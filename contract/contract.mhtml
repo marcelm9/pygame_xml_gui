@@ -1,0 +1,998 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: file:///C:/Users/marce/appdata/local/temp/13.html
+Subject: contract
+Date: Sat, 19 Aug 2023 00:19:24 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--lo4l2Nl0fbAZoxvsWl4N1vKlH63AO6cUhkZ5RHbzde----"
+
+
+------MultipartBoundary--lo4l2Nl0fbAZoxvsWl4N1vKlH63AO6cUhkZ5RHbzde----
+Content-Type: text/html
+Content-ID: <frame-FC5D1A2BEF2BF69EE51ACDBFCD8030A6@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/Users/marce/appdata/local/temp/13.html
+
+<!DOCTYPE html><html><head><meta http-equiv=3D"Content-Type" content=3D"tex=
+t/html; charset=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" href=3D=
+"cid:css-b05b09f4-f0eb-484a-91cd-46f2f58a8095@mhtml.blink" /><link rel=3D"s=
+tylesheet" type=3D"text/css" href=3D"cid:css-ed6b466d-782e-4bdf-b5fd-a87fe7=
+895d66@mhtml.blink" /><meta name=3D"viewport" content=3D"width=3Ddevice-wid=
+th, initial-scale=3D1"><title>contract</title></head><body><article class=
+=3D"markdown-body"><h1 id=3D"better-gui-development-in-pygame-pyxg-pygame-x=
+ml-gui">Better GUI development in Pygame: PyXG (Pygame XML GUI)<a class=3D"=
+headerlink" href=3D"file:///C:/Users/marce/appdata/local/temp/13.html#bette=
+r-gui-development-in-pygame-pyxg-pygame-xml-gui" title=3D"Permanent link">=
+=EE=85=97</a></h1>
+<h4 id=3D"the-goal-of-this-project-is-to-simplify-the-process-of-gui-creati=
+on-in-pygame-until-now-gui-creation-in-pygame-has-been-a-very-tedious-task-=
+compared-to-gui-creation-in-other-languages-like-html-this-project-aims-at-=
+reducing-the-time-and-effort-that-goes-into-great-uis-by-combining-xml-like=
+-formatting-with-custom-elements-and-attributes-all-in-a-python-environment=
+">The goal of this project is to simplify the process of GUI creation in Py=
+game. Until now, GUI creation in Pygame has been a very tedious task compar=
+ed to GUI creation in other languages like HTML. This project aims at reduc=
+ing the time and effort that goes into great UIs by combining xml-like form=
+atting with custom elements and attributes, all in a Python environment.<a =
+class=3D"headerlink" href=3D"file:///C:/Users/marce/appdata/local/temp/13.h=
+tml#the-goal-of-this-project-is-to-simplify-the-process-of-gui-creation-in-=
+pygame-until-now-gui-creation-in-pygame-has-been-a-very-tedious-task-compar=
+ed-to-gui-creation-in-other-languages-like-html-this-project-aims-at-reduci=
+ng-the-time-and-effort-that-goes-into-great-uis-by-combining-xml-like-forma=
+tting-with-custom-elements-and-attributes-all-in-a-python-environment" titl=
+e=3D"Permanent link">=EE=85=97</a></h4>
+<p>&nbsp;</p>
+<h3 id=3D"example-use-case-creating-a-list-of-entity-positions">Example use=
+ case: Creating a list of entity positions<a class=3D"headerlink" href=3D"f=
+ile:///C:/Users/marce/appdata/local/temp/13.html#example-use-case-creating-=
+a-list-of-entity-positions" title=3D"Permanent link">=EE=85=97</a></h3>
+<p>The goal is to not only display the positions, but also
+to make it possible to edit them. Because of this, the
+structure of each line (/position) should look like this:</p>
+<table>
+    <tbody><tr>
+        <td> Position
+        </td>
+        <td> Entity name
+        </td>
+        <td> Change (position)
+        </td>
+        <td> Round (to int)
+        </td>
+        <td> Delete
+        </td>
+    </tr>
+</tbody></table>
+
+<p>The code for this UI should look like this:
+</p><div class=3D"highlight"><pre><span class=3D"nt">&lt;canvas</span> <spa=
+n class=3D"na">pySize=3D</span><span class=3D"s">"500x500"</span> <span cla=
+ss=3D"na">pySource=3D</span><span class=3D"s">"data.py"</span> <span class=
+=3D"na">pyStyle=3D</span><span class=3D"s">"dark"</span><span class=3D"nt">=
+&gt;</span>
+    <span class=3D"nt">&lt;style&gt;</span>
+        <span class=3D"nt">&lt;all</span> <span class=3D"na">size=3D</span>=
+<span class=3D"s">"26"</span><span class=3D"nt">/&gt;</span>
+        <span class=3D"nt">&lt;label</span> <span class=3D"na">font=3D</spa=
+n><span class=3D"s">"consolas"</span><span class=3D"nt">/&gt;</span>
+    <span class=3D"nt">&lt;/style&gt;</span>
+    <span class=3D"nt">&lt;label&gt;</span> Entity positions <span class=3D=
+"nt">&lt;/label&gt;</span>
+    <span class=3D"nt">&lt;list</span> <span class=3D"na">pyMoving=3D</span=
+><span class=3D"s">"True"</span> <span class=3D"na">pyAxis=3D</span><span c=
+lass=3D"s">"horizontal"</span><span class=3D"nt">&gt;</span>
+        <span class=3D"nt">&lt;list-item</span> <span class=3D"na">pyFor=3D=
+</span><span class=3D"s">"e in entities"</span><span class=3D"nt">&gt;</spa=
+n>
+            <span class=3D"nt">&lt;label</span> <span class=3D"na">pyW=3D</=
+span><span class=3D"s">"20"</span><span class=3D"nt">&gt;</span> {{ e.posit=
+ion }} <span class=3D"nt">&lt;/label&gt;</span>
+            <span class=3D"nt">&lt;label</span> <span class=3D"na">pyW=3D</=
+span><span class=3D"s">"20"</span><span class=3D"nt">&gt;</span> {{ e.name =
+}} <span class=3D"nt">&lt;/label&gt;</span>
+            <span class=3D"nt">&lt;button</span> <span class=3D"na">pyW=3D<=
+/span><span class=3D"s">"20"</span><span class=3D"nt">&gt;</span> Change <s=
+pan class=3D"nt">&lt;/button&gt;</span>
+            <span class=3D"nt">&lt;button</span> <span class=3D"na">pyW=3D<=
+/span><span class=3D"s">"20"</span><span class=3D"nt">&gt;</span> Round <sp=
+an class=3D"nt">&lt;/button&gt;</span>
+            <span class=3D"nt">&lt;button</span> <span class=3D"na">pyW=3D<=
+/span><span class=3D"s">"20"</span><span class=3D"nt">&gt;</span> Delete <s=
+pan class=3D"nt">&lt;/button&gt;</span>
+        <span class=3D"nt">&lt;/list-item&gt;</span>
+    <span class=3D"nt">&lt;/list&gt;</span>
+<span class=3D"nt">&lt;/canvas&gt;</span>
+</pre></div><p></p>
+<p>&nbsp;</p>
+<h3 id=3D"elements">Elements<a class=3D"headerlink" href=3D"file:///C:/User=
+s/marce/appdata/local/temp/13.html#elements" title=3D"Permanent link">=EE=
+=85=97</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Info</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>canvas</td>
+<td>toplevel element</td>
+</tr>
+<tr>
+<td>style</td>
+<td>-</td>
+</tr>
+<tr>
+<td>all</td>
+<td>only in =E2=80=9Cstyle=E2=80=9D element, specifies style for elements =
+=E2=80=9Clabel=E2=80=9D and =E2=80=9Cbutton=E2=80=9D</td>
+</tr>
+<tr>
+<td>label</td>
+<td>-</td>
+</tr>
+<tr>
+<td>button</td>
+<td>-</td>
+</tr>
+<tr>
+<td>list</td>
+<td>-</td>
+</tr>
+<tr>
+<td>list-item</td>
+<td>only in =E2=80=9Clist=E2=80=9D element</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3 id=3D"attributes">Attributes<a class=3D"headerlink" href=3D"file:///C:/=
+Users/marce/appdata/local/temp/13.html#attributes" title=3D"Permanent link"=
+>=EE=85=97</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Elements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pySize</td>
+<td>size of the canvas (has to be set)</td>
+<td>canvas</td>
+</tr>
+<tr>
+<td>pySource</td>
+<td>data source for canvas</td>
+<td>canvas</td>
+</tr>
+<tr>
+<td>pyStyle</td>
+<td>sets the style of the file to a preset (<em>multiple shall be created d=
+uring development</em>)</td>
+<td>canvas</td>
+</tr>
+<tr>
+<td>pyStylePath</td>
+<td>sets the style of the file to the style specified in the given file</td=
+>
+<td>canvas</td>
+</tr>
+<tr>
+<td>pyMoving</td>
+<td>makes widget scrollable</td>
+<td>label-list, button-list</td>
+</tr>
+<tr>
+<td>pyClick</td>
+<td>action on click</td>
+<td>button</td>
+</tr>
+<tr>
+<td>pyIf</td>
+<td>if statement</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyFor</td>
+<td>for statement</td>
+<td>label-list-item, button-list-item</td>
+</tr>
+<tr>
+<td>pyW</td>
+<td>width of the element (in percent of the width of the parent element)</t=
+d>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3 id=3D"default-values-for-attributes">Default values for attributes<a cl=
+ass=3D"headerlink" href=3D"file:///C:/Users/marce/appdata/local/temp/13.htm=
+l#default-values-for-attributes" title=3D"Permanent link">=EE=85=97</a></h3=
+>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pySize</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pySource</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyStyle</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyStylePath</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyMoving</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyClick</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyIf</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyFor</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyW</td>
+<td>-</td>
+</tr>
+<tr>
+<td>pyAxis</td>
+<td>=E2=80=9Chorizontal=E2=80=9D</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3 id=3D"how-the-project-will-be-used">How the project will be used<a clas=
+s=3D"headerlink" href=3D"file:///C:/Users/marce/appdata/local/temp/13.html#=
+how-the-project-will-be-used" title=3D"Permanent link">=EE=85=97</a></h3>
+<p>First, the developer will create a python file and store any variables t=
+hat should be accessible during the testing of the UI. Then, the developer =
+starts writing the xml file. To create mockup UI from the xml file, the com=
+mand =E2=80=9Cpyxg_xml_to_mockup <em>path_to_xml_file</em>=E2=80=9D can be =
+used. This file is instantly launchable as a standalone GUI, just to see ho=
+w the GUI of the XML file looks for now. After the finishing touches on the=
+ xml file, the command =E2=80=9Cpyxg_xml_to_class <em>path_to_xml_file</em>=
+=E2=80=9D can be used to create a python class that is insertable into any =
+pygame project.</p>
+<p>&nbsp;</p>
+<h3 id=3D"commands">Commands<a class=3D"headerlink" href=3D"file:///C:/User=
+s/marce/appdata/local/temp/13.html#commands" title=3D"Permanent link">=EE=
+=85=97</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pyxg_xml_to_mockup</td>
+<td>create a mockup of the ui that can be instantly launched</td>
+</tr>
+<tr>
+<td>pyxg_xml_to_class</td>
+<td>create a GUI class that can be used in any pygame project</td>
+</tr>
+<tr>
+<td>pyxg_validate_xml</td>
+<td>validate an xml file</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3 id=3D"hints">Hints<a class=3D"headerlink" href=3D"file:///C:/Users/marc=
+e/appdata/local/temp/13.html#hints" title=3D"Permanent link">=EE=85=97</a><=
+/h3>
+<ul>
+<li>While writing the xml file, you can test out your code with example dat=
+a by giving the canvas a =E2=80=9CpySource=E2=80=9D attribute. In the given=
+ file you can create variables which will then be used in the xml file.</li=
+>
+</ul>
+<p>&nbsp;</p>
+<h3 id=3D"further-ideas">Further ideas<a class=3D"headerlink" href=3D"file:=
+///C:/Users/marce/appdata/local/temp/13.html#further-ideas" title=3D"Perman=
+ent link">=EE=85=97</a></h3>
+<ul>
+<li>Maybe add references?<ul>
+<li>eg.:
+<div class=3D"highlight"><pre><span class=3D"nt">&lt;label</span> <span cla=
+ss=3D"na">pyRef=3D</span><span class=3D"s">"title"</span><span class=3D"nt"=
+>&gt;</span> Hello world! <span class=3D"nt">&lt;/label&gt;</span>
+</pre></div></li>
+</ul>
+</li>
+<li>Maybe create xsd file for better error highlighting?</li>
+<li>Maybe add a way to reference a style file?</li>
+<li>Maybe create some standard color schemes?</li>
+</ul></article></body></html>
+------MultipartBoundary--lo4l2Nl0fbAZoxvsWl4N1vKlH63AO6cUhkZ5RHbzde----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-b05b09f4-f0eb-484a-91cd-46f2f58a8095@mhtml.blink
+
+@charset "utf-8";
+
+body { max-width: 980px; margin: 16px auto; }
+
+body .markdown-body { padding: 45px; }
+
+@font-face { font-family: fontawesome-mini; src: url("data:font/woff;charse=
+t=3Dutf-8;base64,d09GRgABAAAAABE0AA8AAAAAHWwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+BHU1VCAAABWAAAADsAAABUIIslek9TLzIAAAGUAAAAQwAAAFY3d1HZY21hcAAAAdgAAACqAAACO=
+vWLi0FjdnQgAAAChAAAABMAAAAgBtX/BGZwZ20AAAKYAAAFkAAAC3CKkZBZZ2FzcAAACCgAAAAI=
+AAAACAAAABBnbHlmAAAIMAAABdQAAAjkYT9TNWhlYWQAAA4EAAAAMwAAADYQ6WvNaGhlYQAADjg=
+AAAAfAAAAJAc6A1pobXR4AAAOWAAAACAAAAA0Kmz/7mxvY2EAAA54AAAAHAAAABwQPBJubWF4cA=
+AADpQAAAAgAAAAIAEHC/NuYW1lAAAOtAAAAYQAAALxhQT4h3Bvc3QAABA4AAAAfgAAAMS3SYh9c=
+HJlcAAAELgAAAB6AAAAhuVBK7x4nGNgZGBg4GIwYLBjYHJx8wlh4MtJLMljkGJgYYAAkDwymzEn=
+Mz2RgQPGA8qxgGkOIGaDiAIAJjsFSAB4nGNgZHZmnMDAysDAVMW0h4GBoQdCMz5gMGRkAooysDI=
+zYAUBaa4pDA4Pwz+yMwf9z2KIYg5imAYUZgTJAQDcoQvQAHic7ZHNDYJAFIRnBXf94cDRIiyCKk=
+CpwFCPJ092RcKNDoYKcN4+EmMPvpdvk539zQyAPYBCXEUJhBcCrJ5SQ9YLnLJe4qF5rdb+uWPDn=
+gNHTkta101pNyWa8lMhn6xx2dqUnW4q9YOIhAOOeueMSgsR/6ry+P7O5s6xVNg4chBsHUuFnWNJ=
+8uZYwrw7chrsHXkODo7cB0dHOYCTY8kv0VE2WJKD6gOlWjsxAAB4nGNgQAMSEMgc9D8LhAESbAP=
+dAHicrVZpd9NGFB15SZyELCULLWphxMRpsEYmbMGACUGyYyBdnK2VoIsUO+m+8Ynf4F/zZNpz6D=
+d+Wu8bLySQtOdwmpOjd+fN1czbZRJaktgL65GUmy/F1NYmjew8CemGTctRfCg7eyFlisnfBVEQr=
+Zbatx2HREQiULWusEQQ+x5ZmmR86FFGy7akV03KLT3pLlvjQb1V334aOsqxO6GkZjN0aD2yJVUY=
+VaJIpj1S0qZlqPorSSu8v8LMV81QwohOImm8GcbQSN4bZ7TKaDW24yiKbLLcKFIkmuFBFHmU1RL=
+n5IoJDMoHzZDyyqcR5cP8iKzYo5xWsEu20/y+L3mndzk/sV9vUbbkQB/Ijuzg7HQlX4RbW2HctJ=
+PtKFQRdtd3QmzZ7FT/Zo/ymkYDtysyvdCMYKl8hRArP6HM/iFZLZxP+ZJHo1qykRNB62VO7Es+g=
+dbjiClxzRhZ0N3RCRHU/ZIzDPaYPh788d4plgsTAngcy3pHJZwIEylhczRJ2jByYCVliyqp9a6Y=
+OOV1WsRbwn7t2tGXzmjjUHdiPFsPHVs5UcnxaFKnmUyd2knNoykNopR0JnjMrwMoP6JJXm1jNYm=
+VR9M4ZsaERCICLdxLU0EsO7GkKQTNoxm9uRumuXYtWqTJA/Xco/f05la4udNT2g70s0Z/VqdiOt=
+gL0+lp5C/xadrlIkXp+ukZfkziQdYCMpEtNsOUgwdv/Q7Sy9eWHIXXBtju7fMrqH3WRPCkAfsb0=
+B5P1SkJTIWYVYhWQGKta1mWydWsFqnI1HdDmla+rNMEinIcF8e+jHH9XzMzlpgSvt+J07MjLj1z=
+7UsI0xx8m3U9mtepxXIBcWZ5TqdZlu/rNMfyA53mWZ7X6QhLW6ejLD/UaYHlRzodY3lBC5p038G=
+QizDkAg6QMISlA0NYXoIhLBUMYbkIQ1gWYQjLJRjC8mMYwnIZhrC8rGXV1FNJ49qZWAZsQmBijh=
+65zEXlaiq5VEK7aFRqQ54SbpVUFM+qf2WgXjzyhjmwFkiXyJpfMc6Vj0bl+NYVLW8aO1fAsepvH=
+472OfFS1ouFPwX/1dZUJb1izcOTq/Abhp5sJ6o2qXh0TZfPVT26/l9UVFgL9BtIhVgoyrJscGci=
+hI86nYZqoJVDzGzMPLTrdcuan8P9NzFCFlD9+DcUGgvcg05ZSVnt4KzV19uy3DuDcjgTLEkxN/P=
+6VvgiI7PSfpFZyp6PfB5wBYxKZdhqA60VvNknMQ+Z3iTPBHFbUTZI2tjOBIkNHPOAefOdBCZh6q=
+oN5E7hhg34BWFuwXknXKJ6oyyH7kXs8yik/Fun4kT2qGiMwLPZG2Gv70LKb3EMJDT5pX4MVBWhq=
+Rg1FdA0Um6oBl/G2bptQsYO9CMqdsOyrOLDxxb3lZJtGYR8pIjVo6Of1l6iTqrcfmYUl++dvgXB=
+IDUxf3vfdHGQyrtayTJHbQNTtxqVU9eaQ+NVh+rmUfW94+wTOWuabronHnpf06rbwcVcLLD2bQ7=
+SUiYX1PVhhQ2iy8WlUOplNEnvuAcYFhjQ71CKjf+r+th8nitVhdFxJN9O1LfR52AM/A/Yf0f1A9=
+D3Y+hyDS7P95oTn2704WyZrqIX66foNzBrrblZugbc0HQD4iFHrY64yg18pwZxeqS5HOkh4GPdF=
+eIBwCaAxeAT3bWM5lMAo/mMOT7A58xh0GQOgy3mMNhmzhrADnMY7DKHwR5zGHzBnHWAL5nDIGQO=
+g4g5DJ4wJwB4yhwGXzGHwdfMYfANc+4DfMscBjFzGCTMYbCv6dYwzC1e0F2gtkFVoANTT1jcw+J=
+QU2XI/o4Xhv29Qcz+wSCm/qjp9pD6Ey8M9WeDmPqLQUz9VdOdIfU3Xhjq7wYx9Q+DmPpMvxjLZQ=
+a/jHyXCgeUXWw+5++J9w/bxUC5AAEAAf//AA94nIVVX2hbZRQ/5/t7893s5ja9f7ouzdZ0TTqz3=
+bRJmogbWya6bG6Cq0VbSV2ddIJjFtfIQHEig80Hda8yUN/0YQz8AyriiyD+xQd92R4HCnaCb3sa=
+mnpumrpsCsLlfPf7zvedc37nL3CAtc/5W/wQZGA3tOBSY/g+TMjHmwzEoM1Q8+ZjRZY4oJhmBw5=
+/YB6Za0yC5AkhlwA1A1yCBIBOwCII0Cj0U8BAMdUCzq05sKwkP7SlUY6fcJk4Fb/RyE79/6P5hj=
+M/F4aZiXBoeMgzcqQ4Xi1hPqfDLG5FT+lchCVU3lYMyvuwhl1mqndQL0RsuloLywHtthLXI06Ob=
+lTrhfWVnpSJ5+mwu/JdbtuN3IAnkW0LLMcRwaC7ktrlzridM6kVdyf9uO1UNBByI7JhwtG2sEwa=
+b07ORBeilWhqavJCqV0qzZTOl/7ZXQ5TbTcdcFelyGhhRDAQpdqp1FEX3w3cFTc1k9pJQkmm4yS=
+CbSikxRP2QOfN+0tHS5MrpQuTU1Mk5nw0E5Xa0WvrOwDyGax9yB9ma6DAg82wHc43SAGTI4GjBW=
+ebOePAERFE8/AHaQpZASSTy8A4WwZiLQMQ82mFKATO0ILicRAoDm9p5P99E5b/fXG+kQYY3TYUu=
+qmERWYoT0u/GNYL2q/4WB3LaVS+VynXsVYIcWw6DkCh3nX1D+VzlYN4LClF5yexSQos8exqZ3KV=
+P+wtrC54u4Nznq6cq+xpMpUUnZ8FUYzE86ud0g28NOIv3Gj5/rmA3ABs7S/ywzFuQ4qyd6QxfNt=
+iQIaEgp3w/entQg4Vcbqa16M5FfpeUB8t1+qeg7mI7cUyOe79wOk86gSxkVec4KPTX69++5x68Y=
+ubn5/F+w52z7u08sJX7fZXv8ekT/d2mILJxq6sn+SC6qEJknzLJCxyZEKwWVqYmAPBxBE/9DLeZ=
+iWHu7lcr/VytrCRuHojncNuTt9h46tmacmYisnSamdN2bZptcsmSysdVsy1PrOvOzF3xN64Rb93=
+7t/og9KHxYdcjIUqFAmIAHGHNzlns+RTPgeUYAQm9DwpNxfxbhhBHPaw3/gfTcXO2L+eJVIx5ns=
+yGkvm9X4/f+bGkH45G0PaSjcMXTjcZyTvi3UdHoCDjQd3IDUVsgwYmUoJK/gp4JJxeRI0MKHZIk=
+gynyIBqBTOUs6rOVCojvjZ4mCQz49ZMlMcp8QoYk6NoBfsxnJtsBohpa8iGJS+ZH7gU7NxME6cm=
+F+t7cO9vB8d3jTWSct0ycW9ranXmolNDwmVkNnxe+8JtoztwS5rKJ0xWS95tQ/1zMYzg69MzUZn=
+Ntl1ofNbsml/OJm6f9wjRjpnu2o4MzHzn77IQkRd+1DjwMQ2pqSjGMMhyjrgTbBAKksuUm0iU7h=
+I0aN2wOKOq7WYBSH0HGihj/jkiPxAfmwsEbfYrjMG+j3ij932Db/LV7I/xruNrhnroxjR9HRMb2=
+nTvO0ZXOoHPk8H2ZhDPx93qcE/53sH5np/dkIP7zzhTVKdR/BAY/9ElkkR+A6lJGsqpJ4oQcTxp=
+vBT3Kn58VkaJjgHyPEIws57xkaHh9KuVpDEpJZeMbZ5w/zBHi5NMQ4r5VphsFqID7TyB9eR4pX2=
+16c3AHxpdAwoqU9qg0ZJ6yVLKmMSz1iG2z27ifx18NkY0LPx1W/wCc2l5LrznrIsiKsqbmB78A9=
+wIGx4tI8rjihVHJyY9pgMirenVq0yWg7Iw7eogG7ZgYM3qR9959A/fZkg6MnD/exlkmc+jWV4SB=
+15XUR+eqC6l6ZmgPtN9z5JMfik05OV8ljylunJ4J+wA/FUaQSSKotsYsCWqaPBidBLcxkWx7XKF=
+RIb45TGaEhjlF9uUVPqXOtcIwsXbBvfoZXIyRYFdkfnqjExH98xpnPczqzjX/uNdO1Y17Wpi5+6=
+Ts8BXtjVFasp9KZ1mOiNbH65c5w6HgmyF2jFCZywM8mWjRc7T5Pmt0lRy7Y71+jYbpGyvwG4sH0=
+XeJxjYGRgYADiwBB/53h+m68M3MwvgCIM1z5N/g6j///9v5H5BbMnkMvBwAQSBQCIcA9gAHicY2=
+BkYGAO+p8FJF/8//v/F/MLBqAICuAFALYQB5kAeJxjfsHAwLwAiCNB+P9fbJjJmoGBMRUo/wKCA=
+fO2EnQAAAAAANoBXgGcAgICVALaA1IDvAPkBAYEPARyAAEAAAANAF0ABAAAAAAAAgAUACQAcwAA=
+AG4LcAAAAAB4nHWRzWrCQBSFT+pPqUIXLXTTzayKUohGKIibCoLuhbrrYtTRxCYZmYyKyz5Fd32=
+HvlDfoO/QkziIFJtw9bvnnpl7ZwLgBt/wcHieGAf2UGd24Atcou+4RH3kuEweO66QXx1XyaHjGh=
+6ROa7jFp/cwStfMVvhy7GHO+/e8QWuvcBxifqz4zL5xXGF/Oa4Sn53XMPE+3Bcx4P3M9DrvYmWo=
+RWNQVN02kFXTPdCU4pSGQu5saE2meiLhU6timPtz3SSs9ypTCdqrJabWJoT5QQnymSRTkXgt0/U=
+kUqVkVbN807ZdtmxdiEWRidi6HqItdErNbN+aO2612qd9sYAGmvsYRBhyUu0EGhQbfK/gzYCdEl=
+TOgSdB1eEFBIxFYkNV4RFJWPeZyyYpVQVHTHZx4y/yVGX2LGWFZri51TccUOn5B7nPefVCSPvGh=
+VVwUl9znveO2KkhV8Wk82PZ8qwZf8OVcu1+fSmWCMw/HMOwXvKaysqM+p+cVuWag8tvv+c+xdd+=
+4+teJxtjUEOwiAURJla24KliQfhUA2g/Sl+CKXx+loNrpzVezOLEY34Ron/0WhwQoszOvQYIKFw=
+wQiNSbSBeO2SZ0tBP4j3zVjKNng32ZmtD1VVXCuOiw/pJ8S3WOU6l+K5UOTaDC4+2TjKMtN9KQf=
+1ezLx/Sg/00FCvABHhjDjAAB4nGPw3sFwIihiIyNjX+QGxp0cDBwMyQUbGVidNjEwMmiBGJu5mB=
+g5ICw+BjCLzWkX0wGgNCeQze60i8EBwmZmcNmowtgRGLHBoSNiI3OKy0Y1EG8XRwMDI4tDR3JIB=
+EhJJBBs5mFi5NHawfi/dQNL70YmBhcADHYj9AAA") format("woff"); }
+
+.markdown-body { text-size-adjust: 100%; color: rgb(51, 51, 51); overflow: =
+hidden; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesa=
+ns, sans-serif; font-size: 16px; line-height: 1.6; overflow-wrap: break-wor=
+d; }
+
+.markdown-body a { background: transparent; }
+
+.markdown-body a:active, .markdown-body a:hover { outline: 0px; }
+
+.markdown-body b, .markdown-body strong { font-weight: bold; }
+
+.markdown-body mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); fo=
+nt-style: italic; font-weight: bold; }
+
+.markdown-body sub, .markdown-body sup { font-size: 75%; line-height: 0; po=
+sition: relative; vertical-align: baseline; }
+
+.markdown-body sup { top: -0.5em; }
+
+.markdown-body sub { bottom: -0.25em; }
+
+.markdown-body h1 { font-size: 2em; margin: 0.67em 0px; }
+
+.markdown-body img { border: 0px; }
+
+.markdown-body hr { box-sizing: content-box; height: 0px; }
+
+.markdown-body pre { overflow: auto; }
+
+.markdown-body code, .markdown-body kbd, .markdown-body pre, .markdown-body=
+ samp { font-family: monospace, monospace; font-size: 1em; }
+
+.markdown-body input { color: inherit; font: inherit; margin: 0px; }
+
+.markdown-body html input[disabled] { cursor: default; }
+
+.markdown-body input { line-height: normal; }
+
+.markdown-body input[type=3D"checkbox"] { box-sizing: border-box; padding: =
+0px; }
+
+.markdown-body table { border-collapse: collapse; border-spacing: 0px; }
+
+.markdown-body td, .markdown-body th { padding: 0px; }
+
+.markdown-body .codehilitetable, .markdown-body .highlighttable { border: 0=
+px; border-spacing: 0px; }
+
+.markdown-body .codehilitetable tr, .markdown-body .highlighttable { border=
+: 0px; }
+
+.markdown-body .codehilitetable pre, .markdown-body .codehilitetable div.co=
+dehilite, .markdown-body .highlighttable pre, .markdown-body .highlighttabl=
+e div.highlight { margin: 0px; }
+
+.markdown-body .linenos, .markdown-body .code, .markdown-body .codehiliteta=
+ble td, .markdown-body .highlighttable td { border: 0px; padding: 0px; }
+
+.markdown-body td:not(.linenos) .linenodiv { padding: 0px !important; }
+
+.markdown-body .code { width: 100%; }
+
+.markdown-body .linenos div pre, .markdown-body .linenodiv pre, .markdown-b=
+ody .linenodiv { border: 0px; border-radius: 3px 0px 0px 3px; }
+
+.markdown-body .code div pre, .markdown-body .code div { border: 0px; borde=
+r-radius: 0px 3px 3px 0px; }
+
+.markdown-body * { box-sizing: border-box; }
+
+.markdown-body input { font: 13px / 1.4 Helvetica, arial, freesans, clean, =
+sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+
+.markdown-body a { color: rgb(65, 131, 196); text-decoration: none; }
+
+.markdown-body a:hover, .markdown-body a:focus, .markdown-body a:active { t=
+ext-decoration: underline; }
+
+.markdown-body hr { height: 0px; margin: 15px 0px; overflow: hidden; backgr=
+ound: transparent; border-width: 0px 0px 1px; border-top-style: initial; bo=
+rder-right-style: initial; border-left-style: initial; border-top-color: in=
+itial; border-right-color: initial; border-left-color: initial; border-imag=
+e: initial; border-bottom-style: solid; border-bottom-color: rgb(221, 221, =
+221); }
+
+.markdown-body hr::before, .markdown-body hr::after { display: table; conte=
+nt: " "; }
+
+.markdown-body hr::after { clear: both; }
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4,=
+ .markdown-body h5, .markdown-body h6 { margin-top: 15px; margin-bottom: 15=
+px; line-height: 1.1; }
+
+.markdown-body h1 { font-size: 30px; }
+
+.markdown-body h2 { font-size: 21px; }
+
+.markdown-body h3 { font-size: 16px; }
+
+.markdown-body h4 { font-size: 14px; }
+
+.markdown-body h5 { font-size: 12px; }
+
+.markdown-body h6 { font-size: 11px; }
+
+.markdown-body blockquote { margin: 0px; }
+
+.markdown-body ul, .markdown-body ol { padding: 0px; margin-top: 0px; margi=
+n-bottom: 0px; }
+
+.markdown-body ol ol, .markdown-body ul ol { list-style-type: lower-roman; =
+}
+
+.markdown-body ul ul ol, .markdown-body ul ol ol, .markdown-body ol ul ol, =
+.markdown-body ol ol ol { list-style-type: lower-alpha; }
+
+.markdown-body dd { margin-left: 0px; }
+
+.markdown-body code, .markdown-body pre, .markdown-body samp { font-family:=
+ Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 12px; }
+
+.markdown-body pre { margin-top: 0px; margin-bottom: 0px; }
+
+.markdown-body kbd { background-color: rgb(231, 231, 231); background-image=
+: linear-gradient(rgb(254, 254, 254), rgb(231, 231, 231)); background-repea=
+t: repeat-x; border-radius: 2px; border: 1px solid rgb(207, 207, 207); colo=
+r: rgb(0, 0, 0); padding: 3px 5px; font: 11px Consolas, "Liberation Mono", =
+Menlo, Courier, monospace; display: inline-block; }
+
+.markdown-body > :first-child { margin-top: 0px !important; }
+
+.markdown-body > :last-child { margin-bottom: 0px !important; }
+
+.markdown-body .headerlink { font: 400 16px fontawesome-mini; vertical-alig=
+n: middle; margin-left: -16px; float: left; display: inline-block; text-dec=
+oration: none; opacity: 0; color: rgb(51, 51, 51); }
+
+.markdown-body .headerlink:focus { outline: none; }
+
+.markdown-body h1 .headerlink { margin-top: 0.8rem; }
+
+.markdown-body h2 .headerlink, .markdown-body h3 .headerlink { margin-top: =
+0.6rem; }
+
+.markdown-body h4 .headerlink { margin-top: 0.2rem; }
+
+.markdown-body h5 .headerlink, .markdown-body h6 .headerlink { margin-top: =
+0px; }
+
+.markdown-body .headerlink:hover, .markdown-body h1:hover .headerlink, .mar=
+kdown-body h2:hover .headerlink, .markdown-body h3:hover .headerlink, .mark=
+down-body h4:hover .headerlink, .markdown-body h5:hover .headerlink, .markd=
+own-body h6:hover .headerlink { opacity: 1; text-decoration: none; }
+
+.markdown-body h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: =
+1.2; border-bottom: 1px solid rgb(238, 238, 238); }
+
+.markdown-body h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: =
+1.225; border-bottom: 1px solid rgb(238, 238, 238); }
+
+.markdown-body h3 { font-size: 1.5em; line-height: 1.43; }
+
+.markdown-body h4 { font-size: 1.25em; }
+
+.markdown-body h5 { font-size: 1em; }
+
+.markdown-body h6 { font-size: 1em; color: rgb(119, 119, 119); }
+
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-b=
+ody ol, .markdown-body dl, .markdown-body table, .markdown-body pre, .markd=
+own-body .admonition { margin-top: 0px; margin-bottom: 16px; }
+
+.markdown-body hr { height: 4px; padding: 0px; margin: 16px 0px; background=
+-color: rgb(231, 231, 231); border: 0px none; }
+
+.markdown-body ul, .markdown-body ol { padding-left: 2em; }
+
+.markdown-body ul ul, .markdown-body ul ol, .markdown-body ol ol, .markdown=
+-body ol ul { margin-top: 0px; margin-bottom: 0px; }
+
+.markdown-body li > p { margin-top: 16px; }
+
+.markdown-body dl { padding: 0px; }
+
+.markdown-body dl dt { padding: 0px; margin-top: 16px; font-size: 1em; font=
+-style: italic; font-weight: bold; }
+
+.markdown-body dl dd { padding: 0px 16px; margin-bottom: 16px; }
+
+.markdown-body blockquote { padding: 0px 15px; color: rgb(119, 119, 119); b=
+order-left: 4px solid rgb(221, 221, 221); }
+
+.markdown-body blockquote > :first-child { margin-top: 0px; }
+
+.markdown-body blockquote > :last-child { margin-bottom: 0px; }
+
+.markdown-body table { display: block; width: 100%; overflow: auto; word-br=
+eak: keep-all; }
+
+.markdown-body table th { font-weight: bold; }
+
+.markdown-body table th, .markdown-body table td { padding: 6px 13px; borde=
+r: 1px solid rgb(221, 221, 221); }
+
+.markdown-body table tr { background-color: rgb(255, 255, 255); border-top:=
+ 1px solid rgb(204, 204, 204); }
+
+.markdown-body table tr:nth-child(2n) { background-color: rgb(248, 248, 248=
+); }
+
+.markdown-body img { max-width: 100%; box-sizing: border-box; }
+
+.markdown-body code, .markdown-body samp { padding: 0.2em 0px; margin: 0px;=
+ font-size: 85%; border-radius: 3px; }
+
+.markdown-body code:not(.highlight):not(.codehilite), .markdown-body samp {=
+ background-color: rgba(0, 0, 0, 0.04); }
+
+.markdown-body code::before, .markdown-body code::after { letter-spacing: -=
+0.2em; content: "=C2=A0"; }
+
+.markdown-body pre > code { padding: 0px; margin: 0px; font-size: 100%; wor=
+d-break: normal; white-space: pre; background: transparent; border: 0px; }
+
+.markdown-body .codehilite, .markdown-body .highlight { margin-bottom: 16px=
+; }
+
+.markdown-body .codehilite pre, .markdown-body .highlight pre, .markdown-bo=
+dy pre { padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; =
+}
+
+.markdown-body .codehilite, .markdown-body .highlight, .markdown-body pre {=
+ border-radius: 3px; }
+
+.markdown-body :not(.highlight) > pre { background-color: rgb(247, 247, 247=
+); }
+
+.markdown-body .codehilite pre, .markdown-body .highlight pre { margin-bott=
+om: 0px; word-break: normal; }
+
+.markdown-body pre { overflow-wrap: normal; }
+
+.markdown-body pre code { display: inline; max-width: initial; padding: 0px=
+; margin: 0px; overflow: initial; line-height: inherit; overflow-wrap: norm=
+al; background-color: transparent; border: 0px; }
+
+.markdown-body pre code::before, .markdown-body pre code::after { content: =
+normal; }
+
+.markdown-body .admonition { position: relative; border-radius: 3px; border=
+-width: 1px 1px 1px 6px; border-style: solid; border-color: rgb(224, 224, 2=
+24) rgb(224, 224, 224) rgb(224, 224, 224) rgb(51, 51, 51); border-image: in=
+itial; padding: 10px 10px 10px 30px; }
+
+.markdown-body .admonition table { color: rgb(51, 51, 51); }
+
+.markdown-body .admonition p { padding: 0px; }
+
+.markdown-body .admonition-title { font-weight: bold; margin: 0px; }
+
+.markdown-body .admonition > .admonition-title { color: rgb(51, 51, 51); }
+
+.markdown-body .attention > .admonition-title { color: rgb(166, 215, 150); =
+}
+
+.markdown-body .caution > .admonition-title { color: rgb(215, 167, 150); }
+
+.markdown-body .hint > .admonition-title { color: rgb(150, 198, 215); }
+
+.markdown-body .danger > .admonition-title { color: rgb(194, 95, 119); }
+
+.markdown-body .question > .admonition-title { color: rgb(150, 166, 215); }
+
+.markdown-body .note > .admonition-title { color: rgb(215, 200, 150); }
+
+.markdown-body .admonition::before, .markdown-body .attention::before, .mar=
+kdown-body .caution::before, .markdown-body .hint::before, .markdown-body .=
+danger::before, .markdown-body .question::before, .markdown-body .note::bef=
+ore { font: 16px / 1.5 fontawesome-mini; user-select: none; color: rgb(51, =
+51, 51); position: absolute; left: 0px; top: 0px; padding-top: 10px; paddin=
+g-left: 10px; }
+
+.markdown-body .admonition::before { content: "=EF=81=96=C2=A0"; }
+
+.markdown-body .attention::before { content: "=EF=81=98=C2=A0"; color: rgb(=
+166, 215, 150); }
+
+.markdown-body .caution::before { content: "=EF=81=AA=C2=A0"; color: rgb(21=
+5, 167, 150); }
+
+.markdown-body .hint::before { content: "=EF=81=9A=C2=A0"; color: rgb(150, =
+198, 215); }
+
+.markdown-body .danger::before { content: "=EF=81=97=C2=A0"; color: rgb(194=
+, 95, 119); }
+
+.markdown-body .question::before { content: "=EF=81=99=C2=A0"; color: rgb(1=
+50, 166, 215); }
+
+.markdown-body .note::before { content: "=EF=81=80=C2=A0"; color: rgb(215, =
+200, 150); }
+
+.markdown-body .admonition::after { content: normal; }
+
+.markdown-body .attention { border-left: 6px solid rgb(166, 215, 150); }
+
+.markdown-body .caution { border-left: 6px solid rgb(215, 167, 150); }
+
+.markdown-body .hint { border-left: 6px solid rgb(150, 198, 215); }
+
+.markdown-body .danger { border-left: 6px solid rgb(194, 95, 119); }
+
+.markdown-body .question { border-left: 6px solid rgb(150, 166, 215); }
+
+.markdown-body .note { border-left: 6px solid rgb(215, 200, 150); }
+
+.markdown-body .admonition > :first-child { margin-top: 0px !important; }
+
+.markdown-body .admonition > :last-child { margin-bottom: 0px !important; }
+
+.markdown-body .progress { display: block; width: 300px; margin: 10px 0px; =
+height: 24px; border-radius: 3px; background-color: rgb(237, 237, 237); pos=
+ition: relative; box-shadow: rgba(0, 0, 0, 0.1) -1px 1px 3px inset; }
+
+.markdown-body .progress-label { position: absolute; text-align: center; fo=
+nt-weight: bold; width: 100%; margin: 0px; line-height: 24px; color: rgb(51=
+, 51, 51); text-shadow: rgb(254, 254, 254) 1px 1px 0px, rgb(254, 254, 254) =
+-1px -1px 0px, rgb(254, 254, 254) -1px 1px 0px, rgb(254, 254, 254) 1px -1px=
+ 0px, rgb(254, 254, 254) 0px 1px 0px, rgb(254, 254, 254) 0px -1px 0px, rgb(=
+254, 254, 254) 1px 0px 0px, rgb(254, 254, 254) -1px 0px 0px, rgb(0, 0, 0) 1=
+px 1px 2px; white-space: nowrap; overflow: hidden; -webkit-font-smoothing: =
+antialiased !important; }
+
+.markdown-body .progress-bar { height: 24px; float: left; border-radius: 3p=
+x; background-color: rgb(150, 198, 215); box-shadow: rgba(255, 255, 255, 0.=
+5) 0px 1px 0px inset, rgba(0, 0, 0, 0.1) 0px -1px 0px inset; background-siz=
+e: 30px 30px; background-image: linear-gradient(135deg, rgba(255, 255, 255,=
+ 0.4) 27%, transparent 27%, transparent 52%, rgba(255, 255, 255, 0.4) 52%, =
+rgba(255, 255, 255, 0.4) 77%, transparent 77%, transparent); }
+
+.markdown-body .progress-100plus .progress-bar { background-color: rgb(166,=
+ 215, 150); }
+
+.markdown-body .progress-80plus .progress-bar { background-color: rgb(198, =
+215, 150); }
+
+.markdown-body .progress-60plus .progress-bar { background-color: rgb(215, =
+200, 150); }
+
+.markdown-body .progress-40plus .progress-bar { background-color: rgb(215, =
+167, 150); }
+
+.markdown-body .progress-20plus .progress-bar { background-color: rgb(215, =
+150, 166); }
+
+.markdown-body .progress-0plus .progress-bar { background-color: rgb(194, 9=
+5, 119); }
+
+.markdown-body .candystripe-animate .progress-bar { animation: 3s linear 0s=
+ infinite normal none running animate-stripes; }
+
+@-webkit-keyframes animate-stripes {=20
+  0% { background-position: 0px 0px; }
+  100% { background-position: 60px 0px; }
+}
+
+@keyframes animate-stripes {=20
+  0% { background-position: 0px 0px; }
+  100% { background-position: 60px 0px; }
+}
+
+.markdown-body .gloss .progress-bar { box-shadow: rgba(255, 255, 255, 0.7) =
+0px 4px 12px inset, rgba(0, 0, 0, 0.05) 0px -12px 0px inset; }
+
+.markdown-body .critic_mark { background: rgb(255, 255, 0); }
+
+.markdown-body .critic_delete { color: rgb(200, 40, 41); text-decoration: l=
+ine-through; }
+
+.markdown-body .critic_insert { color: rgb(113, 140, 0); text-decoration: u=
+nderline; }
+
+.markdown-body .critic_comment { color: rgb(142, 144, 140); font-style: ita=
+lic; }
+
+.markdown-body .headeranchor { font: 16px / 1 fontawesome-mini; display: in=
+line-block; text-decoration: none; -webkit-font-smoothing: antialiased; use=
+r-select: none; }
+
+.headeranchor::before { content: "=EE=85=97"; }
+
+.markdown-body .task-list-item { list-style-type: none; }
+
+.markdown-body .task-list-item + .task-list-item { margin-top: 3px; }
+
+.markdown-body .task-list-item input { margin: 0px 4px 0.25em -20px; vertic=
+al-align: middle; }
+
+.markdown-body diagram-div, .markdown-body div.uml-sequence-diagram, .markd=
+own-body, div.uml-flowchart { overflow: auto; }
+
+@media only screen and (min-width: 480px) {
+  .markdown-body { font-size: 14px; }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body { font-size: 16px; }
+}
+
+@media print {
+  .markdown-body * { background: transparent !important; color: black !impo=
+rtant; filter: none !important; }
+  .markdown-body { font-size: 12pt; max-width: 100%; outline: none; border:=
+ 0px; }
+  .markdown-body a, .markdown-body a:visited { text-decoration: underline; =
+}
+  .markdown-body .headeranchor-link { display: none; }
+  .markdown-body a[href]::after { content: " (" attr(href) ")"; }
+  .markdown-body abbr[title]::after { content: " (" attr(title) ")"; }
+  .markdown-body .ir a::after, .markdown-body a[href^=3D"javascript:"]::aft=
+er, .markdown-body a[href^=3D"#"]::after { content: ""; }
+  .markdown-body pre { white-space: pre-wrap; overflow-wrap: break-word; }
+  .markdown-body pre, .markdown-body blockquote { border: 1px solid rgb(153=
+, 153, 153); padding-right: 1em; break-inside: avoid; }
+  .markdown-body .progress, .markdown-body .progress-bar { box-shadow: none=
+; }
+  .markdown-body .progress { border: 1px solid rgb(221, 221, 221); }
+  .markdown-body .progress-bar { height: 22px; border-right: 1px solid rgb(=
+221, 221, 221); }
+  .markdown-body tr, .markdown-body img { break-inside: avoid; }
+  .markdown-body img { max-width: 100% !important; }
+  .markdown-body p, .markdown-body h2, .markdown-body h3 { orphans: 3; wido=
+ws: 3; }
+  .markdown-body h2, .markdown-body h3 { break-after: avoid; }
+}
+------MultipartBoundary--lo4l2Nl0fbAZoxvsWl4N1vKlH63AO6cUhkZ5RHbzde----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-ed6b466d-782e-4bdf-b5fd-a87fe7895d66@mhtml.blink
+
+@charset "utf-8";
+
+.highlight { background-color: rgb(247, 247, 247); color: rgb(51, 51, 51); =
+}
+
+.highlight .hll { background-color: rgb(255, 255, 204); }
+
+.highlight .c { color: rgb(153, 153, 136); font-style: italic; }
+
+.highlight .err { color: rgb(166, 23, 23); background-color: rgb(227, 210, =
+210); }
+
+.highlight .k { font-weight: bold; }
+
+.highlight .o { font-weight: bold; }
+
+.highlight .cm { color: rgb(153, 153, 136); font-style: italic; }
+
+.highlight .cp { color: rgb(153, 153, 153); font-weight: bold; }
+
+.highlight .c1 { color: rgb(153, 153, 136); font-style: italic; }
+
+.highlight .cs { color: rgb(153, 153, 153); font-weight: bold; font-style: =
+italic; }
+
+.highlight .gd { color: rgb(0, 0, 0); background-color: rgb(255, 221, 221);=
+ }
+
+.highlight .ge { font-style: italic; }
+
+.highlight .gr { color: rgb(170, 0, 0); }
+
+.highlight .gh { color: rgb(153, 153, 153); }
+
+.highlight .gi { color: rgb(0, 0, 0); background-color: rgb(221, 255, 221);=
+ }
+
+.highlight .go { color: rgb(136, 136, 136); }
+
+.highlight .gp { color: rgb(85, 85, 85); }
+
+.highlight .gs { font-weight: bold; }
+
+.highlight .gu { color: rgb(128, 0, 128); font-weight: bold; }
+
+.highlight .gt { color: rgb(170, 0, 0); }
+
+.highlight .kc { font-weight: bold; }
+
+.highlight .kd { font-weight: bold; }
+
+.highlight .kn { font-weight: bold; }
+
+.highlight .kp { font-weight: bold; }
+
+.highlight .kr { font-weight: bold; }
+
+.highlight .kt { color: rgb(68, 85, 136); font-weight: bold; }
+
+.highlight .m { color: rgb(0, 153, 153); }
+
+.highlight .s { color: rgb(221, 17, 68); }
+
+.highlight .n { color: rgb(51, 51, 51); }
+
+.highlight .na { color: teal; }
+
+.highlight .nb { color: rgb(0, 134, 179); }
+
+.highlight .nc { color: rgb(68, 85, 136); font-weight: bold; }
+
+.highlight .no { color: teal; }
+
+.highlight .ni { color: purple; }
+
+.highlight .ne { color: rgb(153, 0, 0); font-weight: bold; }
+
+.highlight .nf { color: rgb(153, 0, 0); font-weight: bold; }
+
+.highlight .nn { color: rgb(85, 85, 85); }
+
+.highlight .nt { color: navy; }
+
+.highlight .nv { color: teal; }
+
+.highlight .ow { font-weight: bold; }
+
+.highlight .w { color: rgb(187, 187, 187); }
+
+.highlight .mf { color: rgb(0, 153, 153); }
+
+.highlight .mh { color: rgb(0, 153, 153); }
+
+.highlight .mi { color: rgb(0, 153, 153); }
+
+.highlight .mo { color: rgb(0, 153, 153); }
+
+.highlight .sb { color: rgb(221, 17, 68); }
+
+.highlight .sc { color: rgb(221, 17, 68); }
+
+.highlight .sd { color: rgb(221, 17, 68); }
+
+.highlight .s2 { color: rgb(221, 17, 68); }
+
+.highlight .se { color: rgb(221, 17, 68); }
+
+.highlight .sh { color: rgb(221, 17, 68); }
+
+.highlight .si { color: rgb(221, 17, 68); }
+
+.highlight .sx { color: rgb(221, 17, 68); }
+
+.highlight .sr { color: rgb(0, 153, 38); }
+
+.highlight .s1 { color: rgb(221, 17, 68); }
+
+.highlight .ss { color: rgb(153, 0, 115); }
+
+.highlight .bp { color: rgb(153, 153, 153); }
+
+.highlight .vc { color: teal; }
+
+.highlight .vg { color: teal; }
+
+.highlight .vi { color: teal; }
+
+.highlight .il { color: rgb(0, 153, 153); }
+
+.highlight .gc { color: rgb(153, 153, 153); background-color: rgb(234, 242,=
+ 245); }
+------MultipartBoundary--lo4l2Nl0fbAZoxvsWl4N1vKlH63AO6cUhkZ5RHbzde------

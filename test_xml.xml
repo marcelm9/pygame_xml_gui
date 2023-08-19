@@ -1,0 +1,12 @@
+<canvas pySize="500x500" pySource="data.py" pyStyle="dark">
+	<label> Entity positions </label>
+	<list pyMoving="True" pyAxis="horizontal">
+		<list-item pyFor="e in entities">
+			<label pyWidth="20"> {{ e.position }} </label>
+			<label pyWidth="20"> {{ e.name }} </label>
+			<button pyWidth="20"> Change </button>
+			<button pyWidth="20"> Round </button>
+			<button pyWidth="20"> Delete </button>
+		</list-item>
+	</list>
+</canvas>

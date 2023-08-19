@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="canvas" type="canvasType" />
+
+    <xsd:complexType name="canvasType">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="label" type="labelType" />
+            <xsd:element name="button" type="buttonType" />
+            <xsd:element name="list" type="listType" />
+        </xsd:choice>
+
+        <xsd:attribute name="pySize">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="[1-9][0-9]{0,3}x[1-9][0-9]{0,3}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="pySource" type="xsd:string" />
+        <xsd:attribute name="pyStyle" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="labelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="pyWidth" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="buttonType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="pyWidth" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="listType">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="list-item" type="listItemType" />
+        </xsd:sequence>
+        <xsd:attribute name="pyMoving">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="True" />
+                    <xsd:enumeration value="False" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="pyAxis">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="horizontal" />
+                    <xsd:enumeration value="vertical" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="listItemType">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="label" type="labelType" />
+            <xsd:element name="button" type="buttonType" />
+            <!-- nested lists are not allowed (for now at least) -->
+        </xsd:choice>
+        <xsd:attribute name="pyFor">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="[a-zA-Z][a-zA-Z0-9]*\sin\s[a-zA-Z][a-zA-Z0-9]*" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+
+</xsd:schema>
+<!-- TODO: ATTRIBUTE USE REQUIRED? -->
