@@ -7,13 +7,14 @@ import xmlschema
 from xml.sax.handler import ContentHandler
 from xml.sax import make_parser
 
-from validator_dir.cprint import cprint
+from files.paths import TEST_XML_FILE, XSD_FILE
+from rich import print as rprint
 
 class Validator:
     def __init__(self, path):
         """This class validates the form of the xml file and its structure.\nCommand: pyxg_validate_xml {path_to_file}"""
         self.path = path
-        cprint("Path: " + str(self.path))
+        print("Path: " + str(self.path))
 
         self.check_form()
         self.check_valid()
@@ -22,20 +23,23 @@ class Validator:
         """Checks if the xml file is well-formed"""
         parser = make_parser()
         parser.setContentHandler(ContentHandler())
+        rprint("Correct form: ", end="")
         try:
             parser.parse(self.path)
-            cprint("Good form")
+            rprint("[green]Yes[/green]")
         except Exception as e:
-            cprint(f"FormException: {e}")
+            rprint("[red]No[/red]")
+            print(f"FormException: {e}")
             sys.exit()
 
     def check_valid(self):
         """Checks if the xml file is valid against the schema"""
-        xsd = os.path.join("validator_dir", "xml_schema.xsd")
+        rprint("Valid: ", end="")
         try:
-            xmlschema.validate(self.path, xsd)
-            cprint("XML valid")
+            xmlschema.validate(self.path, XSD_FILE)
+            rprint("[green]Yes[/green]")
         except Exception as e:
-            cprint("StructureException: The following error occurred:")
+            rprint("[red]No[/red]")
+            print("StructureException: The following error occurred:")
             print(e)
             sys.exit()

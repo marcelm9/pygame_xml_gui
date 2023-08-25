@@ -5,7 +5,7 @@
 	+ validating form (xml)
 	+ validating structure (xsd file)
 - extracting elements with attributes from xml file
-	+ creating generic "Element" class
+	+ writing generic "Element" class
 	+ creating "Element" classes for each element including its attributes
 	+ validating elements
 	+ validating attributes of each element
