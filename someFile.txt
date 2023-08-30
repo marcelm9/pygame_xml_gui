@@ -1,0 +1,5 @@
+l1	content of element <list>
+l2	new content of element <list>
+l3	content of original element <list-item>
+l4	list of new <list-item> elements
+l5	list of individual <list-item> content
