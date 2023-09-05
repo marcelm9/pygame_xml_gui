@@ -24,7 +24,8 @@
     <xsd:complexType name="labelType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <xsd:attribute name="pyWidth" type="xsd:string" />
+                <xsd:attribute name="pyWidth" type="xsd:string" use="optional"/>
+                <xsd:attribute name="pyHeight" type="xsd:string" use="optional"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -32,7 +33,8 @@
     <xsd:complexType name="buttonType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <xsd:attribute name="pyWidth" type="xsd:string" />
+                <xsd:attribute name="pyWidth" type="xsd:string" use="optional"/>
+                <xsd:attribute name="pyHeight" type="xsd:string" use="optional"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -42,6 +44,7 @@
             <xsd:element name="list-item" type="listItemType"/>
             <xsd:element name="label" type="labelType"/>
             <xsd:element name="button" type="buttonType"/>
+            <xsd:element name="list" type="listType"/> <!-- keep? -->
         </xsd:choice>
         <xsd:attribute name="pyMoving">
             <xsd:simpleType>
@@ -62,9 +65,10 @@
     </xsd:complexType>
 
     <xsd:complexType name="listItemType">
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
             <xsd:element name="label" type="labelType" />
             <xsd:element name="button" type="buttonType" />
+            <xsd:element name="list" type="listType" />
             <!-- nested lists are not allowed (for now at least) -->
         </xsd:choice>
         <xsd:attribute name="pyFor" use="required">
@@ -85,4 +89,3 @@
     </xsd:complexType>
 
 </xsd:schema>
-<!-- TODO: ATTRIBUTE USE REQUIRED? -->

@@ -1,19 +1,23 @@
 <canvas pySize="500x500" pySource="files/data.py" pyStyle="dark">
-	<label> Entity positions </label>
+	<label> Entity positions (count: {{len(entities)}}) </label>
 	<list pyMoving="True" pyAxis="vertical">
 		<list-item pyFor="e in entities" pyAxis="horizontal">
-			<label pyWidth="20"> {{e.name}}, {{e.position}}, {{e.name}} </label>
-			<label pyWidth="20">
-				{{ 
-					e.position
-				}}
-			</label>
+			<label pyWidth="20"> Name: {{ e.name }} </label>
+			<label pyWidth="20"> Position: {{ e.position }}</label>
 			<button pyWidth="20"> Change </button>
 			<button pyWidth="20"> Round </button>
 			<button pyWidth="20"> Delete </button>
+			<list pyAxis="vertical">
+				<button pyHeight="parent.height / 3">b1</button>
+				<button pyHeight="parent.height / 3">b2</button>
+				<button pyHeight="parent.height / 3">b3</button>
+				<!-- should this be possible? -->
+			</list>
 		</list-item>
-		<label> new Label </label>
-		<button> new button </button>
-		<label>    another new label</label>
+		<label> no formatting here, right? (a = {{a}})</label>
+		<list pyAxis="vertical">
+			<label>wow</label>
+		</list>
 	</list>
+	<label> All entities started from position {{starting_position}}</label>
 </canvas>

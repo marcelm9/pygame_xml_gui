@@ -99,6 +99,7 @@ pyxg_validate_xml | validate an xml file
 &nbsp;
 ### Hints
 - While writing the xml file, you can test out your code with example data by giving the canvas a "pySource" attribute. In the given file you can create variables which will then be used in the xml file.
+- Variables of the source file can be referenced in the xml file. For example, you can create a list of entities and create a label for each entity by using a list and a list-item with the attribute "pyFor".
 
 &nbsp;
 ### Further ideas

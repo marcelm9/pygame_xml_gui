@@ -5,9 +5,12 @@ import sys
 import xml.sax
 
 from classes.validator import Validator
-from classes.widgetCreator import WidgetCreator
+from classes.widgetPrinter import WidgetPrinter
 from classes.xmlHandler import XMLHandler
 from classes.sourceInserter import SourceInserter
+from classes.styleInserter import StyleInserter
+from classes.sizeInserter import SizeInserter
+from classes.guiMaker import GUIMaker
 
 parser = argparse.ArgumentParser()
 parser.add_argument("path", help="Path of the xml file to create a mockup from")
@@ -30,16 +33,22 @@ if not (dest_path.endswith(".py") or dest_path.endswith(".pyw")):
 
 Validator(xml_path)
 
-widgetCreator = WidgetCreator()
-
 parser = xml.sax.make_parser()
 parser.setFeature(xml.sax.handler.feature_namespaces, 0)
 
-handler = XMLHandler(widgetCreator)
+handler = XMLHandler()
 parser.setContentHandler(handler)
 parser.parse(xml_path) # inserts widgets into WidgetCreator
-# widgetCreator.print_widgets()
+WidgetPrinter.print_canvas(handler.get_widgets()[0])
 
-sourceInserter = SourceInserter(widgetCreator.get_widgets(), widgetCreator.get_variables())
-widgets = widgetCreator.print_widgets(sourceInserter.get_widgets())
+# sourceInserter = SourceInserter(handler.get_widgets(), widgetCreator.get_variables())
 
+
+# styleInserter = StyleInserter(sourceInserter.get_canvas(), handler.get_style())
+
+# sizeInserter = SizeInserter(styleInserter.get_canvas(), handler.get_size())
+
+# widgetCreator.print_recursive(sizeInserter.get_canvas())
+
+# guiMaker = GUIMaker(styleInserter.get_widgets(), handler.get_size())
+# guiMaker.write_to_file(dest_path)
