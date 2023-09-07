@@ -7,10 +7,11 @@ pygame.init()
 
 
 class GUIMaker:
-    def __init__(self, widgets: list[Widget]):
+    def __init__(self, widgets: list[Widget], padding=1):
         self.__widgets = widgets
         self.__gui_widgets = []
         self.__text_gui_widgets = []
+        self.__padding = padding
         self.__sanity_check()
         self.__run()
 
@@ -29,24 +30,23 @@ class GUIMaker:
             w = Label if widget.name == "label" else Button
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
-            attributes = {k: v for k, v in widget.attributes.items() if k not in ["size", "anchor"]}
+            attributes = {k: v for k, v in widget.attributes.items() if k not in ["pyWidth", "size", "anchor", "padding"]}
             self.__gui_widgets.append(
                 w(None, widget.content, size, self.__pos(), anchor, **attributes)
             )
 
             attributes_text = f'None, "{widget.content}", {size}, {self.__pos()}, "{anchor}"'
             for k, v in attributes.items():
-                if k != "pyWidth":
-                    value = "\"" + v + "\"" if isinstance(v, str) else v
-                    attributes_text += f", {k}={value}"
+                value = "\"" + v + "\"" if isinstance(v, str) else v
+                attributes_text += f", {k}={value}"
             self.__text_gui_widgets.append(
                 widget.name.title() + f"({attributes_text})"
             )
 
             if parent_attributes["pyAxis"] == "vertical":
-                self.__current_y += self.__gui_widgets[-1].rect.height
+                self.__current_y += self.__gui_widgets[-1].rect.height + self.__padding
             elif parent_attributes["pyAxis"] == "horizontal":
-                self.__current_x += self.__gui_widgets[-1].rect.width
+                self.__current_x += self.__gui_widgets[-1].rect.width + self.__padding
 
         elif widget.name in ["canvas", "list"]:
             for item in widget.content:
@@ -56,7 +56,7 @@ class GUIMaker:
             x, y = self.__pos()
             for item in widget.content:
                 self.__run_recursive(item, widget.attributes)
-            self.__set_pos(x, y + self.__gui_widgets[-1].rect.height)
+            self.__set_pos(x, y + self.__gui_widgets[-1].rect.height + self.__padding)
 
 
     def __pos(self):
@@ -87,10 +87,14 @@ class GUIMaker:
         code.append("]")
         code.append("")
         code.append("while True:")
-        code.append("\tfor e in pygame.event.get():")
+        code.append("\tevents = pygame.event.get()")
+        code.append("\tfor e in events:")
         code.append("\t\tif e.type == pygame.QUIT:")
         code.append("\t\t\tpygame.quit()")
         code.append("\t\t\tsys.exit()")
+        code.append("\tfor widget in widgets:")
+        code.append("\t\tif isinstance(widget, pe.Button):")
+        code.append("\t\t\twidget.update(events)")
         code.append("\tscreen.fill((80,80,200))")
         code.append("\tfor item in widgets:")
         code.append("\t\titem.draw_to(screen)")
