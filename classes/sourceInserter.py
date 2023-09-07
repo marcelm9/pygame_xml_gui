@@ -3,12 +3,10 @@ import sys
 import os
 
 from rich import print as rprint
-from pprint import pprint as print
 from classes.widget import Widget
 from mmlib import check
 
 REGULAR_EXPRESSION = r"{{.*?}}"
-
 
 class SourceInserter:
     @check
