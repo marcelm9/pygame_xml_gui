@@ -47,18 +47,18 @@ class SourceInserter:
 
     def __run(self):
         self.__new_widgets = [
-            self.__run_recursive(widget, None, {}) for widget in self.__widgets
+            self.__run_recursive(widget, {}) for widget in self.__widgets
         ]
         self.__unpack_lists()
 
     def __run_recursive(
-        self, widget: Widget, parent_widget: Widget | None, additional_variables: dict
+        self, widget: Widget, additional_variables: dict
     ):
         if widget.name in ["canvas", "list"]:
             return Widget(
                 widget.name,
                 widget.attributes,
-                [self.__run_recursive(item, widget, additional_variables) for item in widget.content],
+                [self.__run_recursive(item, additional_variables) for item in widget.content],
             )
         elif widget.name in ["label", "button"]:
             return self.__evaluate_widget(
@@ -77,7 +77,6 @@ class SourceInserter:
                     content.append(
                         self.__run_recursive(
                             widget_in_list_item,
-                            widget,
                             {v1: variable_value}
                             ),
                         )

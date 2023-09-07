@@ -19,14 +19,14 @@
         </xsd:attribute>
         <xsd:attribute name="pySource" type="xsd:string" use="optional" />
         <xsd:attribute name="pyStyle" type="xsd:string" use="required" />
-        <xsd:attribute name="pyAxis" use="required">
+        <!-- <xsd:attribute name="pyAxis" use="required">
             <xsd:simpleType>
                 <xsd:restriction base="xsd:string">
                     <xsd:enumeration value="horizontal" />
                     <xsd:enumeration value="vertical" />
                 </xsd:restriction>
             </xsd:simpleType>
-        </xsd:attribute>
+        </xsd:attribute> -->
     </xsd:complexType>
 
     <xsd:complexType name="labelType">
@@ -62,14 +62,14 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>
-        <xsd:attribute name="pyAxis" use="required">
+        <!-- <xsd:attribute name="pyAxis" use="required">
             <xsd:simpleType>
                 <xsd:restriction base="xsd:string">
                     <xsd:enumeration value="horizontal" />
                     <xsd:enumeration value="vertical" />
                 </xsd:restriction>
             </xsd:simpleType>
-        </xsd:attribute>
+        </xsd:attribute> -->
     </xsd:complexType>
 
     <xsd:complexType name="listItemType">
@@ -86,14 +86,14 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>
-        <xsd:attribute name="pyAxis" use="required">
+        <!-- <xsd:attribute name="pyAxis" use="required">
             <xsd:simpleType>
                 <xsd:restriction base="xsd:string">
                     <xsd:enumeration value="horizontal" />
                     <xsd:enumeration value="vertical" />
                 </xsd:restriction>
             </xsd:simpleType>
-        </xsd:attribute>
+        </xsd:attribute> -->
     </xsd:complexType>
 
 </xsd:schema>

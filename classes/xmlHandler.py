@@ -29,6 +29,14 @@ class XMLHandler(xml.sax.ContentHandler):
     def endElement(self, name):
         w_name = self.__active_names.pop()
         w_attributes = dict(self.__active_attributes.pop())
+        if name in ["canvas", "list"]:
+            # for now only vertical canvases and lists are allowed
+            w_attributes["pyAxis"] = "vertical"
+        if name in ["label", "button"]:
+            w_attributes["anchor"] = "topleft"
+        if name == "list-item":
+            # for now list-items are always horizontal
+            w_attributes["pyAxis"] = "horizontal"
         w_content = self.__active_contents.pop()
         widget = Widget(w_name, w_attributes, w_content)
         if name == "canvas":

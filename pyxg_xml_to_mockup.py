@@ -46,9 +46,7 @@ styleInserter = StyleInserter(sourceInserter.get_widgets())
 
 sizeInserter = SizeInserter(styleInserter.get_widgets())
 
-WidgetPrinter.print_canvas(styleInserter.get_widgets()[0])
+# WidgetPrinter.print_canvas(sizeInserter.get_widgets()[0])
 
-# widgetCreator.print_recursive(sizeInserter.get_canvas())
-
-# guiMaker = GUIMaker(styleInserter.get_widgets(), handler.get_size())
-# guiMaker.write_to_file(dest_path)
+guiMaker = GUIMaker(styleInserter.get_widgets())
+guiMaker.write_to_file(dest_path)

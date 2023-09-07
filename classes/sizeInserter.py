@@ -1,6 +1,4 @@
-import sys
 from classes.widget import Widget
-from mmlib import check
 
 class SizeInserter:
     def __init__(self, widgets: list[Widget]):
@@ -45,22 +43,19 @@ class SizeInserter:
                     ]
                 )
 
-
         if widget.name in ["label", "button"]:
             return self.__get_widget_with_inserted_size(widget, parent_widget_attributes)
 
     def __get_widget_with_inserted_size(self, widget: Widget, parent_widget_attributes: dict) -> Widget:
-        attributes = widget.attributes
 
         if "pyWidth" in widget.attributes.keys():
             width = (int(widget.attributes["pyWidth"]) / 100) * parent_widget_attributes["force_width"]
-            del attributes["pyWidth"]
         else:
             width = parent_widget_attributes["force_width"]
-        attributes["force_width"] = width
-        attributes["force_height"] = self.__standard_width_or_height
+        widget.attributes["force_width"] = int(width)
+        widget.attributes["force_height"] = int(self.__standard_width_or_height)
         
-        return Widget(widget.name, attributes, widget.content)
+        return Widget(widget.name, widget.attributes, widget.content)
 
     def get_widgets(self):
-        return self.__widgets
+        return self.__new_widgets
