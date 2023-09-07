@@ -1,4 +1,4 @@
-<canvas pySize="500x500" pySource="files/data.py" pyStyle="dark">
+<canvas pySize="500x500" pySource="files/data.py" pyStyle="dark" pyAxis="vertical">
 	<label> Entity positions (count: {{len(entities)}}) </label>
 	<list pyMoving="True" pyAxis="vertical">
 		<list-item pyFor="e in entities" pyAxis="horizontal">

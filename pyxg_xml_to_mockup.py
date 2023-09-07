@@ -44,9 +44,9 @@ sourceInserter = SourceInserter(handler.get_widgets())
 
 styleInserter = StyleInserter(sourceInserter.get_widgets())
 
-WidgetPrinter.print_canvas(styleInserter.get_widgets()[0])
+sizeInserter = SizeInserter(styleInserter.get_widgets())
 
-# sizeInserter = SizeInserter(styleInserter.get_canvas(), handler.get_size())
+WidgetPrinter.print_canvas(styleInserter.get_widgets()[0])
 
 # widgetCreator.print_recursive(sizeInserter.get_canvas())
 

@@ -14,5 +14,6 @@
 - creating class file from xml file
 	+ todo
 
-### Optional tasks
-- style in "canvas" element
+
+### for future releases
+- Positioning of widgets is very simple at the moment. For example, it is not possible to put two widgets next to each other.
