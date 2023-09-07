@@ -1,14 +1,6 @@
-import sys
-import os
 import xml.sax
 from classes.widget import Widget
 
-def error(text):
-    print(f"Error: {text}")
-    sys.exit()
-
-STYLES = ["light", "dark"]
-PRINT = False
 
 class XMLHandler(xml.sax.ContentHandler):
     def __init__(self):
@@ -18,27 +10,6 @@ class XMLHandler(xml.sax.ContentHandler):
         self.__active_names = []
         self.__active_attributes = []
         self.__active_contents = []
-
-        self.__vars = {}
-
-    def __check_source(self):
-        s = os.path.abspath(self.__source)
-        if not os.path.exists(s):
-            raise Exception(f"Source file does not exist ({s})")
-        if not os.path.isfile(s):
-            raise Exception(f"Given source file is not a file ({s})")
-        if not (str(s).endswith(".py") or str(s).endswith(".pyw")):
-            raise Exception(f"Given source file has to be a python file (.py or .pyw)")
-
-    def __import_source(self):
-        self.__check_source()
-        try:
-            with open(self.__source, "r") as f:
-                code = f.read()
-        except FileNotFoundError:
-            print(f"Could not find source file ('{self.__source}')")
-        exec(code, None, self.__vars)
-        self.__widgetCreator.set_variables(self.__vars)
 
     def startElement(self, tag, attributes):
         if tag in ["canvas", "list", "list-item"]:

@@ -8,16 +8,12 @@
 			<button pyWidth="20"> Round </button>
 			<button pyWidth="20"> Delete </button>
 			<list pyAxis="vertical">
-				<button pyHeight="parent.height / 3">b1</button>
-				<button pyHeight="parent.height / 3">b2</button>
-				<button pyHeight="parent.height / 3">b3</button>
-				<!-- should this be possible? -->
+				<button>b1 {{e.name}}</button>
+				<button>b2 {{e.name}}</button>
+				<button>b3 {{e.name}}</button>
 			</list>
 		</list-item>
 		<label> no formatting here, right? (a = {{a}})</label>
-		<list pyAxis="vertical">
-			<label>wow</label>
-		</list>
 	</list>
 	<label> All entities started from position {{starting_position}}</label>
 </canvas>

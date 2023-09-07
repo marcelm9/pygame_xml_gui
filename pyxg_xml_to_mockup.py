@@ -39,10 +39,11 @@ parser.setFeature(xml.sax.handler.feature_namespaces, 0)
 handler = XMLHandler()
 parser.setContentHandler(handler)
 parser.parse(xml_path) # inserts widgets into WidgetCreator
-WidgetPrinter.print_canvas(handler.get_widgets()[0])
+# WidgetPrinter.print_canvas(handler.get_widgets()[0])
 
-# sourceInserter = SourceInserter(handler.get_widgets(), widgetCreator.get_variables())
+sourceInserter = SourceInserter(handler.get_widgets())
 
+WidgetPrinter.print_canvas(sourceInserter.get_widgets()[0])
 
 # styleInserter = StyleInserter(sourceInserter.get_canvas(), handler.get_style())
 

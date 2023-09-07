@@ -1,53 +1,126 @@
 import re
 import sys
+import os
 
 from rich import print as rprint
+from pprint import pprint as print
 from classes.widget import Widget
 from mmlib import check
 
 REGULAR_EXPRESSION = r"{{.*?}}"
 
+
 class SourceInserter:
     @check
-    def __init__(self, canvas: Widget, variables: dict):
-        self.__canvas = canvas
-        self.__widgets = canvas.content
+    def __init__(self, widgets: list[Widget]):
+        self.__widgets = widgets
         self.__new_widgets = []
-        self.__vars = variables
+
+        self.__sanity_check()
+        self.__source = self.__widgets[0].attributes.get("pySource", None)
+        self.__vars = {}
+        self.__import_source()
         self.__run()
 
+    def __sanity_check(self):
+        assert len(self.__widgets) == 1
+        assert self.__widgets[0].name == "canvas"
+
+    def __import_source(self):
+        if self.__source == None:
+            return
+
+        # checking for errors
+        s = os.path.abspath(self.__source)
+        if not os.path.exists(s):
+            raise Exception(f"Source file does not exist ({s})")
+        if not os.path.isfile(s):
+            raise Exception(f"Given source file is not a file ({s})")
+        if not (str(s).endswith(".py") or str(s).endswith(".pyw")):
+            raise Exception(f"Given source file has to be a python file (.py or .pyw)")
+
+        # trying to load the variables
+        try:
+            with open(self.__source, "r") as f:
+                code = f.read()
+        except FileNotFoundError:
+            print(f"Could not find source file ('{self.__source}')")
+        exec(code, None, self.__vars)
+
     def __run(self):
-        for widget1 in self.__widgets:
-            if widget1.name in ["label", "button"]:
-                widget1.content = self.__evaluate_widget(widget1)
-                self.__new_widgets.append(widget1)
-            if widget1.name == "list":
-                l1 = widget1.content
-                l2 = []
-                for widget2 in l1:
-                    if widget2.name in ["label", "button"]:
-                        widget2.content = self.__evaluate_widget(widget2)
-                        l2.append(widget2)
-                    if widget2.name == "list-item":
+        self.__new_widgets = [
+            self.__run_recursive(widget, None, {}) for widget in self.__widgets
+        ]
+        self.__unpack_lists()
 
-                        pyForString = widget2.attributes["pyFor"]
-                        # 'for v1 in v2'
-                        v1 = pyForString.split(" in ")[0]
-                        v2 = self.__vars[pyForString.split(" in ")[1]]
+    def __run_recursive(
+        self, widget: Widget, parent_widget: Widget | None, additional_variables: dict
+    ):
+        if widget.name in ["canvas", "list"]:
+            return Widget(
+                widget.name,
+                widget.attributes,
+                [self.__run_recursive(item, widget, additional_variables) for item in widget.content],
+            )
+        elif widget.name in ["label", "button"]:
+            return self.__evaluate_widget(
+                widget, additional_variables
+            )  # TODO: insert source
+        elif widget.name == "list-item":
+            return_list = []
+            v1 = widget.attributes["pyFor"].split(" in ")[0]  # name of the iterable
+            v2 = self.__vars[
+                widget.attributes["pyFor"].split(" in ")[1]
+            ]  # list of items to iterate over
 
-                        l3 = widget2.content
+            for variable_value in v2:
+                content = []
+                for widget_in_list_item in widget.content:
+                    content.append(
+                        self.__run_recursive(
+                            widget_in_list_item,
+                            widget,
+                            {v1: variable_value}
+                            ),
+                        )
+                return_list.append(content)
+            return [
+                Widget(
+                    widget.name,
+                    {  # removes pyFor attribute
+                        k: v for k, v in dict(widget.attributes).items() if k != "pyFor"
+                    },
+                    collection,
+                )
+                for collection in return_list
+            ]
 
-                        for item in v2:
-                            l5 = []
-                            for widget3 in l3:
-                                string = self.__evaluate_widget(widget3, {v1: item})
-                                l5.append(Widget(widget3.name, widget3.attributes, string))
+    def __unpack_lists(self):
+        self.__unpacked_widgets = [
+            self.__unpack_recursive(widget) for widget in self.__new_widgets
+        ]
+        self.__new_widgets = self.__unpacked_widgets
 
-                            attributes = {k: v for k, v in dict(widget2.attributes).items() if k != "pyFor"}
-                            l2.append(Widget("list-item", attributes, l5))
+    def __unpack_recursive(self, widget: Widget):
+        if widget.name in ["label", "button"]:
+            return widget
 
-                self.__new_widgets.append(Widget(widget1.name, widget1.attributes, l2))
-                print(widget1.attributes)
+        if widget.name in ["list"]:
+            new_content = []
+            for item in widget.content:
+                if isinstance(item, list):
+                    for inner_item in item:
+                        new_content.append(self.__unpack_recursive(inner_item))
+                else:
+                    new_content.append(self.__unpack_recursive(item))
+            return Widget(widget.name, widget.attributes, new_content)
+
+        if widget.name in ["canvas", "list-item"]:
+            return Widget(
+                widget.name,
+                widget.attributes,
+                [self.__unpack_recursive(item) for item in widget.content],
+            )
 
     @check
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None):
@@ -59,25 +132,22 @@ class SourceInserter:
         if additional_locals != None:
             for k, v in additional_locals.items():
                 vars_[k] = v
-        
+
         for match in re.findall(REGULAR_EXPRESSION, string, re.DOTALL):
             try:
                 evaluation = eval(match[2:-2], None, vars_)
             except Exception as e:
-                rprint(f"[red]An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}'):")
+                rprint(
+                    f"[red]An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}'):"
+                )
                 rprint("[red]To be evaluated: ", end="")
                 print(match[2:-2])
                 rprint("[red]Error: ", end="")
                 print(e)
                 sys.exit()
-            string = string.replace(
-                match,
-                str(evaluation)
-            )
+            string = string.replace(match, str(evaluation))
 
-        return string
+        return Widget(widget.name, widget.attributes, string)
 
-
-    def get_canvas(self):
-        self.__canvas.content = self.__new_widgets
-        return self.__canvas
+    def get_widgets(self):
+        return self.__new_widgets

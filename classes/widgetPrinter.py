@@ -1,6 +1,7 @@
 from classes.widget import Widget
 from rich import print
 
+
 class WidgetPrinter:
 
     @staticmethod
@@ -14,20 +15,23 @@ class WidgetPrinter:
     @staticmethod
     def __print_recursive(widget: Widget, indent: int, lines: list[str]):
 
-        if widget.name in ["canvas", "list", "list-item"]:
+        if isinstance(widget, list):
+            lines.append(str(widget))
+        else:
 
-            lines.append("    " * indent + f"[purple]name[/]: {widget.name}")
-            lines.append("    " * indent + f"attributes: {widget.attributes}")
-            lines.append("    " * indent + f"content:")
+            if widget.name in ["canvas", "list", "list-item"]:
 
-            indent += 1
-            for item in widget.content:
-                WidgetPrinter.__print_recursive(item, indent, lines)
-            indent -= 1
-        
-        elif widget.name in ["label", "button"]:
+                lines.append("    " * indent + f"[purple]name[/]: {widget.name}")
+                lines.append("    " * indent + f"attributes: {widget.attributes}")
+                lines.append("    " * indent + f"content:")
 
-            lines.append("    " * indent + f"[purple]name[/]: {widget.name}")
-            lines.append("    " * indent + f"attributes: {widget.attributes}")
-            lines.append("    " * indent + f"content: [blue]{widget.content}")
+                indent += 1
+                for item in widget.content:
+                    WidgetPrinter.__print_recursive(item, indent, lines)
+                indent -= 1
+            
+            elif widget.name in ["label", "button"]:
 
+                lines.append("    " * indent + f"[purple]name[/]: {widget.name}")
+                lines.append("    " * indent + f"attributes: {widget.attributes}")
+                lines.append("    " * indent + f"content: [blue]{widget.content}")
