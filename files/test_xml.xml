@@ -4,7 +4,7 @@
 		<list-item pyFor="e in entities">
 			<label pyWidth="30"> {{ e.name }} </label>
 			<label pyWidth="10"> {{ e.position }}</label>
-			<button pyWidth="20"> Change </button>
+			<button pyWidth="20" pyStyle="bgc=(30,30,200)"> Edit </button>
 			<button pyWidth="20"> Round </button>
 			<button pyWidth="20" pyStyle="bgc=(200,40,40)"> Delete </button>
 		</list-item>

@@ -29,7 +29,7 @@ class StyleInserter:
         assert self.__widgets[0].attributes["pyStyle"] in STYLES.keys()
 
     def __run(self):
-        self.__new_widgets = [
+        self.__widgets = [
             self.__run_recursive(widget) for widget in self.__widgets
         ]
 
@@ -74,6 +74,3 @@ class StyleInserter:
                     raise Exception(f"Could not interpret key-value pair: {style}")
             return styles_dict
         return {}
-
-    def get_widgets(self):
-        return self.__new_widgets

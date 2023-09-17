@@ -3,7 +3,6 @@ from classes.widget import Widget
 class SizeInserter:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
-        self.__new_widgets = []
         self.__sanity_check()
 
         self.__standard_width_or_height = 30
@@ -14,7 +13,7 @@ class SizeInserter:
         assert self.__widgets[0].name == "canvas"
 
     def __run(self):
-        self.__new_widgets = [
+        self.__widgets = [
             self.__run_recursive(widget, None) for widget in self.__widgets
         ]
 
@@ -56,6 +55,3 @@ class SizeInserter:
         widget.attributes["force_height"] = int(self.__standard_width_or_height)
         
         return Widget(widget.name, widget.attributes, widget.content)
-
-    def get_widgets(self):
-        return self.__new_widgets

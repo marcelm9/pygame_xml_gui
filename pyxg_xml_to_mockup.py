@@ -43,13 +43,13 @@ handler = XMLHandler()
 parser.setContentHandler(handler)
 parser.parse(xml_path)
 
-sourceInserter = SourceInserter(handler.get_widgets())
+widgets = SourceInserter(handler.get_widgets()).get_widgets()
 
-styleInserter = StyleInserter(sourceInserter.get_widgets())
+styleInserter = StyleInserter(widgets)
 
-sizeInserter = SizeInserter(styleInserter.get_widgets())
+sizeInserter = SizeInserter(widgets)
 
-guiMaker = GUIMaker(styleInserter.get_widgets())
+guiMaker = GUIMaker(widgets)
 guiMaker.write_to_file(dest_path)
 
 if run:
