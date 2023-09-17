@@ -2,13 +2,11 @@
 	<label> Entity positions (count: {{len(entities)}}) </label>
 	<list pyMoving="True">
 		<list-item pyFor="e in entities">
-			<label pyWidth="30" padding="1"> {{ e.name }} </label>
-			<label pyWidth="10" padding="1"> {{ e.position }}</label>
-			<button pyWidth="20" padding="1"> Change </button>
-			<button pyWidth="20" padding="1"> Round </button>
-			<button pyWidth="20" padding="1"> Delete </button>
+			<label pyWidth="30"> {{ e.name }} </label>
+			<label pyWidth="10"> {{ e.position }}</label>
+			<button pyWidth="20"> Change </button>
+			<button pyWidth="20"> Round </button>
+			<button pyWidth="20"> Delete </button>
 		</list-item>
-		<label> no formatting here, right? (a = {{a}})</label>
 	</list>
-	<label> All entities started from position {{starting_position}}</label>
 </canvas>
