@@ -1,3 +1,4 @@
+import sys
 from rich import print
 
 from classes.widget import Widget
@@ -29,10 +30,16 @@ class GUIMaker:
             w = Label if widget.name == "label" else Button
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
-            attributes = {k: v for k, v in widget.attributes.items() if k not in ["pyWidth", "size", "anchor"]}
+            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor"] and not k.startswith("py"))}
             self.__gui_widgets.append(
                 w(None, widget.content, size, self.__pos(), anchor, **attributes)
             )
+            try:
+                self.__gui_widgets[-1].draw_to(pygame.Surface((10,10)))
+            except:
+                print("[red]Could not create GUI widget due to invalid attribute(s):")
+                print(attributes)
+                sys.exit()
 
             attributes_text = f'None, "{widget.content}", {size}, {self.__pos()}, "{anchor}"'
             for k, v in attributes.items():

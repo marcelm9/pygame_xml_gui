@@ -13,7 +13,3 @@ entities = [
     Entity("Laurenz", (7,7)),
     Entity("Anni", (8,8))
 ]
-
-starting_position = (0, 0)
-
-a = 1

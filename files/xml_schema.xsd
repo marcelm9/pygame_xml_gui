@@ -34,6 +34,7 @@
             <xsd:extension base="xsd:string">
                 <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
+                <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <!-- <xsd:attribute name="pyHeight" type="xsd:string" use="optional"/> -->
             </xsd:extension>
         </xsd:simpleContent>
@@ -44,6 +45,7 @@
             <xsd:extension base="xsd:string">
                 <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
+                <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <!-- <xsd:attribute name="pyHeight" type="xsd:string" use="optional"/> -->
             </xsd:extension>
         </xsd:simpleContent>

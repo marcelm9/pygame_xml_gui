@@ -1,5 +1,5 @@
 class Widget:
-    def __init__(self, name, attributes: dict, content):
+    def __init__(self, name: str, attributes: dict, content):
         self.name = name
         self.attributes = attributes
         self.content = content

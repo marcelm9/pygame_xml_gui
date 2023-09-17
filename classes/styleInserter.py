@@ -46,11 +46,34 @@ class StyleInserter:
             )
 
     def __get_widget_with_injected_style_attributes(self, widget: Widget) -> Widget:
+        pyStyle_attributes = self.__extract_style_attribute(widget)
+
         attributes = widget.attributes
         for k, v in self.__style.items():
             if k not in attributes.keys():
                 attributes[k] = v
+        for k, v in pyStyle_attributes.items():
+            # pyStyle attributes can overwrite others
+            attributes[k] = v
         return Widget(widget.name, attributes, widget.content)
-    
+
+    def __extract_style_attribute(self, widget: Widget):
+        if "pyStyle" in widget.attributes.keys():
+            string = widget.attributes["pyStyle"]
+            styles = string.split(";")
+            styles = [s.strip() for s in styles if s.strip() != ""]
+            styles_dict = {}
+            for style in styles:
+                try:
+                    key = style.split("=")[0]
+                    value = eval(style.split("=")[1])
+                    styles_dict[key] = value
+                except NameError:
+                    raise Exception(f"Could not interpret key-value pair: {style}. Maybe you forget quotation marks?")
+                except:
+                    raise Exception(f"Could not interpret key-value pair: {style}")
+            return styles_dict
+        return {}
+
     def get_widgets(self):
         return self.__new_widgets

@@ -6,7 +6,7 @@
 			<label pyWidth="10"> {{ e.position }}</label>
 			<button pyWidth="20"> Change </button>
 			<button pyWidth="20"> Round </button>
-			<button pyWidth="20"> Delete </button>
+			<button pyWidth="20" pyStyle="bgc=(200,40,40)"> Delete </button>
 		</list-item>
 	</list>
 </canvas>
