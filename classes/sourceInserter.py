@@ -1,12 +1,12 @@
 import re
-import sys
 import os
+import sys
 
-from rich import print as rprint
 from classes.widget import Widget
 from mmlib import check
 
 REGULAR_EXPRESSION = r"{{.*?}}"
+
 
 class SourceInserter:
     @check
@@ -43,7 +43,10 @@ class SourceInserter:
                 code = f.read()
         except FileNotFoundError:
             print(f"Could not find source file ('{self.__source}')")
-        exec(code, None, self.__vars)
+        try:
+            exec("import warnings\nwarnings.filterwarnings('ignore')\n" + code, None, self.__vars)
+        except Exception as e:
+            raise Exception(f"Error executing source file: {e}")
 
     def __run(self):
         self.__new_widgets = [
@@ -51,14 +54,15 @@ class SourceInserter:
         ]
         self.__unpack_lists()
 
-    def __run_recursive(
-        self, widget: Widget, additional_variables: dict
-    ):
+    def __run_recursive(self, widget: Widget, additional_variables: dict):
         if widget.name in ["canvas", "list"]:
             return Widget(
                 widget.name,
                 widget.attributes,
-                [self.__run_recursive(item, additional_variables) for item in widget.content],
+                [
+                    self.__run_recursive(item, additional_variables)
+                    for item in widget.content
+                ],
             )
         elif widget.name in ["label", "button"]:
             return self.__evaluate_widget(
@@ -75,11 +79,8 @@ class SourceInserter:
                 content = []
                 for widget_in_list_item in widget.content:
                     content.append(
-                        self.__run_recursive(
-                            widget_in_list_item,
-                            {v1: variable_value}
-                            ),
-                        )
+                        self.__run_recursive(widget_in_list_item, {v1: variable_value}),
+                    )
                 return_list.append(content)
             return [
                 Widget(
@@ -131,17 +132,16 @@ class SourceInserter:
                 vars_[k] = v
 
         for match in re.findall(REGULAR_EXPRESSION, string, re.DOTALL):
-            try:
-                evaluation = eval(match[2:-2], None, vars_)
-            except Exception as e:
-                rprint(
-                    f"[red]An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}'):"
-                )
-                rprint("[red]To be evaluated: ", end="")
-                print(match[2:-2])
-                rprint("[red]Error: ", end="")
-                print(e)
-                sys.exit()
+            to_be_evaluated = match[2:-2]
+            evaluation = ""
+            if to_be_evaluated.strip() != "":
+                try:
+                    evaluation = eval(to_be_evaluated, None, vars_)
+                except Exception as e:
+                    raise Exception(
+                        f"An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}')"
+                        + f"\nContent to be evaluated: '{to_be_evaluated}'"
+                    )
             string = string.replace(match, str(evaluation))
 
         return Widget(widget.name, widget.attributes, string)

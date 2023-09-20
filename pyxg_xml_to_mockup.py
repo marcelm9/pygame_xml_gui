@@ -34,6 +34,9 @@ if not (dest_path.endswith(".py") or dest_path.endswith(".pyw")):
     print(f"Destination path has to be a python file (.py or .pyw)")
     sys.exit()
 
+print(f"XML path: {xml_path}")
+print(f"Output path: {dest_path}")
+
 Validator(xml_path)
 
 parser = xml.sax.make_parser()
@@ -45,12 +48,11 @@ parser.parse(xml_path)
 
 widgets = SourceInserter(handler.get_widgets()).get_widgets()
 
-styleInserter = StyleInserter(widgets)
+StyleInserter(widgets)
 
-sizeInserter = SizeInserter(widgets)
+SizeInserter(widgets)
 
-guiMaker = GUIMaker(widgets)
-guiMaker.write_to_file(dest_path)
+GUIMaker(widgets).write_to_file(dest_path)
 
 if run:
     rprint("[purple]Launching Mockup")

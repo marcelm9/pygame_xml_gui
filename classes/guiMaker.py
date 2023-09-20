@@ -74,7 +74,7 @@ class GUIMaker:
         if y is not None:
             self.__current_y = y
 
-    def write_to_file(self, path):
+    def __write_code(self):
         size = self.__widgets[0].attributes["pySize"].split("x")
         size = int(size[0]), int(size[1])
         code = []
@@ -86,6 +86,7 @@ class GUIMaker:
         code.append(f"screen = pygame.display.set_mode({size})")
         code.append("fpsclock = pygame.time.Clock()")
         code.append("fps = 60")
+        code.append("pygame.display.set_caption('Mockup')")
         code.append("")
         code.append("widgets = [")
         for item in self.__text_gui_widgets:
@@ -107,7 +108,16 @@ class GUIMaker:
         code.append("\tpygame.display.flip()")
         code.append("\tfpsclock.tick(fps)")
         code.append("")
+        
+        return "\n".join(code)
 
+    def write_to_file(self, path):
         with open(path, "w") as f:
-            f.write("\n".join(code))
+            f.write(self.__write_code())
             print(f"[green]Written code to file {path}")
+
+    def get_widgets(self):
+        return self.__gui_widgets
+    
+    def get_size(self):
+        return [int(number) for number in self.__widgets[0].attributes["pySize"].split("x")]
