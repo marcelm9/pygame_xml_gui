@@ -11,6 +11,9 @@ repository = "https://github.com/Golfmensch99/pygame_xml_gui.git"
 [tool.poetry.dependencies]
 python = "^3.11"
 pygame = "^2.5.2"
+pygame-engine = {path = "../Pygame_Engine"}
+rich = "^13.5.3"
+xmlschema = "^2.5.0"
 
 
 [build-system]
