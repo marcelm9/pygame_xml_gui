@@ -13,6 +13,8 @@
 	+ todo
 - creating class file from xml file
 	+ todo
+- pyIf
+- creating a way to style (eg.) all "label" widgets
 
 
 ### for future releases

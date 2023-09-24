@@ -1,0 +1,15 @@
+<canvas pySize="500x500" pySource="files/data.py" pyStyle="dark">
+	<label
+		pyStyle="padding=0; br=0; bgc=(200,200,200); tc=(20,20,20); to=(10,0); tb='midleft'; f='consolas'; size=16">
+		Entity positions (count: {{len(entities)}})
+	</label>
+	<list pyMaxHeight="400">
+		<list-item pyFor="e in entities">
+			<label pyWidth="30"> {{ e.name.upper() }}</label>
+			<label pyWidth="10"> {{ e.position }}</label>
+			<button pyWidth="20" pyStyle="bgc=(30,30,200)"> Edit </button>
+			<button pyWidth="20"> Round </button>
+			<button pyWidth="20" pyStyle="bgc=(200,40,40)"> Delete </button>
+		</list-item>
+	</list>
+</canvas>

@@ -1,6 +1,6 @@
 import json
 
-from mmlib import check
+# from mmlib import check
 from files.paths import STYLE_LIGHT, STYLE_DARK
 from classes.widget import Widget
 
@@ -13,7 +13,7 @@ with open(STYLE_DARK, "r") as f:
     STYLES["dark"] = json.load(f)
 
 class StyleInserter:
-    @check
+    # @check
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
         self.__new_widgets = []

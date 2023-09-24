@@ -3,13 +3,13 @@ import os
 import sys
 
 from classes.widget import Widget
-from mmlib import check
+# from mmlib import check
 
 REGULAR_EXPRESSION = r"{{.*?}}"
 
 
 class SourceInserter:
-    @check
+    # @check
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
         self.__new_widgets = []
@@ -120,7 +120,7 @@ class SourceInserter:
                 [self.__unpack_recursive(item) for item in widget.content],
             )
 
-    @check
+    # @check
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None):
         assert widget.name in ["label", "button"]
         string = widget.content
