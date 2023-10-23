@@ -1,5 +1,5 @@
 import xml.sax
-from classes.widget import Widget
+from .widget import Widget
 
 
 class XMLHandler(xml.sax.ContentHandler):
@@ -44,5 +44,5 @@ class XMLHandler(xml.sax.ContentHandler):
         else:
             self.__active_contents[-1].append(widget)
 
-    def get_widgets(self):
+    def get_widget_structure(self):
         return self.__widgets

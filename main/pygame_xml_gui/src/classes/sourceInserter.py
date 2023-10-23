@@ -1,52 +1,23 @@
 import re
 import os
-import sys
 
-from classes.widget import Widget
-# from mmlib import check
+from .widget import Widget
 
 REGULAR_EXPRESSION = r"{{.*?}}"
 
 
 class SourceInserter:
-    # @check
-    def __init__(self, widgets: list[Widget]):
+    def __init__(self, widgets: list[Widget], variables):
         self.__widgets = widgets
         self.__new_widgets = []
 
         self.__sanity_check()
-        self.__source = self.__widgets[0].attributes.get("pySource", None)
-        self.__vars = {}
-        self.__import_source()
+        self.__vars = variables
         self.__run()
 
     def __sanity_check(self):
         assert len(self.__widgets) == 1
         assert self.__widgets[0].name == "canvas"
-
-    def __import_source(self):
-        if self.__source == None:
-            return
-
-        # checking for errors
-        s = os.path.abspath(self.__source)
-        if not os.path.exists(s):
-            raise Exception(f"Source file does not exist ({s})")
-        if not os.path.isfile(s):
-            raise Exception(f"Given source file is not a file ({s})")
-        if not (str(s).endswith(".py") or str(s).endswith(".pyw")):
-            raise Exception(f"Given source file has to be a python file (.py or .pyw)")
-
-        # trying to load the variables
-        try:
-            with open(self.__source, "r") as f:
-                code = f.read()
-        except FileNotFoundError:
-            print(f"Could not find source file ('{self.__source}')")
-        try:
-            exec("import warnings\nwarnings.filterwarnings('ignore')\n" + code, None, self.__vars)
-        except Exception as e:
-            raise Exception(f"Error executing source file: {e}")
 
     def __run(self):
         self.__new_widgets = [
@@ -67,7 +38,7 @@ class SourceInserter:
         elif widget.name in ["label", "button"]:
             return self.__evaluate_widget(
                 widget, additional_variables
-            )  # TODO: insert source
+            )
         elif widget.name == "list-item":
             return_list = []
             v1 = widget.attributes["pyFor"].split(" in ")[0]  # name of the iterable
@@ -120,7 +91,6 @@ class SourceInserter:
                 [self.__unpack_recursive(item) for item in widget.content],
             )
 
-    # @check
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None):
         assert widget.name in ["label", "button"]
         string = widget.content
@@ -143,6 +113,9 @@ class SourceInserter:
                         + f"\nContent to be evaluated: '{to_be_evaluated}'"
                     )
             string = string.replace(match, str(evaluation))
+
+        # adding the context (the local variables of the pyFor) to the attributes
+        widget.attributes["contextInfo"] = additional_locals
 
         return Widget(widget.name, widget.attributes, string)
 

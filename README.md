@@ -1,0 +1,1 @@
+raw string comparison for knowing when to recreate widgets?

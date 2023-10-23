@@ -8,6 +8,7 @@ from rich import print as rprint
 
 from classes.validator import Validator
 from classes.xmlHandler import XMLHandler
+from classes.sourceReader import SourceReader
 from classes.sourceInserter import SourceInserter
 from classes.styleInserter import StyleInserter
 from classes.sizeInserter import SizeInserter
@@ -46,11 +47,20 @@ handler = XMLHandler()
 parser.setContentHandler(handler)
 parser.parse(xml_path)
 
-widgets = SourceInserter(handler.get_widgets()).get_widgets()
+variables = SourceReader(handler.get_widget_structure()).get_variables()
+
+widgets = handler.get_widget_structure()
+
 
 StyleInserter(widgets)
 
 SizeInserter(widgets)
+# with open("SOMEFILE.txt", "w") as f:
+#     f.write(str(widgets))
+
+# ! changing order does still work !!! lets goooooo
+
+widgets = SourceInserter(widgets, variables).get_widgets()
 
 GUIMaker(widgets).write_to_file(dest_path)
 

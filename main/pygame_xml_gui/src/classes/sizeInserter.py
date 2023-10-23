@@ -1,4 +1,4 @@
-from classes.widget import Widget
+from .widget import Widget
 
 class SizeInserter:
     def __init__(self, widgets: list[Widget]):

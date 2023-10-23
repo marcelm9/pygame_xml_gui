@@ -19,7 +19,16 @@
         </xsd:attribute>
         <xsd:attribute name="pySource" type="xsd:string" use="optional" />
         <xsd:attribute name="pyStyle" type="xsd:string" use="required" />
+        <!-- for now pyBackground is required, but it the future it will be optional and
+        if left blank the background will be transparent -->
+        <xsd:attribute name="pyBackground" type="rgbColor" use="required" />
     </xsd:complexType>
+
+    <xsd:simpleType name="rgbColor">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d),\s*(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d),\s*(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\)" />
+        </xsd:restriction>
+    </xsd:simpleType>
 
     <xsd:complexType name="labelType">
         <xsd:simpleContent>
@@ -37,6 +46,8 @@
                 <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyAction" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyArgs" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>

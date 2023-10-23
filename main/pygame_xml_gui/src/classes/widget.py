@@ -13,4 +13,5 @@ class Widget:
         self.__info["force_height"] = height
 
     def __repr__(self) -> str:
-        return f"widget (name: {self.name}, attributes: {dict(self.attributes)}, content: {self.content})"
+        content = "\"" + self.content + "\"" if isinstance(self.content, str) else self.content
+        return f"Widget(name='{self.name}', attributes={dict(self.attributes)},content={content})"

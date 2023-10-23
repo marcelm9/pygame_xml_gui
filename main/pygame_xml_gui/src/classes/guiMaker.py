@@ -11,7 +11,7 @@ class GUIMaker:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
         self.__gui_widgets = []
-        self.__text_gui_widgets = []
+        self.__text_gui_widgets = [] # for parsing into a file as code
         self.__sanity_check()
         self.__run()
 
@@ -27,13 +27,23 @@ class GUIMaker:
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
 
         if widget.name in ["label", "button"]:
-            w = Label if widget.name == "label" else Button
+            # w = Label if widget.name == "label" else Button
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
-            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor"] and not k.startswith("py"))}
-            self.__gui_widgets.append(
-                w(None, widget.content, size, self.__pos(), anchor, **attributes)
-            )
+            context_info = widget.attributes["contextInfo"]
+            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
+            attributes["info"] = {}
+            # attributes["info"]["context"] = context_info
+            if widget.name == "label":
+                self.__gui_widgets.append(
+                    Label(None, widget.content, size, self.__pos(), anchor, **attributes)
+                )
+            elif widget.name == "button":
+                attributes["info"]["pyAction"] = widget.attributes.get("pyAction", None)
+                attributes["info"]["pyArgs"] = widget.attributes.get("pyArgs", None)
+                self.__gui_widgets.append(
+                    Button(None, widget.content, size, self.__pos(), anchor, **attributes)
+                )
             try:
                 self.__gui_widgets[-1].draw_to(pygame.Surface((10,10)))
             except:
@@ -118,6 +128,9 @@ class GUIMaker:
 
     def get_widgets(self):
         return self.__gui_widgets
+    
+    def get_background_color(self) -> tuple[int, int, int]:
+        return eval(self.__widgets[0].attributes["pyBackground"])
     
     def get_size(self):
         return [int(number) for number in self.__widgets[0].attributes["pySize"].split("x")]

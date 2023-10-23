@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 
-from classes.validator import Validator
+from .classes.validator import Validator
 
 parser = argparse.ArgumentParser()
 parser.add_argument("path", help="Path of the xml file to validate")
