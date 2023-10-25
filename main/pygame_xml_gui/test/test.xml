@@ -2,9 +2,9 @@
     <label>Total points: {{ len(points) }}</label>
     <list pyMaxHeight="400">
         <list-item pyFor="point in points">
-            <label pyWidth="45" pyStyle="tb='midleft'; to=(10, 0); bgc=(70,70,70);"> Name: {{ point[0] }}</label>
-            <label pyWidth="45" pyStyle="tb='midleft'; to=(10, 0); bgc=(70,70,70);"> Position: {{ point[1] }}</label>
-            <button pyWidth="10" pyStyle="hl=(100,100,255)"> X </button>
+            <label pyWidth="45" pyStyle="tb='midleft'; to=(10, 0); bgc=(70,70,70);"> Name: {{ point.name }}</label>
+            <label pyWidth="45" pyStyle="tb='midleft'; to=(10, 0); bgc=(70,70,70);"> Position: {{ point.pos }}</label>
+            <button pyWidth="10" pyStyle="hl=(100,100,255)" pyAction="print_name" pyArgs="point"> PN </button>
         </list-item>
     </list>
 </canvas>

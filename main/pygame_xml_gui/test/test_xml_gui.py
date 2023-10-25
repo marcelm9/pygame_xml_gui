@@ -2,6 +2,11 @@ import sys, os, pygame
 
 from ..src.UserInterface import UserInterface
 
+class Point:
+    def __init__(self, name, pos):
+        self.name = name
+        self.pos = pos
+
 class Program():
     def __init__(self):
         self.win_w, self.win_h = 800, 600
@@ -12,15 +17,18 @@ class Program():
         self.fpsclock = pygame.time.Clock()
         self.fps = 60
 
+    def print_name(self, point: Point):
+        print(point.name)
+
     def main(self):
 
         with open(os.path.join(os.path.dirname(__file__), "test.xml"), "r") as f:
             structure = f.read()
 
         points = [
-            ("Point A", (1, 5)),
-            ("Point B", (4, 9)),
-            ("Point C", (15, 20))
+            Point("Point A", (1, 5)),
+            Point("Point B", (4, 9)),
+            Point("Point C", (15, 20))
         ]
         
         ui = UserInterface()
@@ -29,6 +37,9 @@ class Program():
             "points": points
         })
         ui.set_pos((150, 50))
+        ui.set_methods({
+            "print_name": self.print_name
+        })
         
         run = True
         while run:

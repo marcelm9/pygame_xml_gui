@@ -30,7 +30,6 @@ class GUIMaker:
             # w = Label if widget.name == "label" else Button
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
-            context_info = widget.attributes["contextInfo"]
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}
             # attributes["info"]["context"] = context_info

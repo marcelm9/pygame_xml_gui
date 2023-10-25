@@ -1,6 +1,6 @@
 import re
-import os
 
+from rich import print
 from .widget import Widget
 
 REGULAR_EXPRESSION = r"{{.*?}}"
@@ -93,6 +93,7 @@ class SourceInserter:
 
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None):
         assert widget.name in ["label", "button"]
+        new_widget_attributes = widget.attributes.copy()
         string = widget.content
 
         vars_ = self.__vars.copy()
@@ -107,7 +108,7 @@ class SourceInserter:
             if to_be_evaluated.strip() != "":
                 try:
                     evaluation = eval(to_be_evaluated, None, vars_)
-                except Exception as e:
+                except Exception:
                     raise Exception(
                         f"An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}')"
                         + f"\nContent to be evaluated: '{to_be_evaluated}'"
@@ -115,9 +116,22 @@ class SourceInserter:
             string = string.replace(match, str(evaluation))
 
         # adding the context (the local variables of the pyFor) to the attributes
-        widget.attributes["contextInfo"] = additional_locals
+        new_widget_attributes["contextInfo"] = additional_locals
 
-        return Widget(widget.name, widget.attributes, string)
+        # evaluating pyArgs for button
+        if widget.name == "button":
+            raw_pyArgs = widget.attributes["pyArgs"]
+            try:
+                pyArgs = eval(raw_pyArgs, None, vars_)
+            except Exception:
+                raise Exception(
+                    f"An error occurred while evaluating attribute 'pyArgs' for a widget (type: {widget.name}, content: '{widget.content}')"
+                    + f"\nContent to be evaluated: '{raw_pyArgs}'"
+                )
+            new_widget_attributes["pyArgs"] = pyArgs
+
+
+        return Widget(widget.name, new_widget_attributes, string)
 
     def get_widgets(self):
         return self.__new_widgets

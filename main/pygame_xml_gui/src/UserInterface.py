@@ -68,12 +68,23 @@ class UserInterface:
         self.__structure_string = structure
         self.__process_structure()
     
+    def set_methods(self, methods: dict):
+        # TODO: safety checks
+        self.__methods = methods
+
+    def __run_method(self, widget):
+        if widget.info["pyAction"] is None:
+            return
+        # TODO: safety checks
+        self.__methods[widget.info["pyAction"]](widget.info["pyArgs"])
+
     def update(self, event_list, button: int = 1, offset: tuple = (0, 0)):
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
                 if widget.update(event_list, button, real_offset):
                     print("a button has been pressed")
+                    self.__run_method(widget)
 
     def set_variables(self, variables: dict):
         self.__variables = variables
@@ -85,7 +96,7 @@ class UserInterface:
         assert self.__raw_structure_widgets != None
         assert self.__variables != None
 
-        # does this also change self.__raw_structure_widgets ?
+        # TODO: does this also change self.__raw_structure_widgets ?
         self.__structure_widgets = SourceInserter(self.__raw_structure_widgets, self.__variables).get_widgets()
         gm = GUIMaker(self.__structure_widgets)
         self.__widgets: list[pe.Label | pe.Button] = gm.get_widgets()
@@ -96,7 +107,7 @@ class UserInterface:
         self.__pos = position_topleft
 
     def draw(self, screen: pygame.Surface):
-        #! FOR NOW JUST GREEN; IDK WHY
+        # TODO: better draw method? technically only needs redraw if something changes...
         self.__background.fill(self.__background_color)
         for widget in self.__widgets:
             widget.draw_to(self.__background)
