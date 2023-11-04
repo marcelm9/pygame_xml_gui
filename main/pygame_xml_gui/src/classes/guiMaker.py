@@ -73,7 +73,6 @@ class GUIMaker:
                 self.__run_recursive(item, widget.attributes)
             self.__set_pos(x, y + self.__gui_widgets[-1].rect.height)
 
-
     def __pos(self):
         return self.__current_x, self.__current_y
     

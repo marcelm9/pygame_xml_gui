@@ -119,7 +119,7 @@ class SourceInserter:
         new_widget_attributes["contextInfo"] = additional_locals
 
         # evaluating pyArgs for button
-        if widget.name == "button":
+        if widget.name == "button" and widget.attributes.get("pyArgs", False):
             raw_pyArgs = widget.attributes["pyArgs"]
             try:
                 pyArgs = eval(raw_pyArgs, None, vars_)

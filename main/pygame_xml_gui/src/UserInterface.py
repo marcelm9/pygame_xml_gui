@@ -70,13 +70,16 @@ class UserInterface:
     
     def set_methods(self, methods: dict):
         # TODO: safety checks
-        self.__methods = methods
+        self.__methods = methods # TODO: .copy() ?
 
     def __run_method(self, widget):
         if widget.info["pyAction"] is None:
             return
         # TODO: safety checks
-        self.__methods[widget.info["pyAction"]](widget.info["pyArgs"])
+        if (args := widget.info["pyArgs"]) != None:
+            self.__methods[widget.info["pyAction"]](args)
+        else:
+            self.__methods[widget.info["pyAction"]]()
 
     def update(self, event_list, button: int = 1, offset: tuple = (0, 0)):
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
@@ -87,7 +90,7 @@ class UserInterface:
                     self.__run_method(widget)
 
     def set_variables(self, variables: dict):
-        self.__variables = variables
+        self.__variables = variables.copy()
         self.refresh()
 
     def refresh(self):
@@ -112,15 +115,3 @@ class UserInterface:
         for widget in self.__widgets:
             widget.draw_to(self.__background)
         screen.blit(self.__background, self.__pos)
-
-        
-    
-
-
-
-
-
-
-
-
-

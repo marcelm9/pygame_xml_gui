@@ -1,6 +1,9 @@
 import sys, os, pygame
 
 from ..src.UserInterface import UserInterface
+import random
+
+from Pygame_Engine import PerformanceGraph
 
 class Point:
     def __init__(self, name, pos):
@@ -20,25 +23,43 @@ class Program():
     def print_name(self, point: Point):
         print(point.name)
 
+    def round(self, point: Point):
+        for p in self.points:
+            if p is point:
+                p.pos = (round(p.pos[0]), round(p.pos[1]))
+                self.ui.refresh()
+                return
+    
+    def delete(self, point: Point):
+        self.points.remove(point)
+        self.ui.refresh()
+
+    def add_random(self):
+        self.points.append(
+            Point("Random" + str(random.randint(0,100)), (round(random.random()*100, 4), round(random.random()*100, 4)))
+        )
+        self.ui.refresh()
+
     def main(self):
+
+        fpslist = []
 
         with open(os.path.join(os.path.dirname(__file__), "test.xml"), "r") as f:
             structure = f.read()
 
-        points = [
-            Point("Point A", (1, 5)),
-            Point("Point B", (4, 9)),
-            Point("Point C", (15, 20))
-        ]
+        self.points = []
         
-        ui = UserInterface()
-        ui.set_structure(structure)
-        ui.set_variables({
-            "points": points
+        self.ui = UserInterface()
+        self.ui.set_structure(structure)
+        self.ui.set_variables({
+            "points": self.points
         })
-        ui.set_pos((150, 50))
-        ui.set_methods({
-            "print_name": self.print_name
+        self.ui.set_pos((150, 50))
+        self.ui.set_methods({
+            "print_name": self.print_name,
+            "round": self.round,
+            "delete": self.delete,
+            "add_random": self.add_random
         })
         
         run = True
@@ -46,18 +67,31 @@ class Program():
             event_list = pygame.event.get()
             for event in event_list:
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                    run = False
+                    # pygame.quit()
+                    # sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         sys.exit()
             
             self.screen.fill((0,0,0))
-            ui.draw(self.screen)
-            ui.update(event_list)
+            # ui.refresh()
+            self.ui.update(event_list)
+            self.ui.draw(self.screen)
+            fps = self.fpsclock.get_fps()
+            fpslist.append(fps)
+            # pygame.display.set_caption(str(round(fps, 4)))
+            if len(fpslist) == 1800:
+                run = False
+            
             
             pygame.display.flip()
             self.fpsclock.tick(self.fps)
+
+        
+        PerformanceGraph(60, fpslist)
+        
+        
 
 Program().main()
