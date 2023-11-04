@@ -5,6 +5,8 @@ import random
 
 from Pygame_Engine import PerformanceGraph
 
+RUN_FOR = 10 # seconds
+
 class Point:
     def __init__(self, name, pos):
         self.name = name
@@ -67,13 +69,11 @@ class Program():
             event_list = pygame.event.get()
             for event in event_list:
                 if event.type == pygame.QUIT:
-                    run = False
-                    # pygame.quit()
-                    # sys.exit()
+                    pygame.quit()
+                    sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
+                        run = False
             
             self.screen.fill((0,0,0))
             # ui.refresh()
@@ -81,15 +81,15 @@ class Program():
             self.ui.draw(self.screen)
             fps = self.fpsclock.get_fps()
             fpslist.append(fps)
-            # pygame.display.set_caption(str(round(fps, 4)))
-            if len(fpslist) == 1800:
+            pygame.display.set_caption("Seconds left: " + str(round(RUN_FOR - (len(fpslist)/self.fps), 2)))
+            if len(fpslist) == RUN_FOR * self.fps:
                 run = False
             
             
             pygame.display.flip()
             self.fpsclock.tick(self.fps)
 
-        
+        pygame.display.set_caption("PerformanceGraph")
         PerformanceGraph(60, fpslist)
         
         
