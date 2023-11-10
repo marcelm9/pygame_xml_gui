@@ -5,7 +5,7 @@ import random
 
 from Pygame_Engine import PerformanceGraph
 
-RUN_FOR = 10 # seconds
+RUN_FOR = -1 # seconds
 
 class Point:
     def __init__(self, name, pos):
