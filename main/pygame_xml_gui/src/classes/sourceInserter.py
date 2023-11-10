@@ -19,6 +19,14 @@ class SourceInserter:
         assert len(self.__widgets) == 1
         assert self.__widgets[0].name == "canvas"
 
+    def __join_dicts(self, inferior: dict, superior: dict | None) -> dict:
+        if superior is None:
+            return inferior
+        new_dict = inferior.copy()
+        for k, v in superior.items():
+            new_dict[k] = v
+        return new_dict
+
     def __run(self):
         self.__new_widgets = [
             self.__run_recursive(widget, {}) for widget in self.__widgets
@@ -26,6 +34,12 @@ class SourceInserter:
         self.__unpack_lists()
 
     def __run_recursive(self, widget: Widget, additional_variables: dict):
+        try:
+            if bool(eval(widget.attributes.get("pyIf", "True"), None, self.__join_dicts(self.__vars, additional_variables))) == False:
+                return None
+        except Exception as e:
+            raise Exception(f"An error occurred while evaluating the pyIf attribute of a widget (type: {widget.name}, pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
+
         if widget.name in ["canvas", "list"]:
             return Widget(
                 widget.name,
@@ -70,7 +84,7 @@ class SourceInserter:
         ]
         self.__new_widgets = self.__unpacked_widgets
 
-    def __unpack_recursive(self, widget: Widget):
+    def __unpack_recursive(self, widget: Widget) -> Widget | None:
         if widget.name in ["label", "button"]:
             return widget
 
@@ -78,29 +92,27 @@ class SourceInserter:
             new_content = []
             for item in widget.content:
                 if isinstance(item, list):
-                    for inner_item in item:
-                        new_content.append(self.__unpack_recursive(inner_item))
+                    [new_content.append(i) for i in item if i is not None]
+                    # for inner_item in item:
+                    #     new_content.append(self.__unpack_recursive(inner_item))
                 else:
-                    new_content.append(self.__unpack_recursive(item))
+                    if item is not None:
+                        new_content.append(self.__unpack_recursive(item))
             return Widget(widget.name, widget.attributes, new_content)
 
         if widget.name in ["canvas", "list-item"]:
             return Widget(
                 widget.name,
                 widget.attributes,
-                [self.__unpack_recursive(item) for item in widget.content],
+                [self.__unpack_recursive(item) for item in widget.content if item is not None],
             )
 
-    def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None):
+    def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None) -> Widget:
         assert widget.name in ["label", "button"]
         new_widget_attributes = widget.attributes.copy()
         string = widget.content
 
-        vars_ = self.__vars.copy()
-
-        if additional_locals != None:
-            for k, v in additional_locals.items():
-                vars_[k] = v
+        vars_ = self.__join_dicts(self.__vars, additional_locals)
 
         for match in re.findall(REGULAR_EXPRESSION, string, re.DOTALL):
             to_be_evaluated = match[2:-2]
@@ -108,10 +120,10 @@ class SourceInserter:
             if to_be_evaluated.strip() != "":
                 try:
                     evaluation = eval(to_be_evaluated, None, vars_)
-                except Exception:
+                except Exception as e:
                     raise Exception(
                         f"An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}')"
-                        + f"\nContent to be evaluated: '{to_be_evaluated}'"
+                        + f"\nContent to be evaluated: '{to_be_evaluated}'\nException: {e}"
                     )
             string = string.replace(match, str(evaluation))
 

@@ -36,6 +36,7 @@
                 <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -48,6 +49,7 @@
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyAction" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyArgs" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -60,6 +62,7 @@
             <xsd:element name="list" type="listType" /> <!-- keep? -->
         </xsd:choice>
         <xsd:attribute name="pyMaxHeight" type="xsd:positiveInteger" />
+        <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
     </xsd:complexType>
 
     <xsd:complexType name="listItemType">
@@ -76,6 +79,7 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>
+        <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
     </xsd:complexType>
 
 </xsd:schema>
