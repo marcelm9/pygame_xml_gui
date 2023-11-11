@@ -1,12 +1,13 @@
 <canvas pySize="500x500" pySource="files/test/data/data.py" pyStyle="dark" pyBackground="(90,90,90)">
     <label>Total points: {{ len(points) }}</label>
     <button pyStyle="hl=(60,200,60)" pyAction="add_random">Add random point</button>
-    <label pyStyle="tc=(0,255,0)" pyIf="len(points) % 2 === 0">number of points is even!</label>
-    <label pyStyle="tc=(255,0,0)" pyIf="len(points) % 2 == 1">number of points is not even!</label>
+    <label pyStyle="tc=(255,0,0)" pyIf="len(points) == 0">no points yet!</label>
+    <label pyStyle="tc=(0,255,0)" pyIf="len(points) > 0 and len(points) % 2 == 0">number of points is even!</label>
+    <label pyStyle="tc=(255,0,0)" pyIf="len(points) > 0 and len(points) % 2 == 1">number of points is not even!</label>
     <list pyMaxHeight="400">
         <list-item pyFor="point in points">
             <label pyWidth="30" pyStyle="bgc=(70,70,70);"> {{ point.name }}</label>
-            <label pyWidth="30" pyStyle="bgc=(70,70,70);"> {{ point.pos }}</label>
+            <label pyWidth="30" pyStyle="bgc=(70,70,70);" pyIf="0"> {{ point.pos }}</label>
             <button pyWidth="20" pyStyle="hl=(100,100,255)" pyAction="round" pyArgs="point"> Round </button>
             <button pyWidth="20" pyStyle="hl=(230,60,60)" pyAction="delete" pyArgs="point"> Delete </button>
         </list-item>

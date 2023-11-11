@@ -49,7 +49,7 @@ class Program():
         with open(os.path.join(os.path.dirname(__file__), "test.xml"), "r") as f:
             structure = f.read()
 
-        self.points = []
+        self.points = [Point("Point1", (1,1)), Point("Point2", (2,2))]
         
         self.ui = UserInterface()
         self.ui.set_structure(structure)
