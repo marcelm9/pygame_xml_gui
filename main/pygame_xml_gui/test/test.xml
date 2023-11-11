@@ -6,8 +6,10 @@
     <label pyStyle="tc=(255,0,0)" pyIf="len(points) > 0 and len(points) % 2 == 1">number of points is not even!</label>
     <list pyMaxHeight="400">
         <list-item pyFor="point in points">
-            <label pyWidth="30" pyStyle="bgc=(70,70,70);"> {{ point.name }}</label>
-            <label pyWidth="30" pyStyle="bgc=(70,70,70);" pyIf="0"> {{ point.pos }}</label>
+            <label pyWidth="4" pyStyle="tc=(255,0,0); size=16" pyIf="'.' in str(point.pos[0])"> R </label>
+            <label pyWidth="4" pyStyle="tc=(0,255,0); size=16" pyIf="'.' not in str(point.pos[0])"> R </label>
+            <label pyWidth="28" pyStyle="bgc=(70,70,70);"> {{ point.name }}</label>
+            <label pyWidth="28" pyStyle="bgc=(70,70,70);"> {{ point.pos }}</label>
             <button pyWidth="20" pyStyle="hl=(100,100,255)" pyAction="round" pyArgs="point"> Round </button>
             <button pyWidth="20" pyStyle="hl=(230,60,60)" pyAction="delete" pyArgs="point"> Delete </button>
         </list-item>

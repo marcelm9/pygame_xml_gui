@@ -38,7 +38,8 @@ class SourceInserter:
             if bool(eval(widget.attributes.get("pyIf", "True"), None, self.__join_dicts(self.__vars, additional_variables))) == False:
                 return None
         except Exception as e:
-            raise Exception(f"An error occurred while evaluating the pyIf attribute of a widget (type: {widget.name}, pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
+            raise Exception(f"An error occurred while evaluating the pyIf attribute of a widget (type: {widget.name}, "
+                            + "pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
 
         if widget.name in ["canvas", "list"]:
             return Widget(
@@ -63,9 +64,8 @@ class SourceInserter:
             for variable_value in v2:
                 content = []
                 for widget_in_list_item in widget.content:
-                    content.append(
-                        self.__run_recursive(widget_in_list_item, {v1: variable_value}),
-                    )
+                    if (widget_ := self.__run_recursive(widget_in_list_item, {v1: variable_value})) is not None:
+                        content.append(widget_)
                 return_list.append(content)
             return [
                 Widget(
@@ -88,24 +88,17 @@ class SourceInserter:
         if widget.name in ["label", "button"]:
             return widget
 
-        if widget.name in ["list"]:
+        if widget.name in ["canvas", "list-item", "list"]:
             new_content = []
             for item in widget.content:
                 if isinstance(item, list):
-                    [new_content.append(i) for i in item if i is not None]
-                    # for inner_item in item:
-                    #     new_content.append(self.__unpack_recursive(inner_item))
+                    for i in item:
+                        if i is not None:
+                            new_content.append(i)
                 else:
                     if item is not None:
                         new_content.append(self.__unpack_recursive(item))
             return Widget(widget.name, widget.attributes, new_content)
-
-        if widget.name in ["canvas", "list-item"]:
-            return Widget(
-                widget.name,
-                widget.attributes,
-                [self.__unpack_recursive(item) for item in widget.content if item is not None],
-            )
 
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None) -> Widget:
         assert widget.name in ["label", "button"]
