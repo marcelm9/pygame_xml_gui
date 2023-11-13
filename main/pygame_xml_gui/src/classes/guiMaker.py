@@ -11,7 +11,11 @@ class GUIMaker:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
         self.__gui_widgets = []
-        self.__text_gui_widgets = [] # for parsing into a file as code
+
+        self.__default_layout = 1 # number of widgets per line
+        self.__custom_layout = []
+        self.__layout_remainder = self.__default_layout
+
         self.__sanity_check()
         self.__run()
 
@@ -20,19 +24,34 @@ class GUIMaker:
         assert self.__widgets[0].name == "canvas"
 
     def __run(self):
+        self.__parse_layout()
+        if self.__custom_layout_remaining():
+            self.__layout_remainder = self.__custom_layout[0]
+            del self.__custom_layout[0]
+        print(f"{self.__default_layout = }")
+        print(f"{self.__custom_layout = }")
         self.__current_x = 0
         self.__current_y = 0
         self.__run_recursive(self.__widgets[0], None)
 
-    def __run_recursive(self, widget: Widget, parent_attributes: dict):
+    def __custom_layout_remaining(self) -> bool:
+        return len(self.__custom_layout) > 0
+    
+    def __parse_layout(self):
+        if (layout := self.__widgets[0].attributes.get("pyLayout", None)) is not None:
+            for i, char in enumerate(layout):
+                if char == "d":
+                    self.__default_layout = int(layout[i+1])
+                    break
+                else:
+                    self.__custom_layout.append(int(char))
 
+    def __run_recursive(self, widget: Widget, parent_attributes: dict):
         if widget.name in ["label", "button"]:
-            # w = Label if widget.name == "label" else Button
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}
-            # attributes["info"]["context"] = context_info
             if widget.name == "label":
                 self.__gui_widgets.append(
                     Label(None, widget.content, size, self.__pos(), anchor, **attributes)
@@ -50,17 +69,23 @@ class GUIMaker:
                 print(attributes)
                 sys.exit()
 
-            attributes_text = f'None, "{widget.content}", {size}, {self.__pos()}, "{anchor}"'
-            for k, v in attributes.items():
-                value = "\"" + v + "\"" if isinstance(v, str) else v
-                attributes_text += f", {k}={value}"
-            self.__text_gui_widgets.append(
-                widget.name.title() + f"({attributes_text})"
-            )
-
+                
+            # positioning
+            print(f"{self.__layout_remainder = } ( - 1)")
+            self.__layout_remainder -= 1
             if parent_attributes["pyAxis"] == "vertical":
-                self.__current_y += self.__gui_widgets[-1].rect.height
+                # move down
+                if self.__layout_remainder > 0:
+                    self.__current_x += self.__gui_widgets[-1].rect.width
+                else:
+                    if self.__custom_layout_remaining():
+                        self.__layout_remainder = self.__custom_layout[0]
+                        del self.__custom_layout[0]
+                    else:
+                        self.__layout_remainder = self.__default_layout
+                    self.__set_pos(0, self.__current_y + self.__gui_widgets[-1].rect.height)
             elif parent_attributes["pyAxis"] == "horizontal":
+                # move right
                 self.__current_x += self.__gui_widgets[-1].rect.width
 
         elif widget.name in ["canvas", "list"]:
@@ -81,43 +106,6 @@ class GUIMaker:
             self.__current_x = x
         if y is not None:
             self.__current_y = y
-
-    def __write_code(self):
-        size = self.__widgets[0].attributes["pySize"].split("x")
-        size = int(size[0]), int(size[1])
-        code = []
-        code.append("import pygame")
-        code.append("import sys")
-        code.append("import Pygame_Engine as pe")
-        code.append("")
-        code.append("pygame.init()")
-        code.append(f"screen = pygame.display.set_mode({size})")
-        code.append("fpsclock = pygame.time.Clock()")
-        code.append("fps = 60")
-        code.append("pygame.display.set_caption('Mockup')")
-        code.append("")
-        code.append("widgets = [")
-        for item in self.__text_gui_widgets:
-            code.append(f"\tpe.{item},")
-        code.append("]")
-        code.append("")
-        code.append("while True:")
-        code.append("\tevents = pygame.event.get()")
-        code.append("\tfor e in events:")
-        code.append("\t\tif e.type == pygame.QUIT:")
-        code.append("\t\t\tpygame.quit()")
-        code.append("\t\t\tsys.exit()")
-        code.append("\tfor widget in widgets:")
-        code.append("\t\tif isinstance(widget, pe.Button):")
-        code.append("\t\t\twidget.update(events)")
-        code.append("\tscreen.fill((80,80,200))")
-        code.append("\tfor item in widgets:")
-        code.append("\t\titem.draw_to(screen)")
-        code.append("\tpygame.display.flip()")
-        code.append("\tfpsclock.tick(fps)")
-        code.append("")
-        
-        return "\n".join(code)
 
     def write_to_file(self, path):
         with open(path, "w") as f:
