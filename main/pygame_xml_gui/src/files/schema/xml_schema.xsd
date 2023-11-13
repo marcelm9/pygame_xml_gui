@@ -70,6 +70,7 @@
         </xsd:choice>
         <xsd:attribute name="pyMaxHeight" type="xsd:positiveInteger" />
         <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
+        <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
     </xsd:complexType>
 
     <xsd:complexType name="listItemType">

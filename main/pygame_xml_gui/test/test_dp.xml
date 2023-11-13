@@ -7,7 +7,7 @@
     <label pyWidth="40"> {{ type_ }} </label>
     <label pyWidth="40"> Car </label>
     <label pyWidth="40"> {{ car }} </label>
-    <list>
+    <list pyWidth="50">
         <list-item pyFor="name in crew">
             <label pyWidth="25"> Crew </label>
             <label pyWidth="75"> {{ name }}</label>

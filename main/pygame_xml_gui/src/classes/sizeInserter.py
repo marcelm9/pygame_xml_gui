@@ -23,7 +23,6 @@ class SizeInserter:
             widget_attributes = widget.attributes
             width = int(widget.attributes["pySize"].split("x")[0])
             widget_attributes["force_width"] = width
-            # only setting "force_width" for now
             return Widget(
                 widget.name,
                 widget_attributes,
@@ -33,16 +32,14 @@ class SizeInserter:
             )
 
         if widget.name in ["list", "list-item"]:
-            widget_attributes = widget.attributes
-            width = parent_widget_attributes["force_width"]
-            widget_attributes["force_width"] = width
-            return Widget(widget.name, widget.attributes, 
+            new_widget  = self.__get_widget_with_inserted_size(widget, parent_widget_attributes)
+            return Widget(new_widget.name, new_widget.attributes, 
                     [
-                        self.__run_recursive(item, widget_attributes) for item in widget.content
+                        self.__run_recursive(item, new_widget.attributes) for item in new_widget.content
                     ]
                 )
 
-        if widget.name in ["label", "button"]:
+        if widget.name in ["label", "button", "list", "list-item"]:
             return self.__get_widget_with_inserted_size(widget, parent_widget_attributes)
 
     def __get_widget_with_inserted_size(self, widget: Widget, parent_widget_attributes: dict) -> Widget:
