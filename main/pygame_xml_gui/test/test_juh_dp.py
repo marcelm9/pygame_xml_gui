@@ -1,9 +1,8 @@
 import sys, os, pygame
 
 from ..src.UserInterface import UserInterface
-import random
 
-from Pygame_Engine import PerformanceGraph
+from PygameXtras import PerformanceGraph
 
 RUN_FOR = -1 # seconds
 

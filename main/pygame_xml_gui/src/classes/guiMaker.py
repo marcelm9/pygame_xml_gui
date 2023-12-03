@@ -2,7 +2,7 @@ import sys
 from rich import print
 
 from .widget import Widget
-from Pygame_Engine import Label, Button
+from PygameXtras import Label, Button
 import pygame
 pygame.init()
 
