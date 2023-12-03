@@ -1,4 +1,5 @@
 import re
+import copy
 
 from rich import print
 from .widget import Widget
@@ -22,7 +23,8 @@ class SourceInserter:
     def __join_dicts(self, inferior: dict, superior: dict | None) -> dict:
         if superior is None:
             return inferior
-        new_dict = inferior.copy()
+        # new_dict = inferior.copy() # TODO: which one?
+        new_dict = copy.deepcopy(inferior)
         for k, v in superior.items():
             new_dict[k] = v
         return new_dict
@@ -102,7 +104,8 @@ class SourceInserter:
 
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None) -> Widget:
         assert widget.name in ["label", "button"]
-        new_widget_attributes = widget.attributes.copy()
+        # new_widget_attributes = widget.attributes.copy()
+        new_widget_attributes = copy.deepcopy(widget.attributes)
         string = widget.content
 
         vars_ = self.__join_dicts(self.__vars, additional_locals)

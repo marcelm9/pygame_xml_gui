@@ -7,7 +7,7 @@ class ClassWriter:
         code.append("import pygame")
         code.append("")
         code.append("try:")
-        code.append("\timport Pygame_Engine as pe")
+        code.append("\timport PygameXtras as pe")
         code.append("except:")
         code.append("\traise ModuleNotFoundError(\"It seems like you forgot to install the Pygame_Engine module\")")
         code.append("")

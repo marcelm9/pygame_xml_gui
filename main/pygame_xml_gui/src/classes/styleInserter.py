@@ -14,7 +14,6 @@ with open(STYLE_DARK, "r") as f:
 class StyleInserter:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
-        self.__new_widgets = []
 
         self.__sanity_check()
         self.__style: dict = STYLES[self.__widgets[0].attributes["pyStyle"]]

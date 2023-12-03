@@ -40,10 +40,11 @@
     <xsd:complexType name="labelType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
+                <!-- <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" /> --> <!-- why was this here? -->
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -51,12 +52,13 @@
     <xsd:complexType name="buttonType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" />
+                <!-- <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" /> --> <!-- why was this here? -->
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyAction" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyArgs" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -66,7 +68,7 @@
             <xsd:element name="list-item" type="listItemType" />
             <xsd:element name="label" type="labelType" />
             <xsd:element name="button" type="buttonType" />
-            <xsd:element name="list" type="listType" /> <!-- keep? -->
+            <!-- <xsd:element name="list" type="listType" /> keep? -->
         </xsd:choice>
         <xsd:attribute name="pyMaxHeight" type="xsd:positiveInteger" />
         <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
@@ -77,7 +79,7 @@
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
             <xsd:element name="label" type="labelType" />
             <xsd:element name="button" type="buttonType" />
-            <xsd:element name="list" type="listType" />
+            <!-- <xsd:element name="list" type="listType" /> -->
             <!-- nested lists are not allowed (for now at least) -->
         </xsd:choice>
         <xsd:attribute name="pyFor" use="required">
