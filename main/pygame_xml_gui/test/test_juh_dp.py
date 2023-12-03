@@ -56,7 +56,6 @@ class Program():
                         run = False
             
             self.screen.fill((0,0,0))
-            # ui.refresh()
             self.ui.draw(self.screen)
             fps = self.fpsclock.get_fps()
             fpslist.append(fps)

@@ -74,10 +74,10 @@ class Program():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run = False
-            
-            self.screen.fill((0,0,0))
-            # ui.refresh()
+
             self.ui.update(event_list)
+
+            self.screen.fill((0,0,0))
             self.ui.draw(self.screen)
             fps = self.fpsclock.get_fps()
             fpslist.append(fps)
