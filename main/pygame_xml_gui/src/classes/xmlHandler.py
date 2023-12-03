@@ -33,7 +33,8 @@ class XMLHandler(xml.sax.ContentHandler):
             # for now only vertical canvases and lists are allowed
             w_attributes["pyAxis"] = "vertical"
         if name in ["label", "button"]:
-            w_attributes["anchor"] = "topleft"
+            # w_attributes["anchor"] = "topleft" # ! not needed: done in StyleInserter
+            pass
         if name == "list-item":
             # for now list-items are always horizontal
             w_attributes["pyAxis"] = "horizontal"

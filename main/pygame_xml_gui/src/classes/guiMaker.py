@@ -48,9 +48,10 @@ class GUIMaker:
 
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
         if widget.name in ["label", "button"]:
-            size = widget.attributes["size"]
-            anchor = widget.attributes["anchor"]
-            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
+            attributes = widget.attributes["style"]
+            size = attributes["size"]
+            anchor = attributes["anchor"]
+            # attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}
             if widget.name == "label":
                 self.__gui_widgets.append(
