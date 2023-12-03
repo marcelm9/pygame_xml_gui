@@ -45,13 +45,15 @@ class StyleInserter:
     def __get_widget_with_injected_style_attributes(self, widget: Widget) -> Widget:
         pyStyle_attributes = self.__extract_style_attribute(widget)
 
-        attributes = self.__style.copy()
+        attributes = widget.attributes
+        for k, v in self.__style.items():
+            if k not in attributes.keys():
+                attributes[k] = v
         for k, v in pyStyle_attributes.items():
-            # pyStyle attributes can overwrite others
             attributes[k] = v
         attributes["anchor"] = "topleft"
-        widget.attributes["style"] = attributes
-        return widget
+
+        return Widget(widget.name, attributes, widget.content)
 
     def __extract_style_attribute(self, widget: Widget):
         if "pyStyle" in widget.attributes.keys():

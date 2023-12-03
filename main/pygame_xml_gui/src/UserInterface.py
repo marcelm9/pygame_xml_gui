@@ -86,7 +86,6 @@ class UserInterface:
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
                 if widget.update(event_list, button, real_offset):
-                    print("a button has been pressed")
                     self.__run_method(widget)
 
     def set_variables(self, variables: dict):

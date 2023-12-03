@@ -12,10 +12,6 @@ class GUIMaker:
         self.__widgets = widgets
         self.__gui_widgets = []
 
-        self.__default_layout = 1 # number of widgets per line
-        # self.__custom_layout = []
-        # self.__layout_remainder = self.__default_layout
-
         self.__sanity_check()
         self.__run()
 
@@ -24,35 +20,17 @@ class GUIMaker:
         assert self.__widgets[0].name == "canvas"
 
     def __run(self):
-        # self.__parse_layout()
-        # if self.__custom_layout_remaining():
-        #     self.__layout_remainder = self.__custom_layout[0]
-        #     del self.__custom_layout[0]
-        # print(f"{self.__default_layout = }")
-        # print(f"{self.__custom_layout = }")
         self.__current_x = 0
         self.__current_y = 0
         self.__run_recursive(self.__widgets[0], None)
 
-    # def __custom_layout_remaining(self) -> bool:
-    #     return len(self.__custom_layout) > 0
-    
-    # def __parse_layout(self):
-    #     if (layout := self.__widgets[0].attributes.get("pyLayout", None)) is not None:
-    #         for i, char in enumerate(layout):
-    #             if char == "d":
-    #                 self.__default_layout = int(layout[i+1])
-    #                 break
-    #             else:
-    #                 self.__custom_layout.append(int(char))
-
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
         if widget.name in ["label", "button"]:
-            # attributes = widget.attributes["style"]
-            size = widget.attributes["style"]["size"]
-            anchor = widget.attributes["style"]["anchor"]
-            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor"] and not k.startswith("py"))}
-            print(attributes)
+            size = widget.attributes["size"]
+            anchor = widget.attributes["anchor"]
+            attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
+            attributes["info"] = {}
+
             if widget.name == "label":
                 self.__gui_widgets.append(
                     Label(None, widget.content, size, self.__pos(), anchor, **attributes)
@@ -65,6 +43,9 @@ class GUIMaker:
                 self.__gui_widgets.append(
                     Button(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
+
+            # testing the widget
+            # fails for invalid inputs that are not caught by the __init__ method of Label / Button
             try:
                 self.__gui_widgets[-1].draw_to(pygame.Surface((10,10)))
             except:
@@ -72,9 +53,9 @@ class GUIMaker:
                 print(attributes)
                 sys.exit()
 
-                
             # positioning
             if parent_attributes["pyAxis"] == "vertical":
+                # move down
                 self.__current_y += self.__gui_widgets[-1].rect.height
             elif parent_attributes["pyAxis"] == "horizontal":
                 self.__current_x += self.__gui_widgets[-1].rect.width
