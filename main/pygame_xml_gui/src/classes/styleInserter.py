@@ -14,7 +14,6 @@ with open(STYLE_DARK, "r") as f:
 class StyleInserter:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
-        self.__new_widgets = []
 
         self.__sanity_check()
         self.__style: dict = STYLES[self.__widgets[0].attributes["pyStyle"]]
@@ -46,16 +45,6 @@ class StyleInserter:
     def __get_widget_with_injected_style_attributes(self, widget: Widget) -> Widget:
         pyStyle_attributes = self.__extract_style_attribute(widget)
 
-        # attributes = self.__style.copy()
-        # for k, v in pyStyle_attributes.items():
-        #     # pyStyle attributes can overwrite others
-        #     attributes[k] = v
-        # attributes["anchor"] = "topleft"
-        # widget.attributes["style"] = attributes
-        # return widget
-
-        # TODO: optimize
-
         attributes = widget.attributes
         for k, v in self.__style.items():
             if k not in attributes.keys():
@@ -63,6 +52,7 @@ class StyleInserter:
         for k, v in pyStyle_attributes.items():
             attributes[k] = v
         attributes["anchor"] = "topleft"
+
         return Widget(widget.name, attributes, widget.content)
 
     def __extract_style_attribute(self, widget: Widget):

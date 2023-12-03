@@ -26,7 +26,6 @@ class GUIMaker:
 
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
         if widget.name in ["label", "button"]:
-            # attributes = widget.attributes["style"]
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
@@ -42,7 +41,8 @@ class GUIMaker:
                     Button(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
 
-            # testing # TODO: is this really needed? would the lines above not fail anyways? what is being tested by drawing the widget to a screen?
+            # testing the widget
+            # fails for invalid inputs that are not caught by the __init__ method of Label / Button
             try:
                 self.__gui_widgets[-1].draw_to(pygame.Surface((10,10)))
             except:
@@ -50,7 +50,6 @@ class GUIMaker:
                 print(attributes)
                 sys.exit()
 
-                
             # positioning
             if parent_attributes["pyAxis"] == "vertical":
                 # move down
