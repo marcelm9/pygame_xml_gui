@@ -1,18 +1,18 @@
-<canvas pySize="500x500" pySource="files/test/data/data.py" pyStyle="dark" pyBackground="(90,90,90)" pyLayout="11d2">
+<canvas pySize="300x270" pySource="files/test/data/data.py" pyStyle="dark" pyBackground="(0,0,0)">
     <label > Shift </label>
-    <label pyWidth="30" pyNl="0"> Type </label>
-    <label pyWidth="70"> {{ type_ }} </label>
-    <label pyWidth="30" pyNl="0"> Car </label>
-    <label pyWidth="70"> {{ car }} </label>
+    <label pyWidth="22" pyNl="0"> Type </label>
+    <label pyWidth="78"> {{ type_ }} </label>
+    <label pyWidth="22" pyNl="0"> Car </label>
+    <label pyWidth="78"> {{ car }} </label>
     <list pyWidth="100">
         <list-item pyFor="crew_item in crew">
-            <label pyWidth="30" pyIf="crew_item[0] == 0"> Crew </label>
-            <label pyWidth="30" pyIf="crew_item[0] != 0" pyStyle="bgc=(90,90,90)"></label>
-            <label pyWidth="70"> {{ crew_item[1] }}</label>
+            <label pyWidth="22" pyIf="crew_item[0] == 0"> Crew </label>
+            <label pyWidth="22" pyIf="crew_item[0] != 0" pyStyle="bgc=(0,0,0)"></label>
+            <label pyWidth="78"> {{ crew_item[1] }}</label>
         </list-item>
     </list>
-    <label pyWidth="30" pyNl="0"> Start </label>
-    <label pyWidth="70"> {{ start }} </label>
-    <label pyWidth="30" pyNl="0"> End </label>
-    <label pyWidth="70"> {{ end }} </label>
+    <label pyWidth="22" pyNl="0"> Start </label>
+    <label pyWidth="78"> {{ start }} </label>
+    <label pyWidth="22" pyNl="0"> End </label>
+    <label pyWidth="78"> {{ end }} </label>
 </canvas>
