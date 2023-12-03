@@ -5,7 +5,7 @@ import time
 
 import xml.sax
 import pygame
-import Pygame_Engine as pe
+import PygameXtras as pe
 
 from rich import print as rprint
 

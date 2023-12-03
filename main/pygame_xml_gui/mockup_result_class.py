@@ -1,7 +1,7 @@
 import pygame
 
 try:
-    import Pygame_Engine as pe
+    import PygameXtras as pe
 except:
     raise ModuleNotFoundError("It seems like you forgot to install the Pygame_Engine module")
 

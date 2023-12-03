@@ -1,6 +1,6 @@
 import pygame
 import sys
-import Pygame_Engine as pe
+import PygameXtras as pe
 
 pygame.init()
 screen = pygame.display.set_mode((500, 500))

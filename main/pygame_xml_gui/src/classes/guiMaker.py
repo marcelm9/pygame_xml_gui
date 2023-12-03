@@ -30,13 +30,16 @@ class GUIMaker:
             anchor = widget.attributes["anchor"]
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}
+
             if widget.name == "label":
                 self.__gui_widgets.append(
                     Label(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
             elif widget.name == "button":
-                attributes["info"]["pyAction"] = widget.attributes.get("pyAction", None)
-                attributes["info"]["pyArgs"] = widget.attributes.get("pyArgs", None)
+                attributes["info"] = {
+                    "pyAction": widget.attributes.get("pyAction", None),
+                    "pyArgs": widget.attributes.get("pyArgs", None)
+                }
                 self.__gui_widgets.append(
                     Button(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
@@ -55,8 +58,23 @@ class GUIMaker:
                 # move down
                 self.__current_y += self.__gui_widgets[-1].rect.height
             elif parent_attributes["pyAxis"] == "horizontal":
-                # move right
                 self.__current_x += self.__gui_widgets[-1].rect.width
+            # print(f"{self.__layout_remainder = } ( - 1)")
+            # self.__layout_remainder -= 1
+            # if parent_attributes["pyAxis"] == "vertical":
+            #     # move down
+            #     if self.__layout_remainder > 0:
+            #         self.__current_x += self.__gui_widgets[-1].rect.width
+            #     else:
+            #         if self.__custom_layout_remaining():
+            #             self.__layout_remainder = self.__custom_layout[0]
+            #             del self.__custom_layout[0]
+            #         else:
+            #             self.__layout_remainder = self.__default_layout
+            #         self.__set_pos(0, self.__current_y + self.__gui_widgets[-1].rect.height)
+            # elif parent_attributes["pyAxis"] == "horizontal":
+            #     # move right
+            #     self.__current_x += self.__gui_widgets[-1].rect.width
 
         elif widget.name in ["canvas", "list"]:
             for item in widget.content:

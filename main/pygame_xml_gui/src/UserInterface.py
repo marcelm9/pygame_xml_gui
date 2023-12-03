@@ -2,7 +2,7 @@ import io
 import xml.sax
 from xml.sax.xmlreader import InputSource
 
-import Pygame_Engine as pe
+import PygameXtras as pe
 import pygame
 
 from rich import print
