@@ -1,4 +1,5 @@
 import sys
+from pygame_xml_gui.src.classes.xmlHelper import XMLHelper
 from rich import print
 
 from .widget import Widget
@@ -28,6 +29,7 @@ class GUIMaker:
         if widget.name in ["label", "button"]:
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
+            newline = XMLHelper.read_bool(widget.attributes.get("pyNl", "1"))
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}
 
@@ -56,25 +58,14 @@ class GUIMaker:
             # positioning
             if parent_attributes["pyAxis"] == "vertical":
                 # move down
-                self.__current_y += self.__gui_widgets[-1].rect.height
+                if newline:
+                    self.__set_pos(0, self.__pos()[1] + self.__gui_widgets[-1].rect.height)
+                else:
+                    self.__set_pos(self.__pos()[0] + self.__gui_widgets[-1].rect.width, self.__pos()[1])
             elif parent_attributes["pyAxis"] == "horizontal":
-                self.__current_x += self.__gui_widgets[-1].rect.width
-            # print(f"{self.__layout_remainder = } ( - 1)")
-            # self.__layout_remainder -= 1
-            # if parent_attributes["pyAxis"] == "vertical":
-            #     # move down
-            #     if self.__layout_remainder > 0:
-            #         self.__current_x += self.__gui_widgets[-1].rect.width
-            #     else:
-            #         if self.__custom_layout_remaining():
-            #             self.__layout_remainder = self.__custom_layout[0]
-            #             del self.__custom_layout[0]
-            #         else:
-            #             self.__layout_remainder = self.__default_layout
-            #         self.__set_pos(0, self.__current_y + self.__gui_widgets[-1].rect.height)
-            # elif parent_attributes["pyAxis"] == "horizontal":
-            #     # move right
-            #     self.__current_x += self.__gui_widgets[-1].rect.width
+                # move right
+                # self.__current_x += self.__gui_widgets[-1].rect.width
+                self.__set_pos(self.__pos()[0] + self.__gui_widgets[-1].rect.width, self.__pos()[1])
 
         elif widget.name in ["canvas", "list"]:
             for item in widget.content:

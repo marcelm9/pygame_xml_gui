@@ -38,7 +38,7 @@ class Program():
         self.ui.set_variables({
             "type_": shift.type,
             "car": shift.car,
-            "crew": shift.crew,
+            "crew": [(index, name) for index, name in enumerate(shift.crew)],
             "start": shift.start,
             "end": shift.end
         })
