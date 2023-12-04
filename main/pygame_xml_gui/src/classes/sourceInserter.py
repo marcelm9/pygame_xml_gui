@@ -41,7 +41,7 @@ class SourceInserter:
                 return None
         except Exception as e:
             raise Exception(f"An error occurred while evaluating the pyIf attribute of a widget (type: {widget.name}, "
-                            + "pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
+                            + f"pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
 
         if widget.name in ["canvas", "list"]:
             return Widget(

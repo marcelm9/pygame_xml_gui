@@ -1,11 +1,11 @@
 from .widget import Widget
 
 class SizeInserter:
-    def __init__(self, widgets: list[Widget]):
+    def __init__(self, widgets: list[Widget], line_height):
         self.__widgets = widgets
         self.__sanity_check()
 
-        self.__standard_width_or_height = 30
+        self.__standard_width_or_height = line_height
         self.__run()
 
     def __sanity_check(self):
