@@ -27,6 +27,7 @@ class UserInterface:
         self.__variables = None
         self.__methods = None
         self.__pos = (0, 0)
+        self.__line_height = 30
     
     def __process_structure(self):
         if self.__structure_string == None:
@@ -53,7 +54,7 @@ class UserInterface:
         StyleInserter(widgets)
 
         # inject size
-        SizeInserter(widgets)
+        SizeInserter(widgets, self.__line_height)
 
         self.__raw_structure_widgets = widgets.copy()
 
@@ -82,6 +83,9 @@ class UserInterface:
             self.__methods[widget.info["pyAction"]]()
 
     def update(self, event_list, button: int = 1, offset: tuple = (0, 0)):
+        """
+        Update all buttons of the UI.
+        """
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
@@ -89,8 +93,16 @@ class UserInterface:
                     self.__run_method(widget)
 
     def set_variables(self, variables: dict):
+        """
+        Sets the variables and calls self.refresh().
+        """
         self.__variables = variables.copy()
         self.refresh()
+
+    def set_line_height(self, height: int = 30):
+        self.__line_height = height
+        if self.__structure_string is not None:
+            self.__process_structure()
 
     def refresh(self):
         # TODO: callable only if structure is set (and variables are not None?)
