@@ -3,7 +3,7 @@ from pygame_xml_gui.src.classes.xmlHelper import XMLHelper
 from rich import print
 
 from .widget import Widget
-from PygameXtras import Label, Button
+from PygameXtras import Label, Button, Entry
 import pygame
 pygame.init()
 
@@ -26,7 +26,7 @@ class GUIMaker:
         self.__run_recursive(self.__widgets[0], None)
 
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
-        if widget.name in ["label", "button"]:
+        if widget.name in ["label", "button", "entry"]:
             size = widget.attributes["size"]
             anchor = widget.attributes["anchor"]
             newline = XMLHelper.read_bool(widget.attributes.get("pyNl", "1"))
@@ -44,6 +44,10 @@ class GUIMaker:
                 }
                 self.__gui_widgets.append(
                     Button(None, widget.content, size, self.__pos(), anchor, **attributes)
+                )
+            elif widget.name == "entry":
+                self.__gui_widgets.append(
+                    Entry(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
 
             # testing the widget
@@ -85,11 +89,6 @@ class GUIMaker:
             self.__current_x = x
         if y is not None:
             self.__current_y = y
-
-    def write_to_file(self, path):
-        with open(path, "w") as f:
-            f.write(self.__write_code())
-            print(f"[green]Written code to file {path}")
 
     def get_widgets(self):
         return self.__gui_widgets

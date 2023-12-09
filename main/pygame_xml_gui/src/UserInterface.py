@@ -86,6 +86,7 @@ class UserInterface:
         """
         Update all buttons of the UI.
         """
+        assert self.__widgets != None
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
@@ -113,7 +114,7 @@ class UserInterface:
         # TODO: does this also change self.__raw_structure_widgets ?
         self.__structure_widgets = SourceInserter(self.__raw_structure_widgets, self.__variables).get_widgets()
         gm = GUIMaker(self.__structure_widgets)
-        self.__widgets: list[pe.Label | pe.Button] = gm.get_widgets()
+        self.__widgets: list[pe.Label | pe.Button | pe.Entry] = gm.get_widgets()
         self.__background = pygame.Surface(gm.get_size())
         self.__background_color = gm.get_background_color()
     
@@ -126,3 +127,6 @@ class UserInterface:
         for widget in self.__widgets:
             widget.draw_to(self.__background)
         screen.blit(self.__background, self.__pos)
+    
+    def get_rect(self):
+        return pygame.Rect(self.__pos[0], self.__pos[1], self.__background.get_width(), self.__background.get_height())
