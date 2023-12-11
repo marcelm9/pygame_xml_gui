@@ -16,21 +16,10 @@ class Program():
         self.fpsclock = pygame.time.Clock()
         self.fps = 60
 
-        self.settings = [
-            ["width", 30],
-            ["height", 20],
-            ["tile sidelength", 32],
-            ["apple worth", 1]
-        ]
-        self.name = "Marcel"
-
-    def confirm(self, settings: dict):
-        print(f"Settings are:")
-        for s in self.settings:
-            print(f"\t{s}")
+        self.name = "Name"
     
     def confirm_name(self):
-        print(f"global name is: {self.name}")
+        print(f"Name is: {self.name}")
 
     def main(self):
 

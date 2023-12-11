@@ -4,7 +4,7 @@ from ..src.UserInterface import UserInterface
 
 RUN_FOR = -1 # seconds
 
-PATH = os.path.join(os.path.dirname(__file__), "juh_image.png")
+PATH = os.path.join(os.path.dirname(__file__), "image.png")
 
 class Shift:
     def __init__(self, type_, car, crew, start, end):
@@ -27,7 +27,7 @@ class Program():
         with open(os.path.join(os.path.dirname(__file__), "test_dp.xml"), "r") as f:
             structure = f.read()
 
-        shift = Shift("JOK", "A-39", ["Marcel Menzel", "Lena Hofmann", "Anna Kristoferitsch", "Pascal Heinrich"], "15.11.2023, 10:00", "15.11.2023, 18:30")
+        shift = Shift("JOK", "A-39", ["First1 Last1", "First2 Last2", "First3 Last3", "First4 Last4"], "15.11.2023, 10:00", "15.11.2023, 18:30")
         
         self.ui = UserInterface()
         self.ui.set_structure(structure)

@@ -1,4 +1,4 @@
-<canvas pySize="300x270" pySource="files/test/data/data.py" pyStyle="dark" pyBackground="(0,0,0)">
+<canvas pySize="300x270" pyStyle="dark" pyBackground="(0,0,0)">
     <label > Shift </label>
     <label pyWidth="22" pyNl="0"> Type </label>
     <label pyWidth="78"> {{ type_ }} </label>
