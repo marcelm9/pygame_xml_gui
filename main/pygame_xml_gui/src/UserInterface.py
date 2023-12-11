@@ -1,13 +1,10 @@
 import io
-import sys
 import xml.sax
 from xml.sax.xmlreader import InputSource
 
 import PygameXtras as pe
 import pygame
 from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
-
-from rich import print
 
 from .classes.validator import Validator
 from .files.schema.xml_schema import SCHEMA
@@ -127,8 +124,11 @@ class UserInterface:
         except KeyError:
             ErrorHandler.error(f"Could not find any entry with id '{id}'", info=f"Keys found: {list(self.__entries_mapping.keys())}")
 
-    def set_pos(self, position_topleft: tuple[int, int]):
-        self.__pos = position_topleft
+    def set_pos(self, pos: tuple[int, int], anchor: str = "center"):
+        assert anchor in ("topleft", "midtop", "topright", "midright", "bottomright", "midbottom", "bottomleft", "midleft", "center")
+        r = pygame.Rect(0, 0, self.__background.get_rect()[2], self.__background.get_rect()[3])
+        r.__setattr__(anchor, pos)
+        self.__pos = r.topleft
 
     def draw(self, screen: pygame.Surface):
         # TODO: better draw method? technically only needs redraw if something changes...
