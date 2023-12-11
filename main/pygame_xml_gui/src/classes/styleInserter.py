@@ -31,7 +31,7 @@ class StyleInserter:
         ]
 
     def __run_recursive(self, widget: Widget):
-        if widget.name in ["label", "button"]:
+        if widget.name in ["label", "button", "entry"]:
             return self.__get_widget_with_injected_style_attributes(widget)
         elif widget.name in ["canvas", "list", "list-item"]:
             return Widget(

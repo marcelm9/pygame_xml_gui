@@ -52,7 +52,7 @@ class SourceInserter:
                     for item in widget.content
                 ],
             )
-        elif widget.name in ["label", "button"]:
+        elif widget.name in ["label", "button", "entry"]:
             return self.__evaluate_widget(
                 widget, additional_variables
             )
@@ -87,7 +87,7 @@ class SourceInserter:
         self.__new_widgets = self.__unpacked_widgets
 
     def __unpack_recursive(self, widget: Widget) -> Widget | None:
-        if widget.name in ["label", "button"]:
+        if widget.name in ["label", "button", "entry"]:
             return widget
 
         if widget.name in ["canvas", "list-item", "list"]:
@@ -103,8 +103,8 @@ class SourceInserter:
             return Widget(widget.name, widget.attributes, new_content)
 
     def __evaluate_widget(self, widget: Widget, additional_locals: dict | None = None) -> Widget:
-        assert widget.name in ["label", "button"]
-        # new_widget_attributes = widget.attributes.copy()
+        assert widget.name in ["label", "button", "entry"]
+
         new_widget_attributes = copy.deepcopy(widget.attributes)
         string = widget.content
 

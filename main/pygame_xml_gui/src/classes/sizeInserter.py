@@ -39,7 +39,7 @@ class SizeInserter:
                     ]
                 )
 
-        if widget.name in ["label", "button", "list", "list-item"]:
+        if widget.name in ["label", "button", "entry", "list", "list-item"]:
             return self.__get_widget_with_inserted_size(widget, parent_widget_attributes)
 
     def __get_widget_with_inserted_size(self, widget: Widget, parent_widget_attributes: dict) -> Widget:

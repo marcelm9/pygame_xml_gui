@@ -1,4 +1,4 @@
-from classes.widget import Widget
+from ..classes.widget import Widget
 from rich import print
 
 
@@ -30,7 +30,7 @@ class WidgetPrinter:
                     WidgetPrinter.__print_recursive(item, indent, lines)
                 indent -= 1
             
-            elif widget.name in ["label", "button"]:
+            elif widget.name in ["label", "button", "entry"]:
 
                 lines.append("    " * indent + f"[purple]name[/]: {widget.name}")
                 lines.append("    " * indent + f"attributes: {widget.attributes}")

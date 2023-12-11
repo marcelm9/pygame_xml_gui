@@ -16,7 +16,7 @@ class XMLHandler(xml.sax.ContentHandler):
             self.__active_names.append(tag)
             self.__active_attributes.append(attributes)
             self.__active_contents.append([])
-        elif tag in ["label", "button"]:
+        elif tag in ["label", "button", "entry"]:
             self.__active_names.append(tag)
             self.__active_attributes.append(attributes)
             self.__active_contents.append("")
@@ -32,7 +32,7 @@ class XMLHandler(xml.sax.ContentHandler):
         if name in ["canvas", "list"]:
             # for now only vertical canvases and lists are allowed
             w_attributes["pyAxis"] = "vertical"
-        if name in ["label", "button"]:
+        if name in ["label", "button", "entry"]:
             # w_attributes["anchor"] = "topleft" # ! not needed: done in StyleInserter
             pass
         if name == "list-item":
