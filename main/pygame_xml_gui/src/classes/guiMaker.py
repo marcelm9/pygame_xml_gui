@@ -1,4 +1,5 @@
 import sys
+from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 from pygame_xml_gui.src.classes.xmlHelper import XMLHelper
 from rich import print
 
@@ -12,6 +13,10 @@ class GUIMaker:
     def __init__(self, widgets: list[Widget]):
         self.__widgets = widgets
         self.__gui_widgets = []
+
+        # for entries
+        self.__index = 0
+        self.__entries_mapping = {}
 
         self.__sanity_check()
         self.__run()
@@ -49,15 +54,17 @@ class GUIMaker:
                 self.__gui_widgets.append(
                     Entry(None, widget.content, size, self.__pos(), anchor, **attributes)
                 )
+                if widget.attributes.get("pyId", None) != None:
+                    if self.__entries_mapping.get(widget.attributes["pyId"], None) != None:
+                        ErrorHandler.error(f"Found more than one entry for id '{widget.attributes['pyId']}'")
+                    self.__entries_mapping[widget.attributes["pyId"]] = self.__index
 
             # testing the widget
             # fails for invalid inputs that are not caught by the __init__ method of Label / Button
             try:
                 self.__gui_widgets[-1].draw_to(pygame.Surface((10,10)))
             except:
-                print("[red]Could not create GUI widget due to invalid attribute(s):")
-                print(attributes)
-                sys.exit()
+                ErrorHandler.error("Could not create GUI widget due to invalid attribute(s)", info=f"Attributes:\n{attributes}")
 
             # positioning
             if parent_attributes["pyAxis"] == "vertical":
@@ -68,8 +75,9 @@ class GUIMaker:
                     self.__set_pos(self.__pos()[0] + self.__gui_widgets[-1].rect.width, self.__pos()[1])
             elif parent_attributes["pyAxis"] == "horizontal":
                 # move right
-                # self.__current_x += self.__gui_widgets[-1].rect.width
                 self.__set_pos(self.__pos()[0] + self.__gui_widgets[-1].rect.width, self.__pos()[1])
+            
+            self.__index += 1
 
         elif widget.name in ["canvas", "list"]:
             for item in widget.content:
@@ -98,3 +106,6 @@ class GUIMaker:
     
     def get_size(self):
         return [int(number) for number in self.__widgets[0].attributes["pySize"].split("x")]
+
+    def get_entries_mapping(self) -> dict:
+        return self.__entries_mapping

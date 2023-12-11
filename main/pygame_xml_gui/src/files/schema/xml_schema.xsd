@@ -34,7 +34,6 @@
     <xsd:complexType name="labelType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <!-- <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" /> --> <!-- why was this here? -->
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
@@ -46,7 +45,6 @@
     <xsd:complexType name="buttonType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <!-- <xsd:attribute name="padding" type="xsd:positiveInteger" use="optional" /> --> <!-- why was this here? -->
                 <xsd:attribute name="pyWidth" type="xsd:positiveInteger" use="optional" />
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyAction" type="xsd:string" use="optional" />
@@ -66,6 +64,7 @@
                 <xsd:attribute name="pyArgs" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
+                <xsd:attribute name="pyId" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -92,13 +91,6 @@
             <!-- nested lists are not allowed (for now at least) -->
         </xsd:choice>
         <xsd:attribute name="pyFor" type="xsd:string" use="optional" />
-        <!-- <xsd:attribute name="pyFor" use="required">
-            <xsd:simpleType>
-                <xsd:restriction base="xsd:string">
-                    <xsd:pattern value="[a-zA-Z][a-zA-Z0-9]*\sin\s[a-zA-Z][a-zA-Z0-9]*" />
-                </xsd:restriction>
-            </xsd:simpleType>
-        </xsd:attribute> -->
         <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
     </xsd:complexType>
 

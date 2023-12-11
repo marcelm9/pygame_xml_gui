@@ -22,11 +22,15 @@ class Program():
             ["tile sidelength", 32],
             ["apple worth", 1]
         ]
+        self.name = "Marcel"
 
     def confirm(self, settings: dict):
         print(f"Settings are:")
         for s in self.settings:
             print(f"\t{s}")
+    
+    def confirm_name(self):
+        print(f"global name is: {self.name}")
 
     def main(self):
 
@@ -37,8 +41,8 @@ class Program():
 
         self.ui = UserInterface()
         self.ui.set_structure(structure)
-        self.ui.set_variables({"settings": self.settings})
-        self.ui.set_methods({"confirm": self.confirm})
+        self.ui.set_variables({"name": self.name})
+        self.ui.set_methods({"confirm_name": self.confirm_name})
         self.ui.set_pos((100, 50))
         
         run = True
@@ -53,10 +57,11 @@ class Program():
                         run = False
 
             self.ui.update(event_list)
+            self.name = self.ui.get_entry(id="name").get()
 
             self.screen.fill((0,0,0))
             self.ui.draw(self.screen)
-            pygame.draw.rect(self.screen, (0,255,0), self.ui.get_rect(), 1)
+            pygame.draw.rect(self.screen, (100,100,100), self.ui.get_rect(), 1)
             fps = self.fpsclock.get_fps()
             fpslist.append(fps)
             pygame.display.set_caption("Seconds left: " + str(round(RUN_FOR - (len(fpslist)/self.fps), 2)))

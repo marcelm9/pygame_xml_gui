@@ -1,9 +1,11 @@
 import io
+import sys
 import xml.sax
 from xml.sax.xmlreader import InputSource
 
 import PygameXtras as pe
 import pygame
+from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 
 from rich import print
 
@@ -114,10 +116,17 @@ class UserInterface:
         # TODO: does this also change self.__raw_structure_widgets ?
         self.__structure_widgets = SourceInserter(self.__raw_structure_widgets, self.__variables).get_widgets()
         gm = GUIMaker(self.__structure_widgets)
+        self.__entries_mapping = gm.get_entries_mapping()
         self.__widgets: list[pe.Label | pe.Button | pe.Entry] = gm.get_widgets()
         self.__background = pygame.Surface(gm.get_size())
         self.__background_color = gm.get_background_color()
     
+    def get_entry(self, id: str) -> pe.Entry:
+        try:
+            return self.__widgets[self.__entries_mapping[id]]
+        except KeyError:
+            ErrorHandler.error(f"Could not find any entry with id '{id}'", info=f"Keys found: {list(self.__entries_mapping.keys())}")
+
     def set_pos(self, position_topleft: tuple[int, int]):
         self.__pos = position_topleft
 
