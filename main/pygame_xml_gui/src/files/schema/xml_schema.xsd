@@ -38,6 +38,7 @@
                 <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
+                <xsd:attribute name="pyClass" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -51,6 +52,7 @@
                 <xsd:attribute name="pyArgs" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
+                <xsd:attribute name="pyClass" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -65,6 +67,7 @@
                 <xsd:attribute name="pyIf" type="xsd:string" use="optional" />
                 <xsd:attribute name="pyNl" type="xsd:boolean" use="optional" default="1" />
                 <xsd:attribute name="pyId" type="xsd:string" use="optional" />
+                <xsd:attribute name="pyClass" type="xsd:string" use="optional" />
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>

@@ -46,13 +46,11 @@ class Program():
 
         fpslist = []
 
-        with open(os.path.join(os.path.dirname(__file__), "test_points.xml"), "r") as f:
-            structure = f.read()
-
         self.points = [Point("Point1", (1,1)), Point("Point2", (2,2))]
         
         self.ui = UserInterface()
-        self.ui.set_structure(structure)
+        self.ui.set_classes(os.path.join(os.path.dirname(__file__), "test_points.json"))
+        self.ui.set_structure(os.path.join(os.path.dirname(__file__), "test_points.xml"))
         self.ui.set_variables({
             "points": self.points
         })
@@ -63,6 +61,7 @@ class Program():
             "delete": self.delete,
             "add_random": self.add_random
         })
+        self.ui.refresh()
         
         run = True
         while run:
