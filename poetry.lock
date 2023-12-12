@@ -115,19 +115,17 @@ files = [
 
 [[package]]
 name = "pygamextras"
-version = "1.1.0"
+version = "1.1.1"
 description = ""
 optional = false
-python-versions = "^3.11"
-files = []
-develop = false
+python-versions = ">=3.11,<4.0"
+files = [
+    {file = "pygamextras-1.1.1-py3-none-any.whl", hash = "sha256:dfa42f3f06346a7f9e8c1eb94ec40f472dc8ee652214c8120f700cdd97da07cf"},
+    {file = "pygamextras-1.1.1.tar.gz", hash = "sha256:8d49be5054f385d9a45a97de03d96efb59de42367b25f8bd046ee79461239f89"},
+]
 
 [package.dependencies]
-pygame = "^2.5.2"
-
-[package.source]
-type = "directory"
-url = "../PygameXtras"
+pygame = ">=2.5.2,<3.0.0"
 
 [[package]]
 name = "pygments"
@@ -184,4 +182,4 @@ docs = ["Sphinx", "elementpath (>=4.1.5,<5.0.0)", "jinja2", "sphinx-rtd-theme"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4bfb563df1b0d9b6937aeef5ab749a92589aabc799263e5c77fd187fed7bb315"
+content-hash = "66a53bab9a4a53be4734eeb7bf1e26ced113cd6e1ec7a2392c1a584f1f65b0e6"

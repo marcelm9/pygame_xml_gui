@@ -46,7 +46,7 @@ class Program():
 
         fpslist = []
 
-        with open(os.path.join(os.path.dirname(__file__), "test.xml"), "r") as f:
+        with open(os.path.join(os.path.dirname(__file__), "test_points.xml"), "r") as f:
             structure = f.read()
 
         self.points = [Point("Point1", (1,1)), Point("Point2", (2,2))]
@@ -56,7 +56,7 @@ class Program():
         self.ui.set_variables({
             "points": self.points
         })
-        self.ui.set_pos((150, 50))
+        self.ui.set_pos(self.center)
         self.ui.set_methods({
             "print_name": self.print_name,
             "round": self.round,
