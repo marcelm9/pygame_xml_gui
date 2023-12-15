@@ -47,3 +47,7 @@ class XMLHandler(xml.sax.ContentHandler):
 
     def get_widget_structure(self):
         return self.__widgets
+    
+    def get_size(self):
+        size = self.__widgets[0].attributes["pySize"].split("x")
+        return int(size[0]), int(size[1])

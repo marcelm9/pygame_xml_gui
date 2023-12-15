@@ -1,4 +1,6 @@
 import io
+import json
+import os
 import xml.sax
 from xml.sax.xmlreader import InputSource
 
@@ -20,19 +22,22 @@ class UserInterface:
         self.__structure_string = None
         self.__structure_widgets = None
         self.__raw_structure_widgets = None
+
         self.__background = None
         self.__background_color = None
+
         self.__widgets = None
         self.__variables = None
         self.__methods = None
+
+        self.__size = None
         self.__pos = (0, 0)
         self.__line_height = 30
+
+        self.__classes_string = None
+        self.__classes = None
     
     def __process_structure(self):
-        if self.__structure_string == None:
-            raise Exception("no structure given")
-        if not isinstance(self.__structure_string, str):
-            raise Exception("given structure is not a string")
         
         # validate structure
         Validator(self.__structure_string, SCHEMA)
@@ -49,28 +54,74 @@ class UserInterface:
         # get structure
         widgets = handler.get_widget_structure()
 
+        # store size
+        self.__size = handler.get_size()
+
         # inject style
-        StyleInserter(widgets)
+        StyleInserter(widgets, classes=self.__classes)
 
         # inject size
         SizeInserter(widgets, self.__line_height)
 
         self.__raw_structure_widgets = widgets.copy()
 
-    def set_structure(self, structure: str):
+    def set_structure(self, path: str):
         """
-        Set the structure of the UI.
+        Imports the widget structure from a file.
+        If you want to use classes, be sure to import them with self.set_classes before
+        calling this method!
+
+        'path' should be a string pointing to the xml file the structure is saved in.
+        """
+
+        if not os.path.exists(path):
+            ErrorHandler.error("Path for structure file does not exist", info=os.path.abspath(path))
+        if not os.path.isfile(path):
+            ErrorHandler.error("Path for structure file is not a file", info=os.path.abspath(path))
+        if not path.endswith(".xml"):
+            ErrorHandler.error("Path for structure file does not point at an xml file", info=os.path.abspath(path))
         
-        'structure' should be a string of an xml file that adheres to
-        the rules specified in the pygame_xml_gui schema. The schema
-        can be found at pygame_xml_gui/src/files/schema/xml_schema.xsd.
-        """
-        self.__structure_string = structure
+        try:
+            with open(path, "r") as f:
+                self.__structure_string = f.read()
+        except Exception as e:
+            ErrorHandler.error(f"An error occurred while reading from the structure file at '{os.path.abspath(path)}'", info=e)
+
         self.__process_structure()
-    
+
+    def set_classes(self, path: str):
+        """
+        Imports the available styling classes from a file.
+
+        'path' should be a string pointing to the json file the styling classes are saved in.
+        """
+        if not os.path.exists(path):
+            ErrorHandler.error("Path for classes file does not exist", info=os.path.abspath(path))
+        if not os.path.isfile(path):
+            ErrorHandler.error("Path for classes file is not a file", info=os.path.abspath(path))
+        if not path.endswith(".json"):
+            ErrorHandler.error("Path for structure file does not point at a json file", info=os.path.abspath(path))
+
+        try:
+            with open(path, "r") as f:
+                self.__classes_string = f.read()
+        except Exception as e:
+            ErrorHandler.error(f"An error occurred while reading from the classes file at '{os.path.abspath(path)}'", info=e)
+
+        self.__process_classes()
+
+    def __process_classes(self):
+        try:
+            self.__classes = json.loads(self.__classes_string)
+        except Exception as e:
+            ErrorHandler.error(f"An error occurred while interpreting the classes file", info=e)
+        
+        if not isinstance(self.__classes, dict):
+            ErrorHandler.error("Content of classes file is not a dict", info=f"Type found: {type(self.__classes)}")
+
     def set_methods(self, methods: dict):
         # TODO: safety checks
-        self.__methods = methods # TODO: .copy() ?
+        self.__methods = methods
 
     def __run_method(self, widget):
         if widget.info["pyAction"] is None:
@@ -94,10 +145,9 @@ class UserInterface:
 
     def set_variables(self, variables: dict):
         """
-        Sets the variables and calls self.refresh().
+        Sets the variables.
         """
         self.__variables = variables.copy()
-        self.refresh()
 
     def set_line_height(self, height: int = 30):
         self.__line_height = height
@@ -105,6 +155,9 @@ class UserInterface:
             self.__process_structure()
 
     def refresh(self):
+        """
+        Creates the UI from the given structure, classes and variables.
+        """
         # TODO: callable only if structure is set (and variables are not None?)
         # for now:
         assert self.__raw_structure_widgets != None
@@ -125,8 +178,15 @@ class UserInterface:
             ErrorHandler.error(f"Could not find any entry with id '{id}'", info=f"Keys found: {list(self.__entries_mapping.keys())}")
 
     def set_pos(self, pos: tuple[int, int], anchor: str = "center"):
-        assert anchor in ("topleft", "midtop", "topright", "midright", "bottomright", "midbottom", "bottomleft", "midleft", "center")
-        r = pygame.Rect(0, 0, self.__background.get_rect()[2], self.__background.get_rect()[3])
+        """
+        Sets the position of the canvas.
+        """
+        if not isinstance(pos, (tuple, list)) or len(pos) != 2:
+            ErrorHandler.error(f"invalid input for 'pos': {pos}")
+        allowed = ("topleft", "midtop", "topright", "midright", "bottomright", "midbottom", "bottomleft", "midleft", "center")
+        if anchor not in allowed:
+            ErrorHandler.error(f"invalid input for 'anchor': {anchor}", info=f'possible values: {allowed}')
+        r = pygame.Rect(0, 0, self.__size[0], self.__size[1])
         r.__setattr__(anchor, pos)
         self.__pos = r.topleft
 

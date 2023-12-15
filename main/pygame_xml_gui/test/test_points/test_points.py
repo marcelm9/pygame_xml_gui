@@ -1,10 +1,16 @@
 import sys, os, pygame
 
-from ..src.UserInterface import UserInterface
+from ...src.UserInterface import UserInterface
+import random
 
 from PygameXtras import PerformanceGraph
 
 RUN_FOR = -1 # seconds
+
+class Point:
+    def __init__(self, name, pos):
+        self.name = name
+        self.pos = pos
 
 class Program():
     def __init__(self):
@@ -16,23 +22,46 @@ class Program():
         self.fpsclock = pygame.time.Clock()
         self.fps = 60
 
-        self.name = "Name"
+    def print_name(self, point: Point):
+        print(point.name)
+
+    def round(self, point: Point):
+        for p in self.points:
+            if p is point:
+                p.pos = (round(p.pos[0]), round(p.pos[1]))
+                self.ui.refresh()
+                return
     
-    def confirm_name(self):
-        print(f"Name is: {self.name}")
+    def delete(self, point: Point):
+        self.points.remove(point)
+        self.ui.refresh()
+
+    def add_random(self):
+        self.points.append(
+            Point("Random" + str(random.randint(0,100)), (round(random.random()*100, 4), round(random.random()*100, 4)))
+        )
+        self.ui.refresh()
 
     def main(self):
 
         fpslist = []
 
-        with open(os.path.join(os.path.dirname(__file__), "test_entry.xml"), "r") as f:
-            structure = f.read()
-
+        self.points = [Point("Point1", (1,1)), Point("Point2", (2,2))]
+        
         self.ui = UserInterface()
-        self.ui.set_structure(structure)
-        self.ui.set_variables({"name": self.name})
-        self.ui.set_methods({"confirm_name": self.confirm_name})
-        self.ui.set_pos((100, 50))
+        self.ui.set_classes(os.path.join(os.path.dirname(__file__), "test_points.json"))
+        self.ui.set_structure(os.path.join(os.path.dirname(__file__), "test_points.xml"))
+        self.ui.set_variables({
+            "points": self.points
+        })
+        self.ui.set_pos(self.center)
+        self.ui.set_methods({
+            "print_name": self.print_name,
+            "round": self.round,
+            "delete": self.delete,
+            "add_random": self.add_random
+        })
+        self.ui.refresh()
         
         run = True
         while run:
@@ -46,11 +75,9 @@ class Program():
                         run = False
 
             self.ui.update(event_list)
-            self.name = self.ui.get_entry(id="name").get()
 
             self.screen.fill((0,0,0))
             self.ui.draw(self.screen)
-            pygame.draw.rect(self.screen, (100,100,100), self.ui.get_rect(), 1)
             fps = self.fpsclock.get_fps()
             fpslist.append(fps)
             pygame.display.set_caption("Seconds left: " + str(round(RUN_FOR - (len(fpslist)/self.fps), 2)))
