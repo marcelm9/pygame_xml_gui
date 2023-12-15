@@ -32,8 +32,14 @@ class GUIMaker:
 
     def __run_recursive(self, widget: Widget, parent_attributes: dict):
         if widget.name in ["label", "button", "entry"]:
-            size = widget.attributes["size"]
-            anchor = widget.attributes["anchor"]
+
+            # setting size to 22 if not given yet
+            size = widget.attributes.get("size", 22)
+
+            # this line is necessary for the correct positioning of widgets
+            anchor = "topleft"
+            # OLD: anchor = widget.attributes["anchor"]
+
             newline = XMLHelper.read_bool(widget.attributes.get("pyNl", "1"))
             attributes = {k: v for k, v in widget.attributes.items() if (k not in ["size", "anchor", "contextInfo", "info"] and not k.startswith("py"))}
             attributes["info"] = {}

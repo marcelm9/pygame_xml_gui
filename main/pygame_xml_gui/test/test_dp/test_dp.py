@@ -1,6 +1,6 @@
 import os, pygame
 
-from ..src.UserInterface import UserInterface
+from ...src.UserInterface import UserInterface
 
 RUN_FOR = -1 # seconds
 
@@ -24,13 +24,10 @@ class Program():
 
     def main(self):
 
-        with open(os.path.join(os.path.dirname(__file__), "test_dp.xml"), "r") as f:
-            structure = f.read()
-
         shift = Shift("JOK", "A-39", ["First1 Last1", "First2 Last2", "First3 Last3", "First4 Last4"], "15.11.2023, 10:00", "15.11.2023, 18:30")
         
         self.ui = UserInterface()
-        self.ui.set_structure(structure)
+        self.ui.set_structure(os.path.join(os.path.dirname(__file__), "test_dp.xml"))
         self.ui.set_variables({
             "type_": shift.type,
             "car": shift.car,
@@ -38,7 +35,9 @@ class Program():
             "start": shift.start,
             "end": shift.end
         })
-        self.ui.set_pos((0, 0))
+        self.ui.set_pos((0, 0), "topleft")
+
+        self.ui.refresh()
         
         self.screen.fill((0,0,0))
         self.ui.draw(self.screen)
