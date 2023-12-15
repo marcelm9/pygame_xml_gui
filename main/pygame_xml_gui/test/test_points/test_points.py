@@ -1,6 +1,6 @@
 import sys, os, pygame
 
-from ..src.UserInterface import UserInterface
+from ...src.UserInterface import UserInterface
 import random
 
 from PygameXtras import PerformanceGraph

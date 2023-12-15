@@ -1,8 +1,0 @@
-add more default styles before merging this branch
-
-AND: the functionality for this automatic formatting is missing:
-{
-	"label": {
-		...
-	}
-}

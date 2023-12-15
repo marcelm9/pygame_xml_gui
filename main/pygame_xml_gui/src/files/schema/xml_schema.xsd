@@ -19,7 +19,7 @@
             </xsd:simpleType>
         </xsd:attribute>
         <xsd:attribute name="pySource" type="xsd:string" use="optional" />
-        <xsd:attribute name="pyStyle" type="xsd:string" use="required" />
+        <xsd:attribute name="pyStyle" type="xsd:string" use="optional" />
         <!-- for now pyBackground is required, but it the future it will be optional and
         if left blank the background will be transparent -->
         <xsd:attribute name="pyBackground" type="rgbColor" use="required" />

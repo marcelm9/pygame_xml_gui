@@ -1,6 +1,6 @@
 import sys, os, pygame
 
-from ..src.UserInterface import UserInterface
+from ...src.UserInterface import UserInterface
 
 from PygameXtras import PerformanceGraph
 
@@ -25,14 +25,12 @@ class Program():
 
         fpslist = []
 
-        with open(os.path.join(os.path.dirname(__file__), "test_entry.xml"), "r") as f:
-            structure = f.read()
-
         self.ui = UserInterface()
-        self.ui.set_structure(structure)
+        self.ui.set_structure(os.path.join(os.path.dirname(__file__), "test_entry.xml"))
         self.ui.set_variables({"name": self.name})
         self.ui.set_methods({"confirm_name": self.confirm_name})
-        self.ui.set_pos((100, 50))
+        self.ui.set_pos(self.center)
+        self.ui.refresh()
         
         run = True
         while run:
