@@ -82,7 +82,9 @@ class StyleInserter:
         return {}
     
     def __extract_pyClass(self, widget: Widget) -> dict:
-        if "pyClass" in widget.attributes.keys() and self.__classes is not None:
+        if "pyClass" in widget.attributes.keys():
+            if self.__classes is None:
+                ErrorHandler.error("Using pyClass without specifing a class file")
             styles_dict = {}
             string = widget.attributes["pyClass"]
             classes = string.split(" ")

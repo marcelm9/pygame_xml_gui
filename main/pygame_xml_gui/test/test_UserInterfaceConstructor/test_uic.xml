@@ -1,0 +1,5 @@
+<canvas pySize="500x500" pyBackground="(100,100,200)">
+    <label> hi there </label>
+    <label> hi there </label>
+    <button pyStyle="tc=(255,0,0)" pyClass="abc">yoyoyo what up</button>
+</canvas>

@@ -27,7 +27,7 @@ class UserInterface:
         self.__background_color = None
 
         self.__widgets = None
-        self.__variables = None
+        self.__variables = {}
         self.__methods = None
 
         self.__size = None
