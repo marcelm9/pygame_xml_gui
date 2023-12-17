@@ -1,5 +1,12 @@
 <canvas pySize="500x500" pyBackground="(100,100,200)">
     <label> hi there </label>
-    <label> hi there </label>
-    <button pyStyle="tc=(255,0,0)" pyClass="abc">yoyoyo what up</button>
+    <button pyClass="lena"> hallo lena </button>
+    <list>
+        <list-item pyFor="human in humans">
+            <label pyWidth="20">Name: </label>
+            <label pyWidth="60"> {{ human.name }} </label>
+            <label pyWidth="10"> Alter: </label>
+            <label pyWidth="10"> {{ human.age }} </label>
+        </list-item>
+    </list>
 </canvas>

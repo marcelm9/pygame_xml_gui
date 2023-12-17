@@ -3,6 +3,8 @@ import sys
 import time
 import pygame
 
+from rich import print
+
 from pygame_xml_gui.src.UserInterface import UserInterface
 from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 
@@ -17,6 +19,11 @@ class UserInterfaceConstructor:
         self.__source_path = None
         self.__variabels = None
 
+        # for refreshing
+        self.__old_structure = ""
+        self.__old_classes = ""
+        self.__old_source = ""
+
         # either 'file' or 'vars'
         # exclusive, because that's easier to manage
         self.__source_mode = ""
@@ -24,6 +31,9 @@ class UserInterfaceConstructor:
         self.__space = 20
         self.__refresh_seconds = 1
         self.__background_color = (0, 0, 0)
+
+    def __print(self, msg):
+        print(f"[purple][CONSTRUCTOR] {msg}")
 
     def set_structure(self, path: str):
         if not os.path.exists(path):
@@ -45,11 +55,13 @@ class UserInterfaceConstructor:
         if not os.path.isfile(path):
             ErrorHandler.error(f"Given path {path} does not point to a file.")
         self.__source_path = path
+        self.__source_mode = "file"
 
     def set_variables(self, variables: dict):
         if not isinstance(variables, dict):
             ErrorHandler.error(f"Given variables object is not of type dict", info=f"found object of type {type(variables)}")
         self.__variabels = variables
+        self.__source_mode = "vars"
     
     def set_space(self, space: int):
         if space < 0:
@@ -72,10 +84,14 @@ class UserInterfaceConstructor:
             variables = {}
             with open(self.__source_path, "r") as f:
                 code = f.read()
-            eval(code, None, variables)
-            print(f"VARIABLES: {variables}")
-            sys.exit(1)
-            # TODO: testing
+            try:
+                exec(
+                    code,
+                    None,
+                    variables,
+                )
+            except Exception as e:
+                ErrorHandler.error("Could not run source file", info=e)
             self.ui.set_variables(variables)
         elif self.__source_mode == "vars":
             self.ui.set_variables(self.__variabels)
@@ -90,7 +106,59 @@ class UserInterfaceConstructor:
             self.ui.set_pos(self.__center)
             self.__old["width"] = self.__screen.get_rect()[2]
             self.__old["height"] = self.__screen.get_rect()[3]
+    
+    def __check_for_refresh(self) -> bool:
+        """
+        Refresh every self.__refresh_seconds seconds if:
+            - structure file has been changed
+            OR
+            - classes file is used AND classes file has been changed
+            OR
+            - source file is used AND source file has been changed
+        """
+
+        if time.time() - self.__last_check < self.__refresh_seconds:
+            return False
+
+        structure_changed = False
+        classes_changed = False
+        source_changed = False
+
+        # structure
+        with open(self.__structure_path, "r") as f:
+            new_structure = f.read()
+        if self.__old_structure != new_structure:
+            structure_changed = True
+            self.__old_structure = new_structure
         
+        # classes
+        if self.__classes_path is not None:
+            with open(self.__classes_path, "r") as f:
+                new_classes = f.read()
+            if self.__old_classes != new_classes:
+                classes_changed = True
+                self.__old_classes = new_classes
+        
+        if self.__source_path is not None:
+            with open(self.__source_path, "r") as f:
+                new_source = f.read()
+            if self.__old_source != new_source:
+                source_changed = True
+                self.__old_source = new_source
+
+        # c2 = structure_changed
+        # c3 = (self.__classes_path is not None and classes_changed)
+        # c4 = (self.__source_path is not None and source_changed)
+        # print([c2, c3, c4])
+
+        self.__last_check = time.time()
+
+        return (
+            structure_changed or \
+            (self.__classes_path is not None and classes_changed) or \
+            (self.__source_path is not None and source_changed)
+        )
+
 
     def run(self):
         if self.__structure_path == None:
@@ -108,7 +176,7 @@ class UserInterfaceConstructor:
         self.__fps = 60
         self.__center = self.__screen.get_rect()[2] // 2, self.__screen.get_rect()[3] // 2
 
-        self.__last_refresh = time.time() - self.__refresh_seconds - 1
+        self.__last_check = time.time() - self.__refresh_seconds - 1
         self.__error = False
         
         run = True
@@ -116,21 +184,26 @@ class UserInterfaceConstructor:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
+                    self.__print("Stopping")
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
+                        self.__print("Stopping")
                         pygame.quit()
                         sys.exit()
             
-            if time.time() - self.__last_refresh > self.__refresh_seconds:
-                self.__last_refresh = time.time()
+            # if time.time() - self.__last_refresh > self.__refresh_seconds:
+            if self.__check_for_refresh():
+                self.__print("Refreshing")
+                self.__last_check = time.time()
                 try:
+                    # TODO: avoid repeating by checking if the file has been changed
                     self.__refresh()
                     self.__error = False
-                except Exception as e:
-                    if self.__error == False:
-                        ErrorHandler.error("An error occurred during compilation.", info=e, stop=False)
+                    self.__print("Success")
+                except SystemExit:
+                    self.__print("^ This error occurred during compilation ^")
                     self.__error = True
             
             self.__screen.fill(self.__background_color)

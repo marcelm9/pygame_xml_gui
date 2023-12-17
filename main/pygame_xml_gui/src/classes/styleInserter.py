@@ -75,9 +75,9 @@ class StyleInserter:
                     value = eval(style.split("=")[1])
                     styles_dict[key] = value
                 except NameError:
-                    raise Exception(f"Could not interpret key-value pair: {style}. Maybe you forgot quotation marks or a semicolon?")
+                    ErrorHandler.error(f"Could not interpret key-value pair: {style}", info="Maybe you forgot quotation marks or a semicolon?")
                 except:
-                    raise Exception(f"Could not interpret key-value pair: {style}")
+                    ErrorHandler.error(f"Could not interpret key-value pair: {style}")
             return styles_dict
         return {}
     

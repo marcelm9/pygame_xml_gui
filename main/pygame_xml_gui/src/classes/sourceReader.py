@@ -1,4 +1,6 @@
 import os
+
+from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 from .widget import Widget
 
 
@@ -30,11 +32,11 @@ class SourceReader:
         # checking for errors
         s = os.path.abspath(self.__source)
         if not os.path.exists(s):
-            raise Exception(f"Source file does not exist ({s})")
+            ErrorHandler.error(f"Source file does not exist", info=s)
         if not os.path.isfile(s):
-            raise Exception(f"Given source file is not a file ({s})")
+            ErrorHandler.error(f"Given source file is not a path", info=s)
         if not (str(s).endswith(".py") or str(s).endswith(".pyw")):
-            raise Exception(f"Given source file has to be a python file (.py or .pyw)")
+            ErrorHandler.error(f"Given source file has to be a python file (.py or .pyw)", info=s)
 
         # trying to load the variables
         try:
@@ -49,4 +51,5 @@ class SourceReader:
                 self.__vars,
             )
         except Exception as e:
-            raise Exception(f"Error executing source file: {e}")
+            ErrorHandler.error("Error executing source file", info=e)
+            # TODO: can i not just use this class in the UIC?

@@ -10,3 +10,7 @@ class Human:
 
 p1 = Human("Marcel", 21)
 p2 = Human("Lena", 20)
+
+humans = [
+    p1, p2
+]

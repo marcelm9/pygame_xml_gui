@@ -1,19 +1,19 @@
 import re
 import copy
+from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 
-from rich import print
 from .widget import Widget
 
 REGULAR_EXPRESSION = r"{{.*?}}"
 
 
 class SourceInserter:
-    def __init__(self, widgets: list[Widget], variables):
+    def __init__(self, widgets: list[Widget], variables: dict):
         self.__widgets = widgets
         self.__new_widgets = []
 
         self.__sanity_check()
-        self.__vars = variables
+        self.__vars: dict = variables
         self.__run()
 
     def __sanity_check(self):
@@ -23,7 +23,7 @@ class SourceInserter:
     def __join_dicts(self, inferior: dict, superior: dict | None) -> dict:
         if superior is None:
             return inferior
-        # new_dict = inferior.copy() # TODO: which one?
+
         new_dict = copy.deepcopy(inferior)
         for k, v in superior.items():
             new_dict[k] = v
@@ -40,8 +40,7 @@ class SourceInserter:
             if bool(eval(widget.attributes.get("pyIf", "True"), None, self.__join_dicts(self.__vars, additional_variables))) == False:
                 return None
         except Exception as e:
-            raise Exception(f"An error occurred while evaluating the pyIf attribute of a widget (type: {widget.name}, "
-                            + f"pyIf: '{widget.attributes.get('pyIf')}', exception: {e})")
+            ErrorHandler.error(f"Could not evaluate attribute 'pyIf' for a widget: {widget.attributes.get('pyIf')}", info=e)
 
         if widget.name in ["canvas", "list"]:
             return Widget(
@@ -58,17 +57,26 @@ class SourceInserter:
             )
         elif widget.name == "list-item":
             return_list = []
-            v1 = widget.attributes["pyFor"].split(" in ")[0]  # name of the iterable
-            v2 = self.__vars[
-                widget.attributes["pyFor"].split(" in ")[1]
-            ]  # list of items to iterate over
+            # v1 => name of the iterable
+            # v2 => list of items to iterate over
+            v1 = widget.attributes["pyFor"].split(" in ")[0]
+            try:
+                v2 = self.__vars[
+                    widget.attributes["pyFor"].split(" in ")[1]
+                ]
+            except KeyError:
+                ErrorHandler.error(f"Could not find value for key '{widget.attributes['pyFor'].split(' in ')[1]}'", info=f"possible keys: {list(self.__vars.keys())}")
 
-            for variable_value in v2:
-                content = []
-                for widget_in_list_item in widget.content:
-                    if (widget_ := self.__run_recursive(widget_in_list_item, {v1: variable_value})) is not None:
-                        content.append(widget_)
-                return_list.append(content)
+            try:
+                for variable_value in v2:
+                    content = []
+                    for widget_in_list_item in widget.content:
+                        if (widget_ := self.__run_recursive(widget_in_list_item, {v1: variable_value})) is not None:
+                            content.append(widget_)
+                    return_list.append(content)
+            except Exception as e:
+                ErrorHandler.error("Could not deal with 'pyFor' attribute", info=e)
+
             return [
                 Widget(
                     widget.name,
@@ -117,10 +125,7 @@ class SourceInserter:
                 try:
                     evaluation = eval(to_be_evaluated, None, vars_)
                 except Exception as e:
-                    raise Exception(
-                        f"An error occurred while evaluating the content of a widget (type: {widget.name}, original content: '{widget.content}')"
-                        + f"\nContent to be evaluated: '{to_be_evaluated}'\nException: {e}"
-                    )
+                    ErrorHandler.error(f"Could not evaluate attribute 'pyArgs' for a widget: {e}", info=f"Content to be evaluated: '{raw_pyArgs}'")
             string = string.replace(match, str(evaluation))
 
         # adding the context (the local variables of the pyFor) to the attributes
@@ -131,11 +136,8 @@ class SourceInserter:
             raw_pyArgs = widget.attributes["pyArgs"]
             try:
                 pyArgs = eval(raw_pyArgs, None, vars_)
-            except Exception:
-                raise Exception(
-                    f"An error occurred while evaluating attribute 'pyArgs' for a widget (type: {widget.name}, content: '{widget.content}')"
-                    + f"\nContent to be evaluated: '{raw_pyArgs}'"
-                )
+            except Exception as e:
+                ErrorHandler.error(f"Could not evaluate attribute 'pyArgs' for a widget: {e}", info=f"Content to be evaluated: '{raw_pyArgs}'")
             new_widget_attributes["pyArgs"] = pyArgs
 
 
