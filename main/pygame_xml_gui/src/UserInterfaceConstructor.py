@@ -13,7 +13,6 @@ class UserInterfaceConstructor:
     def __init__(self):
         self.ui = UserInterface()
 
-
         self.__structure_path = None
         self.__classes_path = None
         self.__source_path = None
@@ -189,7 +188,6 @@ class UserInterfaceConstructor:
             (self.__source_path is not None and source_changed)
         )
 
-
     def run(self):
         """
         Runs the UserInterfaceConstructor.
@@ -203,11 +201,11 @@ class UserInterfaceConstructor:
         }
 
         pygame.init()
-        # TODO: change
-        self.__screen = pygame.display.set_mode((100, 100), display=1)
+        self.__screen = pygame.display.set_mode((100, 100))
         self.__fpsclock = pygame.time.Clock()
         self.__fps = 60
         self.__center = self.__screen.get_rect()[2] // 2, self.__screen.get_rect()[3] // 2
+        pygame.display.set_caption("UserInterfaceConstructor")
 
         self.__last_check = time.time() - self.__refresh_seconds - 1
         self.__error = False
@@ -232,7 +230,7 @@ class UserInterfaceConstructor:
                 try:
                     self.__refresh()
                     self.__error = False
-                    self.__print("Success")
+                    self.__print("[green]Success")
                 except SystemExit:
                     self.__print("^ This error occurred during compilation ^")
                     self.__error = True
