@@ -1,6 +1,5 @@
-<canvas pySize="500x500" pyBackground="(100,100,200)">
-    <label> hi there </label>
-    <button pyClass="lena"> hallo lena </button>
+<canvas pySize="500x400" pyBackground="(100,100,200)">
+    <label pyClass="header"> People </label>
     <list>
         <list-item pyFor="human in humans">
             <label pyWidth="20">Name: </label>

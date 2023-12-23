@@ -33,47 +33,82 @@ class UserInterfaceConstructor:
         self.__background_color = (0, 0, 0)
 
     def __print(self, msg):
-        print(f"[purple][CONSTRUCTOR] {msg}")
+        print(f"[purple][CONSTRUCTOR] {msg}[/]")
 
     def set_structure(self, path: str):
+        """
+        Set the location of the structure file.
+        This file should have the extension '.xml'.
+        """
         if not os.path.exists(path):
-            ErrorHandler.error(f"Given path {path} does not exist.")
+            ErrorHandler.error(f"Given path '{path}' does not exist.")
         if not os.path.isfile(path):
-            ErrorHandler.error(f"Given path {path} does not point to a file.")
+            ErrorHandler.error(f"Given path '{path}' does not point to a file.")
         self.__structure_path = path
 
     def set_classes(self, path: str):
+        """
+        Set the location of the 'classes' file.
+        This file should have the extension '.json'.
+        """
         if not os.path.exists(path):
-            ErrorHandler.error(f"Given path {path} does not exist.")
+            ErrorHandler.error(f"Given path '{path}' does not exist.")
         if not os.path.isfile(path):
-            ErrorHandler.error(f"Given path {path} does not point to a file.")
+            ErrorHandler.error(f"Given path '{path}' does not point to a file.")
+        if not path.endswith(".json"):
+            ErrorHandler.error(f"Given path '{path}' is not a json file")
         self.__classes_path = path
 
     def set_source(self, path: str):
+        """
+        Set the location of the source file, from which the variables should be imported.
+        This file should have the extension '.py' or '.pyw'.
+
+        Sets the source mode to 'file'
+        """
         if not os.path.exists(path):
-            ErrorHandler.error(f"Given path {path} does not exist.")
+            ErrorHandler.error(f"Given path '{path}' does not exist.")
         if not os.path.isfile(path):
-            ErrorHandler.error(f"Given path {path} does not point to a file.")
+            ErrorHandler.error(f"Given path '{path}' does not point to a file.")
+        if not (path.endswith(".py") or path.endswith(".pyw")):
+            ErrorHandler.error(f"Given path '{path}' is not a .py or .pyw file.")
         self.__source_path = path
         self.__source_mode = "file"
 
     def set_variables(self, variables: dict):
+        """
+        Set the variables.
+        These can take any form, but the 'variabels' object has to be a dict.
+
+        Sets the source mode to 'vars'.
+        """
         if not isinstance(variables, dict):
             ErrorHandler.error(f"Given variables object is not of type dict", info=f"found object of type {type(variables)}")
         self.__variabels = variables
         self.__source_mode = "vars"
     
     def set_space(self, space: int):
+        """
+        Draw a black margin around the UI.
+        """
         if space < 0:
             ErrorHandler.error(f"Space has to be greater than or equal to zero", info=f"given: {space}")
         self.__space = space
 
     def set_refresh_interval(self, seconds: float):
+        """
+        Set the time (in seconds) between refreshes.
+        During a refresh, the given files are checked for changes and
+        if any change is found the window will be reloaded.
+        """
         if seconds < 0:
             ErrorHandler.error(f"Interval has to be greater than or equal to 0.5", info=f"given: {seconds}")
         self.__refresh_seconds = seconds
 
     def set_background_color(self, color: tuple[int, int, int]):
+        """
+        Set the background color.
+        """
         self.__background_color = color
 
     def __refresh(self):
@@ -139,17 +174,12 @@ class UserInterfaceConstructor:
                 classes_changed = True
                 self.__old_classes = new_classes
         
-        if self.__source_path is not None:
+        if self.__source_path is not None and self.__source_mode == "file":
             with open(self.__source_path, "r") as f:
                 new_source = f.read()
             if self.__old_source != new_source:
                 source_changed = True
                 self.__old_source = new_source
-
-        # c2 = structure_changed
-        # c3 = (self.__classes_path is not None and classes_changed)
-        # c4 = (self.__source_path is not None and source_changed)
-        # print([c2, c3, c4])
 
         self.__last_check = time.time()
 
@@ -161,6 +191,9 @@ class UserInterfaceConstructor:
 
 
     def run(self):
+        """
+        Runs the UserInterfaceConstructor.
+        """
         if self.__structure_path == None:
             ErrorHandler.error("No structure file given")
 
@@ -192,13 +225,11 @@ class UserInterfaceConstructor:
                         self.__print("Stopping")
                         pygame.quit()
                         sys.exit()
-            
-            # if time.time() - self.__last_refresh > self.__refresh_seconds:
+
             if self.__check_for_refresh():
                 self.__print("Refreshing")
                 self.__last_check = time.time()
                 try:
-                    # TODO: avoid repeating by checking if the file has been changed
                     self.__refresh()
                     self.__error = False
                     self.__print("Success")
@@ -212,7 +243,3 @@ class UserInterfaceConstructor:
 
             pygame.display.flip()
             self.__fpsclock.tick(self.__fps)
-
-            
-
-
