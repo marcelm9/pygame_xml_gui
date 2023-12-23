@@ -75,14 +75,16 @@ class StyleInserter:
                     value = eval(style.split("=")[1])
                     styles_dict[key] = value
                 except NameError:
-                    raise Exception(f"Could not interpret key-value pair: {style}. Maybe you forgot quotation marks or a semicolon?")
+                    ErrorHandler.error(f"Could not interpret key-value pair: {style}", info="Maybe you forgot quotation marks or a semicolon?")
                 except:
-                    raise Exception(f"Could not interpret key-value pair: {style}")
+                    ErrorHandler.error(f"Could not interpret key-value pair: {style}")
             return styles_dict
         return {}
     
     def __extract_pyClass(self, widget: Widget) -> dict:
-        if "pyClass" in widget.attributes.keys() and self.__classes is not None:
+        if "pyClass" in widget.attributes.keys():
+            if self.__classes is None:
+                ErrorHandler.error("Using pyClass without specifing a class file")
             styles_dict = {}
             string = widget.attributes["pyClass"]
             classes = string.split(" ")

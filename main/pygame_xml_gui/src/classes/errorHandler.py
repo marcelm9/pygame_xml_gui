@@ -1,4 +1,3 @@
-import sys
 from rich import print
 
 class ErrorHandler:
@@ -6,6 +5,6 @@ class ErrorHandler:
     def error(message: str, *, info: str = "", stop: bool = True):
         print(f"[red]ERROR:[white] {message}")
         if info != "":
-            print(f"[green]INFO:[white] {info}")
+            print(f"[green]INFO:[white]  {info}")
         if stop:
-            sys.exit(1)
+            raise SystemExit

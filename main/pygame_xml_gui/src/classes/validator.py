@@ -1,3 +1,4 @@
+from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 import xmlschema
 
 class Validator:
@@ -14,4 +15,4 @@ class Validator:
         try:
             xmlschema.validate(self.structure, self.schema)
         except Exception as e:
-            raise e
+            ErrorHandler.error("Error while checking xml file", info=e)

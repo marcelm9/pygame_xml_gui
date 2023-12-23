@@ -1,7 +1,5 @@
-import sys
 from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
 from pygame_xml_gui.src.classes.xmlHelper import XMLHelper
-from rich import print
 
 from .widget import Widget
 from PygameXtras import Label, Button, Entry
