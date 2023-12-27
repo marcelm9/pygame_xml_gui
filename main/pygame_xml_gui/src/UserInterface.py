@@ -6,7 +6,7 @@ from xml.sax.xmlreader import InputSource
 
 import PygameXtras as pe
 import pygame
-from pygame_xml_gui.src.classes.errorHandler import ErrorHandler
+from .classes.errorHandler import ErrorHandler
 
 from .classes.validator import Validator
 from .files.schema.xml_schema import SCHEMA
@@ -32,6 +32,7 @@ class UserInterface:
 
         self.__size = None
         self.__pos = (0, 0)
+        self.__anchor = "center"
         self.__line_height = 30
 
         self.__classes_string = None
@@ -89,6 +90,12 @@ class UserInterface:
 
         self.__process_structure()
 
+    def set_structure_from_string(self, structure: str):
+        if not isinstance(structure, str):
+            ErrorHandler.error("Given structure is not a string")
+        self.__structure_string = structure
+        self.__process_structure()
+
     def set_classes(self, path: str):
         """
         Imports the available styling classes from a file.
@@ -108,6 +115,12 @@ class UserInterface:
         except Exception as e:
             ErrorHandler.error(f"An error occurred while reading from the classes file at '{os.path.abspath(path)}'", info=e)
 
+        self.__process_classes()
+
+    def set_classes_from_dict(self, classes: dict):
+        if not isinstance(classes, dict):
+            ErrorHandler.error("Given classes object is not a dict")
+        self.__classes_string = str(classes).replace("'", '"')
         self.__process_classes()
 
     def __process_classes(self):
@@ -170,6 +183,13 @@ class UserInterface:
         self.__widgets: list[pe.Label | pe.Button | pe.Entry] = gm.get_widgets()
         self.__background = pygame.Surface(gm.get_size())
         self.__background_color = gm.get_background_color()
+
+        self.__apply_position()
+    
+    def __apply_position(self):
+        r = pygame.Rect(0, 0, self.__size[0], self.__size[1])
+        r.__setattr__(self.__anchor, self.__pos)
+        self.__pos = r.topleft
     
     def get_entry(self, id: str) -> pe.Entry:
         try:
@@ -186,9 +206,9 @@ class UserInterface:
         allowed = ("topleft", "midtop", "topright", "midright", "bottomright", "midbottom", "bottomleft", "midleft", "center")
         if anchor not in allowed:
             ErrorHandler.error(f"invalid input for 'anchor': {anchor}", info=f'possible values: {allowed}')
-        r = pygame.Rect(0, 0, self.__size[0], self.__size[1])
-        r.__setattr__(anchor, pos)
-        self.__pos = r.topleft
+
+        self.__pos = pos
+        self.__anchor = anchor
 
     def draw(self, screen: pygame.Surface):
         # TODO: better draw method? technically only needs redraw if something changes...
