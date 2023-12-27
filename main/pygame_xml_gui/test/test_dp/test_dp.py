@@ -1,6 +1,6 @@
 import os, pygame
 
-from ...src.UserInterface import UserInterface
+from pygame_xml_gui.src.UserInterface import UserInterface
 
 RUN_FOR = -1 # seconds
 
@@ -37,7 +37,7 @@ class Program():
         })
         self.ui.set_pos((0, 0), "topleft")
 
-        self.ui.refresh()
+        self.ui.initialize()
         
         self.screen.fill((0,0,0))
         self.ui.draw(self.screen)
