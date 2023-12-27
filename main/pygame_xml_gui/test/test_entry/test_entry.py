@@ -1,6 +1,6 @@
 import sys, os, pygame
 
-from ...src.UserInterface import UserInterface
+from pygame_xml_gui.src.UserInterface import UserInterface
 
 from PygameXtras import PerformanceGraph
 
@@ -30,7 +30,7 @@ class Program():
         self.ui.set_variables({"name": self.name})
         self.ui.set_methods({"confirm_name": self.confirm_name})
         self.ui.set_pos(self.center)
-        self.ui.refresh()
+        self.ui.initialize()
         
         run = True
         while run:

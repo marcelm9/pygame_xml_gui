@@ -32,11 +32,14 @@ class UserInterface:
 
         self.__size = None
         self.__pos = (0, 0)
+        self.__pos_given = (0, 0)
         self.__anchor = "center"
         self.__line_height = 30
 
         self.__classes_string = None
         self.__classes = None
+
+        self.__initialized = False
     
     def __process_structure(self):
         
@@ -88,13 +91,10 @@ class UserInterface:
         except Exception as e:
             ErrorHandler.error(f"An error occurred while reading from the structure file at '{os.path.abspath(path)}'", info=e)
 
-        self.__process_structure()
-
     def set_structure_from_string(self, structure: str):
         if not isinstance(structure, str):
             ErrorHandler.error("Given structure is not a string")
         self.__structure_string = structure
-        self.__process_structure()
 
     def set_classes(self, path: str):
         """
@@ -115,13 +115,10 @@ class UserInterface:
         except Exception as e:
             ErrorHandler.error(f"An error occurred while reading from the classes file at '{os.path.abspath(path)}'", info=e)
 
-        self.__process_classes()
-
     def set_classes_from_dict(self, classes: dict):
         if not isinstance(classes, dict):
             ErrorHandler.error("Given classes object is not a dict")
         self.__classes_string = str(classes).replace("'", '"')
-        self.__process_classes()
 
     def __process_classes(self):
         try:
@@ -149,7 +146,9 @@ class UserInterface:
         """
         Update all buttons of the UI.
         """
-        assert self.__widgets != None
+        if not self.__initialized:
+            ErrorHandler.error("Not initialized yet")
+
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
@@ -171,12 +170,9 @@ class UserInterface:
         """
         Creates the UI from the given structure, classes and variables.
         """
-        # TODO: callable only if structure is set (and variables are not None?)
-        # for now:
-        assert self.__raw_structure_widgets != None
-        assert self.__variables != None
+        if not self.__initialized:
+            ErrorHandler.error("Not initialized yet")
 
-        # TODO: does this also change self.__raw_structure_widgets ?
         self.__structure_widgets = SourceInserter(self.__raw_structure_widgets, self.__variables).get_widgets()
         gm = GUIMaker(self.__structure_widgets)
         self.__entries_mapping = gm.get_entries_mapping()
@@ -188,10 +184,12 @@ class UserInterface:
     
     def __apply_position(self):
         r = pygame.Rect(0, 0, self.__size[0], self.__size[1])
-        r.__setattr__(self.__anchor, self.__pos)
+        r.__setattr__(self.__anchor, self.__pos_given)
         self.__pos = r.topleft
     
     def get_entry(self, id: str) -> pe.Entry:
+        if not self.__initialized:
+            ErrorHandler.error("Not initialized yet")
         try:
             return self.__widgets[self.__entries_mapping[id]]
         except KeyError:
@@ -207,10 +205,12 @@ class UserInterface:
         if anchor not in allowed:
             ErrorHandler.error(f"invalid input for 'anchor': {anchor}", info=f'possible values: {allowed}')
 
-        self.__pos = pos
+        self.__pos_given = pos
         self.__anchor = anchor
 
     def draw(self, screen: pygame.Surface):
+        if not self.__initialized:
+            ErrorHandler.error("Not initialized yet")
         # TODO: better draw method? technically only needs redraw if something changes...
         self.__background.fill(self.__background_color)
         for widget in self.__widgets:
@@ -218,4 +218,16 @@ class UserInterface:
         screen.blit(self.__background, self.__pos)
     
     def get_rect(self):
+        if not self.__initialized:
+            ErrorHandler.error("Not initialized yet")
         return pygame.Rect(self.__pos[0], self.__pos[1], self.__background.get_width(), self.__background.get_height())
+
+    def initialize(self):
+        if self.__initialized:
+            ErrorHandler.error("Already initialized", info="If you want to refresh the widgets, use 'self.refresh()'")
+        if self.__classes_string is not None:
+            self.__process_classes()
+        self.__process_structure()
+
+        self.__initialized = True
+        self.refresh()

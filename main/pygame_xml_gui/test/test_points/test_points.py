@@ -61,7 +61,7 @@ class Program():
             "delete": self.delete,
             "add_random": self.add_random
         })
-        self.ui.refresh()
+        self.ui.initialize()
         
         run = True
         while run:

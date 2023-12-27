@@ -19,7 +19,7 @@ ui = UserInterface()
 ui.set_pos((300, 300))
 ui.set_classes_from_dict(DICT_CLASSES)
 ui.set_structure_from_string(STRING_XML)
-ui.refresh()
+ui.initialize()
 
 screen = pygame.display.set_mode((600, 600))
 fpsclock = pygame.time.Clock()
