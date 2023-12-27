@@ -149,7 +149,6 @@ class UserInterface:
         if not self.__initialized:
             ErrorHandler.error("Not initialized yet")
 
-        assert self.__widgets != None
         real_offset = (offset[0] + self.__pos[0], offset[1] + self.__pos[1])
         for widget in self.__widgets:
             if isinstance(widget, pe.Button):
@@ -174,13 +173,6 @@ class UserInterface:
         if not self.__initialized:
             ErrorHandler.error("Not initialized yet")
 
-
-        # TODO: callable only if structure is set (and variables are not None?)
-        # for now:
-        assert self.__raw_structure_widgets != None
-        assert self.__variables != None
-
-        # TODO: does this also change self.__raw_structure_widgets ?
         self.__structure_widgets = SourceInserter(self.__raw_structure_widgets, self.__variables).get_widgets()
         gm = GUIMaker(self.__structure_widgets)
         self.__entries_mapping = gm.get_entries_mapping()
