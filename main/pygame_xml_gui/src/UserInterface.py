@@ -223,6 +223,10 @@ class UserInterface:
         return pygame.Rect(self.__pos[0], self.__pos[1], self.__background.get_width(), self.__background.get_height())
 
     def initialize(self):
+        """
+        Initializes the UI.
+        Has to be called after all configurations and before updating or drawing.
+        """
         if self.__initialized:
             ErrorHandler.error("Already initialized", info="If you want to refresh the widgets, use 'self.refresh()'")
         if self.__classes_string is not None:
