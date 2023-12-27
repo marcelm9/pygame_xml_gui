@@ -4,6 +4,7 @@
 - changed UI.set_structure to take a path to an xml file instead of the content of an xml file
 - added 'guides' folder
 - made 'pyStyle' in the `canvas` widget optional
+- added `initialize` method
 
 ## 0.2.1 (11.12.2023)
 - improved set_pos method
