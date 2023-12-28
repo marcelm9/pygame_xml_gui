@@ -1,5 +1,4 @@
 import os
-from pygame_xml_gui.src.UserInterface import UserInterface
 
 from pygame_xml_gui.src.UserInterfaceConstructor import UserInterfaceConstructor
 
