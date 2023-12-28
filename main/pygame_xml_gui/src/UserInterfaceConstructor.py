@@ -131,13 +131,17 @@ class UserInterfaceConstructor:
             self.ui.set_variables(self.__variabels)
 
         self.ui.set_structure(self.__structure_path)
-        
-        self.ui.refresh()
+
+        # little workaround to always trigger ui.__process_structure and ui.__process_classes
+        self.ui._UserInterface__initialized = False
+        self.ui.initialize()
 
         if self.ui.get_rect()[2] != self.__old["width"] or self.ui.get_rect()[3] != self.__old["height"]:
             self.__screen = pygame.display.set_mode((self.ui.get_rect()[2] + self.__space, self.ui.get_rect()[3] + self.__space))
             self.__center = self.__screen.get_rect()[2] // 2, self.__screen.get_rect()[3] // 2
             self.ui.set_pos(self.__center)
+            # necessary for positioning
+            self.ui.refresh()
             self.__old["width"] = self.__screen.get_rect()[2]
             self.__old["height"] = self.__screen.get_rect()[3]
     
@@ -234,7 +238,7 @@ class UserInterfaceConstructor:
                 except SystemExit:
                     self.__print("^ This error occurred during compilation ^")
                     self.__error = True
-            
+
             self.__screen.fill(self.__background_color)
             if self.__error == False:
                 self.ui.draw(self.__screen)

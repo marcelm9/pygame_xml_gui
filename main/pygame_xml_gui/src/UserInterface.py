@@ -235,3 +235,9 @@ class UserInterface:
 
         self.__initialized = True
         self.refresh()
+    
+    def is_initialized(self):
+        return self.__initialized
+    
+    def has_classes_file(self):
+        return self.__classes_string is not None

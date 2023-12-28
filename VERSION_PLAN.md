@@ -5,3 +5,4 @@
 - pyBackground
 - making list scrollable
 - pyClass json improvement
+- pyStyleIf
