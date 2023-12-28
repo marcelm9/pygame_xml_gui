@@ -1,8 +1,3 @@
-## 0.2.4 (27.12.2023)
-- PLANNED: pyBackground
-- PLANNED: making list scrollable
-- PLANNED: pyClass json improvement
-
 ## 0.2.3 (27.12.2023)
 - changed UI.set_structure to take a path to an xml file instead of the content of an xml file
 - added 'guides' folder
