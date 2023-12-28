@@ -163,8 +163,6 @@ class UserInterface:
 
     def set_line_height(self, height: int = 30):
         self.__line_height = height
-        if self.__structure_string is not None:
-            self.__process_structure()
 
     def refresh(self):
         """

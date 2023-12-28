@@ -1,3 +1,6 @@
+## 0.2.6 (28.12.2023)
+- fixed bug with UserInterface.set_line_height
+
 ## 0.2.5 (28.12.2023)
 - added description to pyproject file
 
