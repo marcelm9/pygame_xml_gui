@@ -1,3 +1,6 @@
+## 0.2.5 (28.12.2023)
+- added description to pyproject file
+
 ## 0.2.4 (28.12.2023)
 - fixed UserInterfaceConstructor
 
