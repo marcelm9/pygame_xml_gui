@@ -1,3 +1,6 @@
+## 0.2.7 (24.01.2024)
+- fixed bug with wrong error being shown when unable to interpret content of a widget
+
 ## 0.2.6 (28.12.2023)
 - fixed bug with UserInterface.set_line_height
 

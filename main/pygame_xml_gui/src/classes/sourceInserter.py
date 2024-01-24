@@ -125,7 +125,7 @@ class SourceInserter:
                 try:
                     evaluation = eval(to_be_evaluated, None, vars_)
                 except Exception as e:
-                    ErrorHandler.error(f"Could not evaluate attribute 'pyArgs' for a widget: {e}", info=f"Content to be evaluated: '{raw_pyArgs}'")
+                    ErrorHandler.error(f"Could not evaluate content of a widget: {e}", info=f"Content to be evaluated: '{to_be_evaluated}'")
             string = string.replace(match, str(evaluation))
 
         # adding the context (the local variables of the pyFor) to the attributes

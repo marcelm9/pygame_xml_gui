@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pygame-xml-gui"
-version = "0.2.6"
+version = "0.2.7"
 description = "A module for easier GUI creation in pygame using XML files"
 authors = ["marcelm9 <marcel.menzel09@gmail.com>"]
 license = "MIT"
