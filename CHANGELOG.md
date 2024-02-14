@@ -1,3 +1,6 @@
+## 0.2.8 (14.02.2024)
+- switched from pygame to pygame-ce
+
 ## 0.2.7 (24.01.2024)
 - fixed bug with wrong error being shown when unable to interpret content of a widget
 
